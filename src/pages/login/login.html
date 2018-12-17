@@ -1,0 +1,34 @@
+<!-- <ion-header>
+  <ion-navbar>
+    <ion-title>{{ 'LOGIN_TITLE' | translate }}</ion-title>
+  </ion-navbar>
+</ion-header> -->
+
+<ion-content class="cover-page">
+  <form (submit)="doLogin()">
+    <ion-list>
+      <div class="login-box">
+        <div class="logo-block"></div>
+        <ion-item>
+          <ion-label fixed>{{ 'EMAIL' | translate }}</ion-label>
+          <ion-input type="email" [(ngModel)]="account.email" name="email"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label fixed>{{ 'PASSWORD' | translate }}</ion-label>
+          <ion-input type="password" [(ngModel)]="account.password" name="password"></ion-input>
+        </ion-item>
+        <div padding>
+          <button ion-button color="primary" block>{{ 'LOGIN_BUTTON' | translate }}</button>
+        </div>
+      </div>
+      <ion-item class="login-box-buttons">
+        <ion-note item-start color="primary" (click)="signUp()">
+          {{ 'GOTO_SIGNUP' | translate }}
+        </ion-note>
+        <ion-note item-end color="danger" (click)="forgotPassword()">
+          {{ 'LOGIN_FORGOT_PASSWORD' | translate }}
+        </ion-note>
+      </ion-item>
+    </ion-list>
+  </form>
+</ion-content>

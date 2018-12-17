@@ -1,0 +1,19 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>{{'SEND_VERIFICATION_TITLE' | translate}}</ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content padding>
+  <ion-list>
+    <div class="login-box">
+      <div padding>
+        {{'SEND_VERIFICATION_MESSAGE' | translate}}
+      </div>
+      <div padding>
+        <button ion-button block (click)="sendVerification()">{{'SEND_VERIFICATION_BUTTON' | translate}}</button>
+      </div>
+    </div>
+  </ion-list>
+
+</ion-content>

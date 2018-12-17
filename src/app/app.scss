@@ -1,0 +1,99 @@
+.cover-page{
+    background-image: url('../assets/img/real-estate-cover.jpg');
+    background-size: cover;
+    background-position: right;
+    background-color: transparent;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-position:top;
+}
+
+ion-header.transparent-header{
+
+  .toolbar {
+    position: absolute;
+
+    .toolbar-background {
+      background: transparent;
+    }
+    .toolbar-title {
+      color: black;
+    }
+  }
+}
+
+.box-shadow-effect{
+    box-shadow: 0px 2px 1px rgb(247, 247, 247), 0 2px 4px #ccc;
+}
+
+.logo-block{
+    background-image: url('../assets/img/app-logo-medium.png');
+    background-size: contain;
+    height: 20vh;
+    background-repeat: no-repeat;
+    background-position: center;
+    margin: $content-margin*2;  
+}
+
+.login-box{
+    @extend .box-shadow-effect; 
+    background-color: rgba($background-color, .95);
+    padding: $content-margin*2;
+    .item{
+        background-color: transparent !important;
+    }
+}
+
+.login-box-buttons{
+    padding: $content-margin*1 $content-margin*2 0 $content-margin*2 !important;   
+    background-color: transparent;
+}
+
+.transparent{
+    background-color:transparent;
+}
+
+.danger-color{
+    color: color($colors, danger);
+}
+
+.alert-button.danger-color{
+    color: color($colors, danger) !important;
+}
+
+.list {
+  .item, .item-inner{
+      box-shadow: none !important;
+      padding: 0;
+  }
+}
+
+.fab-pad {
+     padding-bottom: 90px;
+}
+
+.items-list{
+    @extend .box-shadow-effect;
+    border-radius: 0 0 15px 0;
+    background-color: $background-color-dark !important;
+    padding: $content-padding/2 0 $content-padding 0;
+    .item, .item-wrapper {
+        border: none !important;
+        background-color: $background-color;
+        margin: $content-margin/4;
+        width: auto;
+        padding-left: $content-padding/2;
+        .item-inner{
+            border: none !important;
+        }
+    }
+
+    .items-list-header{
+        background-color: $background-color-dark;
+    }
+}
+
+.swiper-pagination-progress .swiper-pagination-progressbar{
+    background: color($colors, success);
+}
+  

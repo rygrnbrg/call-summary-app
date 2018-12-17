@@ -1,0 +1,7 @@
+{
+  "name": "callSummaryApp",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "ionic-angular"
+}

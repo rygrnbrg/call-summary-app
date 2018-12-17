@@ -1,0 +1,114 @@
+// Ionic Variables and Theming. For more info, please see:
+// http://ionicframework.com/docs/v2/theming/
+$font-path: "../assets/fonts";
+
+@import "ionic.globals";
+
+
+// Named Color Variables
+// --------------------------------------------------
+// Named colors makes it easy to reuse colors on various components.
+// It's highly recommended to change the default colors
+// to match your app's branding. Ionic uses a Sass map of
+// colors so you can add, rename and remove colors as needed.
+// The "primary" color is the only required color in the map.
+
+$colors: (
+  primary:    #4A659E,
+  secondary:  #F7713F,
+  danger:     #FF466C,
+  light:      #F7F7F7,
+  light-darken: #F1F1F1,
+  dark:        #4b4b4b,
+  success:      rgb(60, 72, 97)
+  );
+
+
+// Shared Variables
+// --------------------------------------------------
+// To customize the look and feel of this app, you can override
+// the Sass variables found in Ionic's source scss files.
+// To view all the possible Ionic variables, see:
+// http://ionicframework.com/docs/v2/theming/overriding-ionic-variables/
+
+$text-color:       color($colors, dark) ;
+$background-color:  color($colors, light) ;
+$background-color-dark:  darken(color($colors, light), 2%) ;
+
+$link-color:                 color($colors, primary) ;
+$subdued-text-color:         color($colors, light-darken);
+
+$font-family-base:           -apple-system, "Helvetica Neue", "Roboto", sans-serif ;
+$font-size-base:             1.6rem ; // 1.4rem == 14px
+
+$content-padding:            16px ;
+$content-margin:             16px ;
+
+$toolbar-background:         color($colors, light) ;
+$toolbar-border-color:       #b2b2b2 ;
+$toolbar-text-color:         color($colors, primary);
+// $toolbar-active-color:       $link-color ;
+$toolbar-inactive-color:     #8c8c8c ;
+
+// $tabs-background:            #f8f8f8 ;
+// $tabs-border-color:          #b2b2b2 ;
+// $tabs-tab-color-inactive:    #8c8c8c ;
+// $tabs-tab-color-active:      $link-color ;
+
+// $list-text-color:            $text-color ;
+// $list-background-color:      $background-color ;
+// $list-border-color:          #c8c7cc ;
+
+
+$text-input-highlight-color-valid:      lighten(color($colors, primary), 50%);
+
+$text-input-highlight-color-invalid:    color($colors, danger);
+
+$text-input-placeholder-color:           #999;
+
+$fab-content-margin: 20px;
+
+// App iOS Variables
+// --------------------------------------------------
+// iOS only Sass variables can go here
+
+
+
+
+// App Material Design Variables
+// --------------------------------------------------
+// Material Design only Sass variables can go here
+
+
+
+
+// App Windows Variables
+// --------------------------------------------------
+// Windows only Sass variables can go here
+
+
+
+
+// App Theme
+// --------------------------------------------------
+// Ionic apps can have different themes applied, which can
+// then be future customized. This import comes last
+// so that the above variables are used and Ionic's
+// default are overridden.
+
+@import "ionic.theme.default";
+
+
+// Ionicons
+// --------------------------------------------------
+// The premium icon font for Ionic. For more info, please see:
+// http://ionicframework.com/docs/v2/ionicons/
+
+@import "ionic.ionicons";
+
+
+// Fonts
+// --------------------------------------------------
+
+@import "roboto";
+@import "noto-sans";

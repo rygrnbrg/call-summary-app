@@ -1,0 +1,20 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>{{ 'MAIN_LATEST_CALLS' | translate }}</ion-title>
+    <button ion-button menuToggle>
+      <ion-icon ion-button name="menu"></ion-icon>
+    </button>
+  </ion-navbar>
+</ion-header>
+<ion-content>
+  <ion-list class="items-list">
+    <ion-item *ngFor="let item of log" (click)="openItem(item)">
+      <ion-avatar item-start>
+        <img [src]="item.avatar | avatar" />
+      </ion-avatar>
+      <h2>{{item.name}}</h2>
+      <p>{{item.phone}}</p>
+      <!-- <ion-note item-end *ngIf="item.created">{{item.created | date : 'shortDate'}}</ion-note> -->
+    </ion-item>
+  </ion-list>
+</ion-content>

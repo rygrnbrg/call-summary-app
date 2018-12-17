@@ -1,0 +1,78 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>
+      {{ item.name? item.name : item.phone }}
+    </ion-title>
+    <!-- <ion-buttons start  end *ngIf="showSkip">
+      <button ion-button icon-only (click)="addItem()">
+        <ion-icon name="arrow-back"></ion-icon>
+      </button>
+    </ion-buttons> -->
+  </ion-navbar>
+</ion-header>
+
+<ion-content no-bounce>
+  <ion-slides pager="true" paginationType="progress" dir="{{dir}}" (ionSlideWillChange)="onSlideChangeStart($event)">
+    <ion-slide *ngFor="let slide of tutorialSlides; let i = index;">
+      <ion-content>
+        <div class="fab-pad">
+          <ion-icon [name]="slide.icon" class="slide-icon"></ion-icon>
+          <h3 class="slide-title">
+            {{slide.title | translate }}
+          </h3>
+          <ion-buttons end *ngIf="slide.buttons?.length">
+            <ion-grid>
+              <ion-row>
+                <ion-col col-6 *ngFor="let button of slide.buttons">
+                  <button color="secondary" ion-button block (click)="answerButtonClick(slide, button, i);" [color]="button.selected? 'secondary': 'success' ">
+                    {{button.title}}
+                  </button>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+          </ion-buttons>
+          <div *ngIf="slide.isBudgetRange">
+            <ion-label>{{priceRange.lower * 100000 | numberFormat}} - {{priceRange.upper * 100000 | numberFormat}}</ion-label>
+            <ion-range dualKnobs="true" [(ngModel)]="priceRange" min="slide.min" max="slide.max" step="0.1" snaps="true"
+              color="secondary">
+              <ion-label range-right>500K</ion-label>
+              <ion-label range-left>10M</ion-label>
+            </ion-range>
+          </div>
+        </div>
+        <ion-fab class="slide-fab" bottom center>
+          <button ion-fab (click)="setBudget(slide); goToSlide(i+1);" [hidden]="!slide.isBudgetRange">
+            {{ 'GENERAL_APPROVE'| translate}}
+          </button>
+          <button ion-fab (click)="goToSlide(i+1);" [hidden]="!slide.multiValue">
+            {{ 'GENERAL_APPROVE'| translate}}
+          </button>
+        </ion-fab>
+      </ion-content>
+    </ion-slide>
+    <ion-slide class="final-summary-slide">
+      <ion-content>
+        <div class="fab-pad">
+          <ion-list class="items-list">
+            <ion-item>
+              <ion-avatar item-start>
+                <img [src]="item.avatar" />
+              </ion-avatar>
+              <h2>{{item.name}}</h2>
+              <p>{{item.phone}}</p>
+              <ion-note item-end *ngIf="item.note">{{item.note}}</ion-note>
+            </ion-item>
+            <ion-item *ngFor="let slide of tutorialSlides; let i = index;" (click)="goToSlide(i);">
+              <ion-icon [name]="slide.icon" icon item-start color="secondary"></ion-icon>
+              <h2>{{slide.title}}</h2>
+              <span>{{getSlideValueString(slide)}}</span>
+            </ion-item>
+          </ion-list>
+        </div>
+        <ion-fab class="slide-fab" bottom center>
+          <button ion-fab (click)="submitSummary()">{{'SUMMARY_SLIDES_SUBMIT' | translate}}</button>
+        </ion-fab>
+      </ion-content>
+    </ion-slide>
+  </ion-slides>
+</ion-content>
