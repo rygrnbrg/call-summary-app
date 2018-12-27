@@ -20,9 +20,9 @@
         <p>{{item.phone}}</p>
         <ion-note item-end *ngIf="item.note">{{item.note}}</ion-note>
       </ion-item>
-      <ion-item *ngFor="let prop of item.info; let i = index;" (click)="goToSlide(i);">
-        <ion-icon [name]="getSlide(prop.key).icon" icon item-start color="secondary"></ion-icon>
-        <h2>{{getSlide(prop.key).title}}</h2>
+      <ion-item *ngFor="let prop of properties">
+        <ion-icon [name]="prop.icon" icon item-start color="secondary"></ion-icon>
+        <h2>{{prop.title}}</h2>
         <h2>{{prop.value}}</h2>
       </ion-item>
     </ion-list>

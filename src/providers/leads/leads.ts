@@ -33,6 +33,7 @@ export class LeadsProvider {
       created: item.created,
       avatar: item.avatar
     };
+    item.info.forEach(prop=> itemObj[prop.key] = prop.value);
     return this.leadsCollectionRef.add(itemObj);
   }
 
