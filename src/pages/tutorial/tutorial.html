@@ -14,7 +14,7 @@
 <ion-content no-bounce>
   <ion-slides pager="true" paginationType="progress" dir="{{dir}}" (ionSlideWillChange)="onSlideChangeStart($event)">
     <ion-slide *ngFor="let slide of tutorialSlides; let i = index;">
-      <ion-content>
+      <ion-content class="pad-left-right">
         <div class="fab-pad">
           <ion-icon [name]="slide.icon" class="slide-icon"></ion-icon>
           <h3 class="slide-title">
@@ -24,7 +24,7 @@
             <ion-grid>
               <ion-row>
                 <ion-col col-6 *ngFor="let button of slide.buttons">
-                  <button color="secondary" ion-button block (click)="answerButtonClick(slide, button, i);" [color]="button.selected? 'secondary': 'success' ">
+                  <button color="secondary" ion-button block (click)="answerButtonClick(slide, button, i);" [color]="button.selected? 'secondary': 'primary' ">
                     {{button.title}}
                   </button>
                 </ion-col>
@@ -33,7 +33,7 @@
           </ion-buttons>
           <div *ngIf="slide.isBudgetRange">
             <ion-label>{{priceRange.lower * 100000 | numberFormat}} - {{priceRange.upper * 100000 | numberFormat}}</ion-label>
-            <ion-range dualKnobs="true" [(ngModel)]="priceRange" min="slide.min" max="slide.max" step="0.1" snaps="true"
+            <ion-range dualKnobs="true" [(ngModel)]="priceRange" min="slide.min" max="slide.max" step="0.1" snaps="false"
               color="secondary">
               <ion-label range-right>500K</ion-label>
               <ion-label range-left>10M</ion-label>
@@ -54,14 +54,14 @@
       <ion-content>
         <div class="fab-pad">
           <ion-list class="items-list">
-            <ion-item>
+      <ion-list-header>
               <ion-avatar item-start>
-                <img [src]="item.avatar" />
+                <img [src]="item.avatar | avatar" />
               </ion-avatar>
               <h2>{{item.name}}</h2>
               <p>{{item.phone}}</p>
               <ion-note item-end *ngIf="item.note">{{item.note}}</ion-note>
-            </ion-item>
+    </ion-list-header>
             <ion-item *ngFor="let slide of tutorialSlides; let i = index;" (click)="goToSlide(i);">
               <ion-icon [name]="slide.icon" icon item-start color="secondary"></ion-icon>
               <h2>{{slide.title}}</h2>

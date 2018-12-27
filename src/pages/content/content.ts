@@ -16,29 +16,31 @@ export class ContentPage {
   keys: string[];
 
   constructor(
-    public navCtrl: NavController, 
-    private callLog: CallLog, 
+    public navCtrl: NavController,
+    private callLog: CallLog,
     private platform: Platform,
     private modalCtrl: ModalController) {
     this.updateLog();
   }
 
   public updateLog() {
-    if (this.platform.is("android")) {
-      this.callLog.hasReadPermission().then(hasPermission => {
-        if (hasPermission) {
-          this.callLog.getCallLog(this.getLogFilter(3)).then((result: Caller[]) => {
-            this.log = result.slice(0,10).map((logItem) => new Lead(logItem.number, logItem.name, {}, logItem.thumbPhoto));
-          });
-        }
-        else {
-          this.callLog.requestReadPermission().then((value) => {
-            this.updateLog();
-          });
-        }
-      });
+    if (this.platform.is("cordova")) {
+      if (this.platform.is("android")) {
+        this.callLog.hasReadPermission().then(hasPermission => {
+          if (hasPermission) {
+            this.callLog.getCallLog(this.getLogFilter(3)).then((result: Caller[]) => {
+              this.log = result.slice(0, 10).map((logItem) => new Lead(logItem.number, logItem.name, {}, logItem.thumbPhoto));
+            });
+          }
+          else {
+            this.callLog.requestReadPermission().then((value) => {
+              this.updateLog();
+            });
+          }
+        });
+      }
     }
-    if (!this.platform.is("cordova")){
+    else {//todo: mock remove
       this.log = [];
       for (let index = 0; index < 10; index++) {
         this.log.push(new Lead("052862665" + index, "caller" + index, {}));
@@ -46,17 +48,17 @@ export class ContentPage {
     }
   }
 
-  public openItem(item: Lead){
-    let addModal = this.modalCtrl.create('ItemCreatePage', {item: item});
+  public openItem(item: Lead) {
+    let addModal = this.modalCtrl.create('ItemCreatePage', { item: item });
     addModal.present();
   }
 
-  private getLogFilter(numberOfDays: number){
-      let logFilter: CallLogObject[] = [{
-        "name": "date",
-        "value": new Date().setDate(new Date().getDate() - numberOfDays).toString(),
-        "operator": ">="
-      }];
-      return logFilter
+  private getLogFilter(numberOfDays: number) {
+    let logFilter: CallLogObject[] = [{
+      "name": "date",
+      "value": new Date().setDate(new Date().getDate() - numberOfDays).toString(),
+      "operator": ">="
+    }];
+    return logFilter
   }
 }

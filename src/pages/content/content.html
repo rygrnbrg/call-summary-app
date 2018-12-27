@@ -1,13 +1,18 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>{{ 'MAIN_LATEST_CALLS' | translate }}</ion-title>
+    <ion-title></ion-title>
     <button ion-button menuToggle>
       <ion-icon ion-button name="menu"></ion-icon>
     </button>
   </ion-navbar>
 </ion-header>
-<ion-content>
+<ion-content class="cover-bg">
+  <div class="logo-block"></div>  
+  <div class="bg-color">
   <ion-list class="items-list">
+    <ion-list-header>
+      {{ 'MAIN_LATEST_CALLS' | translate }}
+    </ion-list-header>
     <ion-item *ngFor="let item of log" (click)="openItem(item)">
       <ion-avatar item-start>
         <img [src]="item.avatar | avatar" />
@@ -17,4 +22,5 @@
       <!-- <ion-note item-end *ngIf="item.created">{{item.created | date : 'shortDate'}}</ion-note> -->
     </ion-item>
   </ion-list>
+  </div>
 </ion-content>

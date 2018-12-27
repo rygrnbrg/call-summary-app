@@ -14,9 +14,9 @@ $font-path: "../assets/fonts";
 // The "primary" color is the only required color in the map.
 
 $colors: (
-  primary:    #4A659E,
+  primary:    #2C5C84,
   secondary:  #F7713F,
-  danger:     #FF466C,
+  danger:     rgb(116, 35, 51),
   light:      #F7F7F7,
   light-darken: #F1F1F1,
   dark:        #4b4b4b,
@@ -44,9 +44,9 @@ $font-size-base:             1.6rem ; // 1.4rem == 14px
 $content-padding:            16px ;
 $content-margin:             16px ;
 
-$toolbar-background:         color($colors, light) ;
-$toolbar-border-color:       #b2b2b2 ;
-$toolbar-text-color:         color($colors, primary);
+$toolbar-background:         transparent;
+$toolbar-border-color:       transparent;
+$toolbar-text-color:         color($colors, light);
 // $toolbar-active-color:       $link-color ;
 $toolbar-inactive-color:     #8c8c8c ;
 

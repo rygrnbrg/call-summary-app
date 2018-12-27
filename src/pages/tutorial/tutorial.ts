@@ -22,17 +22,12 @@ export class TutorialPage {
 
   @ViewChild(Slides) slides: Slides;
 
-  constructor
-  (public navCtrl: NavController, 
-    public menu: MenuController, 
-    public platform: Platform, 
-    public numberFormatPipe: NumberFormatPipe,
-    public summarySlides: SummarySlidesProvider,
-    public leads: LeadsProvider, 
-    public navParams: NavParams) {
+  constructor (
+    public navCtrl: NavController, public menu: MenuController,  public platform: Platform, 
+    public numberFormatPipe: NumberFormatPipe, public summarySlides: SummarySlidesProvider,
+    public leads: LeadsProvider,  public navParams: NavParams) {
       this.item = navParams.get('item');
       this.dir = platform.dir();
-      this.tutorialSlides = summarySlides.get();
       this.priceRange = { lower: 15, upper: 30 };
   }
 
@@ -55,6 +50,7 @@ export class TutorialPage {
   }
 
   ionViewDidEnter() {
+    this.tutorialSlides = this.summarySlides.get();
     // the root left menu should be disabled on the tutorial page
     // this.menu.enable(false);
   }

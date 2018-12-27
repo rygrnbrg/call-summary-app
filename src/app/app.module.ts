@@ -57,7 +57,7 @@ export function provideSettings(storage: Storage) {
       }
     }),
     IonicModule.forRoot(MyApp, {
-      menuType: 'push',
+      menuType: 'overlay',
       platforms: {
         ios: {
           // menuType: 'overlay',
@@ -65,7 +65,8 @@ export function provideSettings(storage: Storage) {
       }
     }),
     IonicStorageModule.forRoot(),
-    AngularFireModule.initializeApp(environment.firebase)
+    AngularFireModule.initializeApp(environment.firebase),
+    AngularFirestoreModule.enablePersistence()
   ],
   bootstrap: [IonicApp],
   entryComponents: [

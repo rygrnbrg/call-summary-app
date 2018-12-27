@@ -1,8 +1,8 @@
-<!-- <ion-header>
+<ion-header>
   <ion-navbar>
-    <ion-title>{{ 'LOGIN_TITLE' | translate }}</ion-title>
+    <ion-title></ion-title>
   </ion-navbar>
-</ion-header> -->
+</ion-header>
 
 <ion-content class="cover-page">
   <form (submit)="doLogin()">
@@ -18,16 +18,14 @@
           <ion-input type="password" [(ngModel)]="account.password" name="password"></ion-input>
         </ion-item>
         <div padding>
-          <button ion-button color="primary" block>{{ 'LOGIN_BUTTON' | translate }}</button>
+          <button ion-button color="light" block>{{ 'LOGIN_BUTTON' | translate }}</button>
+        </div>
+        <div class="danger-note" (click)="forgotPassword()">
+            {{ 'LOGIN_FORGOT_PASSWORD' | translate }}
         </div>
       </div>
-      <ion-item class="login-box-buttons">
-        <ion-note item-start color="primary" (click)="signUp()">
-          {{ 'GOTO_SIGNUP' | translate }}
-        </ion-note>
-        <ion-note item-end color="danger" (click)="forgotPassword()">
-          {{ 'LOGIN_FORGOT_PASSWORD' | translate }}
-        </ion-note>
+      <ion-item class="login-box-buttons" (click)="signUp()">
+        <b>{{ 'GOTO_SIGNUP_MESSAGE' | translate }}</b> {{ 'GOTO_SIGNUP' | translate }}
       </ion-item>
     </ion-list>
   </form>

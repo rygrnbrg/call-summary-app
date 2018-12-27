@@ -1,25 +1,44 @@
-.cover-page{
-    background-image: url('../assets/img/real-estate-cover.jpg');
-    background-size: cover;
-    background-position: right;
+.bg-color{
+    background-color: $background-color;
+}
+.cover-bg{
+    background-image: url('../assets/img/background-sky.jpg');
+    background-size: 1563px 929px;
     background-color: transparent;
     background-attachment: fixed;
     background-repeat: no-repeat;
-    background-position:top;
+    background-position: top center;   
+}
+.cover-page{
+    @extend .cover-bg;
 }
 
-ion-header.transparent-header{
 
-  .toolbar {
-    position: absolute;
+ion-list-header{
+     h1, h2, p{
+         text-align: initial;
+     }
+}
+.pad-left-right{
+    padding-left: $content-padding * 2;
+    padding-right: $content-padding * 2;
+}
 
+.toolbar .toolbar-title{
+    color:$toolbar-text-color !important;
+}
+
+ion-header::after {
+    background-image: none !important;
+}
+
+.toolbar {
     .toolbar-background {
-      background: transparent;
+        @extend .cover-bg;
     }
     .toolbar-title {
-      color: black;
+        color: black;
     }
-  }
 }
 
 .box-shadow-effect{
@@ -28,26 +47,55 @@ ion-header.transparent-header{
 
 .logo-block{
     background-image: url('../assets/img/app-logo-medium.png');
+    background-position: top;    
     background-size: contain;
     height: 20vh;
     background-repeat: no-repeat;
-    background-position: center;
-    margin: $content-margin*2;  
+    margin-bottom: $content-margin*2;  
+}
+
+.border-radius-button{
+    border-radius: 10px;
+}
+
+.light-label{
+    color: darken(color($colors, light), 5%);
 }
 
 .login-box{
-    @extend .box-shadow-effect; 
-    background-color: rgba($background-color, .95);
     padding: $content-margin*2;
+    
+    button{
+        @extend .border-radius-button;
+    }
+
     .item{
         background-color: transparent !important;
-    }
-}
+        color:color($colors, light);
 
-.login-box-buttons{
-    padding: $content-margin*1 $content-margin*2 0 $content-margin*2 !important;   
-    background-color: transparent;
+        .label {
+            @extend .light-label;
+        }
+    }
+
+    .danger-note{
+        color: color($colors, danger);
+        text-align: center;
+        font-weight: bold;
+        width:100%;
+    }
+
 }
+    
+.login-box-buttons{
+    text-align:center; 
+    background-color: transparent;
+    color: color($colors, light);
+    b{
+        @extend .light-label;
+    }
+}   
+
 
 .transparent{
     background-color:transparent;
@@ -73,24 +121,7 @@ ion-header.transparent-header{
 }
 
 .items-list{
-    @extend .box-shadow-effect;
-    border-radius: 0 0 15px 0;
-    background-color: $background-color-dark !important;
-    padding: $content-padding/2 0 $content-padding 0;
-    .item, .item-wrapper {
-        border: none !important;
-        background-color: $background-color;
-        margin: $content-margin/4;
-        width: auto;
-        padding-left: $content-padding/2;
-        .item-inner{
-            border: none !important;
-        }
-    }
-
-    .items-list-header{
-        background-color: $background-color-dark;
-    }
+    margin-bottom: 0;
 }
 
 .swiper-pagination-progress .swiper-pagination-progressbar{

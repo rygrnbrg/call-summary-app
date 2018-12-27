@@ -94,6 +94,6 @@ export class SummarySlidesProvider {
   }
 
   get() : SummarySlide[]{
-    return this.slides;
+    return Object.assign(this.slides);
   }
 }

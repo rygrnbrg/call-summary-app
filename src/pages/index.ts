@@ -1,5 +1,5 @@
 // The page the user lands on after opening the app and without a session
-export const FirstRunPage = 'LoginPage';
+export const FirstRunPage = 'TabsPage';
 export const SignupPage = 'SignupPage';
 export const LoginPage = 'LoginPage';
 export const SendVerificationPage = 'SendVerificationPage';

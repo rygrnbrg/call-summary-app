@@ -60,6 +60,8 @@
 
   "LOGIN_FORGOT_PASSWORD": "שכחתי סיסמה",
   "LOGIN_BUTTON": "התחבר",
+ 
+  "GOTO_SIGNUP_MESSAGE": "פעם ראשונה אצלנו?", 
   "GOTO_SIGNUP": "צור חשבון",
   "GOTO_LOGIN": "כבר רשום אצלנו?",
 

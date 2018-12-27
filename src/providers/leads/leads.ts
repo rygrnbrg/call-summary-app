@@ -4,7 +4,7 @@ import { Lead } from '../../models/lead';
 import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
 import { Observable } from 'rxjs/Rx';
 import { User } from '..';
-
+import { firestore } from 'firebase'
 /*
   Generated class for the LeadsProvider provider.
 
@@ -14,19 +14,19 @@ import { User } from '..';
 @Injectable()
 export class LeadsProvider {
   private leadsCollectionRef: AngularFirestoreCollection;
-  private leads$: Observable<firebase.firestore.DocumentData[]>;
+  private leads$: Observable<firestore.DocumentData[]>;
 
   constructor(public http: HttpClient, private afStore: AngularFirestore, user: User) {
     let userData = user.getUserData();
-    this.leadsCollectionRef = this.afStore.collection('users').doc(userData.email).collection('leads');
+    this.leadsCollectionRef = this.afStore.collection('users').doc(userData.email).collection('leads', ref=> ref.orderBy('created','desc'));
     this.leads$ = this.leadsCollectionRef.valueChanges();
   }
 
-  get(): Observable<firebase.firestore.DocumentData[]> {
+  get(): Observable<firestore.DocumentData[]> {
     return this.leads$;
   }
 
-  add(item: Lead): Promise<firebase.firestore.DocumentReference> {
+  add(item: Lead): Promise<firestore.DocumentReference> {
     let itemObj = {
       phone: item.phone,
       name: item.name,

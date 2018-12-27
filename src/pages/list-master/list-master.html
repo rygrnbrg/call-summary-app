@@ -1,6 +1,6 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>{{ 'LIST_MASTER_TITLE' | translate }}</ion-title>
+    <ion-title></ion-title>
     <button ion-button menuToggle>
       <ion-icon ion-button name="menu"></ion-icon>
     </button>
@@ -9,7 +9,7 @@
 
 <ion-content>
   <ion-list class="items-list">
-    <ion-item *ngFor="let item of leads" ion-item (click)="openItem(item)">
+    <ion-item *ngFor="let item of leads$ | async" ion-item (click)="openItem(item)">
       <ion-avatar item-start>
         <img [src]="item.avatar | avatar" />
       </ion-avatar>

@@ -3,6 +3,7 @@ import { IonicPage, ModalController, NavController } from 'ionic-angular';
 import { LeadsProvider } from '../../providers/leads/leads';
 import { Lead } from '../../models/lead';
 import { AvatarPipe } from '../../pipes/avatar/avatar';
+import { Observable } from 'rxjs';
 
 @IonicPage()
 @Component({
@@ -11,7 +12,7 @@ import { AvatarPipe } from '../../pipes/avatar/avatar';
   providers: [AvatarPipe]
 })
 export class ListMasterPage {
-  leads: firebase.firestore.DocumentData[];
+  leads$: Observable<firebase.firestore.DocumentData[]>;
 
   constructor(public navCtrl: NavController, public leadsProvider: LeadsProvider, public modalCtrl: ModalController) {
 
@@ -20,10 +21,8 @@ export class ListMasterPage {
   /**
    * The view loaded, let's query our items for the list
    */
-  ionViewDidLoad() { //todo:remove mock items
-    this.leadsProvider.get().subscribe((leads) => {
-      this.leads = leads;
-    });
+  ionViewDidLoad() {
+    this.leads$ = this.leadsProvider.get();
   }
 
   /**
