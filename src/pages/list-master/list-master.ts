@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
-import { IonicPage, ModalController, NavController } from 'ionic-angular';
+import { IonicPage, ModalController, NavController, LoadingController, Loading, ToastController } from 'ionic-angular';
 import { LeadsProvider } from '../../providers/leads/leads';
 import { Lead } from '../../models/lead';
 import { AvatarPipe } from '../../pipes/avatar/avatar';
 import { Observable } from 'rxjs';
+import { TranslateService } from '@ngx-translate/core';
 
 @IonicPage()
 @Component({
@@ -12,17 +13,49 @@ import { Observable } from 'rxjs';
   providers: [AvatarPipe]
 })
 export class ListMasterPage {
-  leads$: Observable<firebase.firestore.DocumentData[]>;
+  leads: firebase.firestore.DocumentData[];
+  loading: Loading;
+  translations: any;
 
-  constructor(public navCtrl: NavController, public leadsProvider: LeadsProvider, public modalCtrl: ModalController) {
+  constructor(private navCtrl: NavController, private leadsProvider: LeadsProvider,
+    private modalCtrl: ModalController, loadingCtrl: LoadingController, 
+    translateService: TranslateService, private toastCtrl: ToastController) {
+    this.loading = loadingCtrl.create();
 
+    translateService.get([
+      'LIST_LOADING_ERROR']).subscribe(values => {
+        this.translations = values;
+      });
   }
 
   /**
    * The view loaded, let's query our items for the list
    */
   ionViewDidLoad() {
-    this.leads$ = this.leadsProvider.get();
+    this.loading.present();
+    this.leadsProvider.get().subscribe(
+      (res) => { 
+        this.leads = res;
+        this.loading.dismiss();
+      },
+      (err) => {        
+        this.loading.dismiss();
+        console.error(err);
+        this.showToast(this.translations.LIST_LOADING_ERROR);
+      },
+      () => {
+        
+      }
+    );
+  }
+
+  showToast(message: string) {
+    let toast = this.toastCtrl.create({
+      message: message,
+      duration: 3000,
+      position: 'top'
+    });
+    toast.present();
   }
 
   /**

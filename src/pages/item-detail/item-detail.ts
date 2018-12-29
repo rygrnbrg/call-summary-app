@@ -5,11 +5,13 @@ import { Items } from '../../providers';
 import { SummarySlidesProvider } from '../../providers/summary-slides/summary-slides';
 import { SummarySlide } from '../../models/summary-slide';
 import { Lead } from '../../models/lead';
+import { AvatarPipe } from '../../pipes/avatar/avatar';
 
 @IonicPage()
 @Component({
   selector: 'page-item-detail',
-  templateUrl: 'item-detail.html'
+  templateUrl: 'item-detail.html',
+  providers: [AvatarPipe]
 })
 
 export class ItemDetailPage {

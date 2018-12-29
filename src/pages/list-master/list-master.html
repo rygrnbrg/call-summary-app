@@ -9,7 +9,7 @@
 
 <ion-content>
   <ion-list class="items-list">
-    <ion-item *ngFor="let item of leads$ | async" ion-item (click)="openItem(item)">
+    <ion-item *ngFor="let item of leads" ion-item (click)="openItem(item)">
       <ion-avatar item-start>
         <img [src]="item.avatar | avatar" />
       </ion-avatar>

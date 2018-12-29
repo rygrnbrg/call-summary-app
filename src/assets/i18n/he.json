@@ -79,6 +79,7 @@
   "AUTH_PASSWORD_VERIFICATION_ERROR": "שליחת דואר אלקטרוני לאיפוס סיסמה נכשלה. אנא נסה שנית",
 
   "LIST_MASTER_TITLE": "לידים",
+  "LIST_LOADING_ERROR": "טעינת הרשימה נכשלה",
 
   "ITEM_CREATE_TITLE": "ליד חדש",
   "ITEM_CREATE_CHOOSE_IMAGE": "הוסף תמונה",
