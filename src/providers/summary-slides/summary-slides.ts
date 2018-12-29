@@ -18,7 +18,7 @@ export class SummarySlidesProvider {
           new ActionButton("לשכור"),
           new ActionButton("למכור")
         ],
-        icon: 'clipboard'
+        icon: 'clipboard-outline'
       },
       {
         id: 'propertyType',
@@ -31,7 +31,7 @@ export class SummarySlidesProvider {
           new ActionButton("קוטג'"),
           new ActionButton("אחר")
         ],
-        icon: 'home'
+        icon: 'home-outline'
       },
       {
         id: 'numberOfRooms',
@@ -45,7 +45,7 @@ export class SummarySlidesProvider {
           new ActionButton("5"),
           new ActionButton("יותר מ-5")
         ],
-        icon: 'people'
+        icon: 'people-outline'
       },
       {
         id: 'budget',
@@ -55,7 +55,7 @@ export class SummarySlidesProvider {
         isBudgetRange: true,
         min: 1,
         max: 10,
-        icon: 'cash'
+        icon: 'cash-outline'
       },
       {
         id: 'area',
@@ -73,7 +73,7 @@ export class SummarySlidesProvider {
           new ActionButton('דורה אזורים'),
           new ActionButton('רצועת החוף')
         ],
-        icon: 'map'
+        icon: 'map-outline'
       },
       {
         id: 'source',

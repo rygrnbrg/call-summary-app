@@ -38,7 +38,6 @@ export class TutorialPage {
     }, 300);
   }
 
-
   startApp() {
     this.navCtrl.setRoot('WelcomePage', {}, {
       animate: true,
@@ -48,6 +47,10 @@ export class TutorialPage {
 
   onSlideChangeStart(slider) {
     this.showSkip = !slider.isEnd();
+  }
+
+  ionViewDidLoad() {
+    this.tutorialSlides.forEach(slide=> SummarySlide.reset(slide));
   }
 
   ionViewDidEnter() {

@@ -58,6 +58,8 @@ export function provideSettings(storage: Storage) {
     }),
     IonicModule.forRoot(MyApp, {
       menuType: 'overlay',
+      backButtonIcon: 'arrow-round-forward',
+      iconMode: 'ios',
       platforms: {
         ios: {
           // menuType: 'overlay',

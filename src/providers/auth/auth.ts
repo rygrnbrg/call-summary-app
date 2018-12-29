@@ -19,12 +19,12 @@ export class AuthProvider {
       })
   }
 
-  doRegister(data: AuthenticationData): Promise<firebase.auth.UserCredential> {
+  doRegister(data: AuthenticationData): Promise<firebase.User> {
     return this.afAuth.auth.createUserWithEmailAndPassword(data.email, data.password)
       .then(
         res => {
           this.localStorage.set(AuthProvider.emailStorageKey, data.email);
-          return Promise.resolve(res);
+          return Promise.resolve(res.user);
         },
         err => {
           console.log('User register failed.', err.code);
@@ -33,7 +33,7 @@ export class AuthProvider {
       )
   }
 
-  doLogin(data: AuthenticationData): Promise<firebase.auth.UserCredential> {
+  doLogin(data: AuthenticationData): Promise<firebase.User> {
     return this.afAuth.auth.signInWithEmailAndPassword(data.email, data.password)
       .then(
         res => {
@@ -43,7 +43,7 @@ export class AuthProvider {
             console.log("User login failed due to email not being verified.", res.user)
             return Promise.reject(<Error>{ name: code, message: this.getLoginErrorString(code) });
           }
-          return Promise.resolve(res);
+          return Promise.resolve(res.user);
         },
         err => {
           console.log('User login failed.', err.code);
