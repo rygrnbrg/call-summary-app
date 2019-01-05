@@ -18,8 +18,8 @@ export class LoginPage {
   // sure to add it to the type
 
   account: { email: string, password: string } = {
-    email: 'rygrnbrg@gmail.com',
-    password: 'test1234'
+    email: '',
+    password: ''
   };
 
   private translations: any;
@@ -29,20 +29,18 @@ export class LoginPage {
     private user: User,
     private toastCtrl: ToastController,
     private alertCtrl: AlertController,
-    translateService: TranslateService,
+    private translateService: TranslateService,
     private localStorage: Storage) {
-    this.user.authenticationState().subscribe((res) => {
-      if (res.emailVerified) {
-        this.user.loginExistingUser(res);
-        this.navCtrl.push(MainPage);
-      }
-    });
 
-    translateService.get([
+  }
+
+  ionViewWillEnter() {
+    this.translateService.get([
       'GENERAL_EMAIL_EXAMPLE', 'GENERAL_EMAIL', 'PASSWORD_RECOVERY_TITLE', 'PASSWORD_RECOVERY_MESSAGE',
       'PASSWORD_RECOVERY_SUCCESS', 'GENERAL_APPROVE', 'GENERAL_CANCEL']).subscribe(values => {
         this.translations = values;
       });
+
     this.localStorage.get(AuthProvider.emailStorageKey).then(
       (email) => this.account.email = email
     );
@@ -51,10 +49,9 @@ export class LoginPage {
   // Attempt to login in through our User service
   doLogin(): void {
     this.user.login(this.account).then((resp) => {
-      this.navCtrl.push(MainPage);
     }, (err: Error) => {
       if (err.name === AuthProvider.emailNotVerifiedErrorCode) {
-        this.navCtrl.setRoot(SendVerificationPage, { email: this.account.email, password: this.account.password });
+        this.navCtrl.setRoot(SendVerificationPage);
       }
       else {
         this.showToast(err.message);

@@ -12,11 +12,11 @@ export class NumberFormatPipe implements PipeTransform {
    * Takes a value and makes it lowercase.
    */
   transform(value: number) {
-    if (value > 1000000){
+    if (value >= 1000000){
       return value/1000000 + "M";
     }
-    if (value > 100000){
-      return value/100000 + "K";
+    if (value >= 100000){
+      return value/1000 + "K";
     }
     
     return value;

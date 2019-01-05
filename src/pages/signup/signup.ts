@@ -10,12 +10,9 @@ import { TranslateService } from '@ngx-translate/core';
   templateUrl: 'signup.html'
 })
 export class SignupPage {
-  // The account fields for the login form.
-  // If you're using the username field with or without email, make
-  // sure to add it to the type
   account: { email: string, password: string } = {
-    email: 'rygrnbrg@gmail.com',
-    password: 'test1234'
+    email: '',
+    password: ''
   };
 
   private translations: any;
@@ -32,26 +29,20 @@ export class SignupPage {
 
   doSignup() {
     // Attempt to login in through our User service
-    this.user.signup(this.account).then((resp) => {
+    this.user.signup(this.account).then((res) => {
       this.user.sendVerificationEmail().then(
         () => {
           this.showPrompt();
         },
-        err => this.navCtrl.setRoot(SendVerificationPage, { email: this.account.email, password: this.account.password })
+        err => this.navCtrl.setRoot(SendVerificationPage)
       )
     }, (err: Error) => {
       this.showToast(err.message);
     });
   }
 
-  doLogin() {
-    this.user.login(this.account).then(
-      res => {
-        this.navCtrl.push(MainPage);
-      },
-      (err: Error) => {
-        this.showToast(err.message);
-      });
+  gotoLogin() {
+    this.navCtrl.setRoot(LoginPage);
   }
 
   showPrompt() {
@@ -59,16 +50,10 @@ export class SignupPage {
       title: this.translations.VERIFY_TITLE,
       message: this.translations.VERIFY_MESSAGE,
       buttons: [
-        {
-          text: this.translations.GENERAL_LATER,
-          cssClass: "danger-color",
-          handler: data => {
-            this.navCtrl.push(LoginPage);
-          }
-        }, {
+         {
           text: this.translations.VERIFY_BUTTON,
           handler: data => {
-            this.doLogin();
+            this.gotoLogin();
           }
         }]
     });

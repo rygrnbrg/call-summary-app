@@ -3,8 +3,10 @@ import { IonicPage, ModalController, NavController, LoadingController, Loading, 
 import { LeadsProvider } from '../../providers/leads/leads';
 import { Lead } from '../../models/lead';
 import { AvatarPipe } from '../../pipes/avatar/avatar';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
+import { User } from '../../providers';
+import { subscriptionLogsToBeFn } from 'rxjs/internal/testing/TestScheduler';
 
 @IonicPage()
 @Component({
@@ -14,39 +16,46 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class ListMasterPage {
   leads: firebase.firestore.DocumentData[];
+  leadsSearchResults: firebase.firestore.DocumentData[];
+  subscriptions: Subscription[];
   loading: Loading;
   translations: any;
 
   constructor(private navCtrl: NavController, private leadsProvider: LeadsProvider,
-    private modalCtrl: ModalController, loadingCtrl: LoadingController, 
-    translateService: TranslateService, private toastCtrl: ToastController) {
+    private modalCtrl: ModalController, loadingCtrl: LoadingController,
+    private translateService: TranslateService, private toastCtrl: ToastController, private user: User) {
     this.loading = loadingCtrl.create();
-
-    translateService.get([
-      'LIST_LOADING_ERROR']).subscribe(values => {
-        this.translations = values;
-      });
+    this.subscriptions = [];
   }
 
-  /**
-   * The view loaded, let's query our items for the list
-   */
   ionViewDidLoad() {
     this.loading.present();
-    this.leadsProvider.get().subscribe(
-      (res) => { 
+    let leadsSubscription = this.leadsProvider.get().subscribe(
+      (res) => {
         this.leads = res;
         this.loading.dismiss();
       },
-      (err) => {        
+      (err) => {
+        if (this.user.getUserData() === null) {
+          return;
+        }
+
         this.loading.dismiss();
         console.error(err);
         this.showToast(this.translations.LIST_LOADING_ERROR);
-      },
-      () => {
-        
-      }
-    );
+      });
+
+    let translationSubscription = this.translateService.get([
+      'LIST_LOADING_ERROR']).subscribe(values => {
+        this.translations = values;
+      });
+
+    this.subscriptions.push(leadsSubscription, translationSubscription);
+  }
+
+  ionViewDidLeave() {
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+    this.loading.dismiss();
   }
 
   showToast(message: string) {
@@ -58,31 +67,32 @@ export class ListMasterPage {
     toast.present();
   }
 
-  /**
-   * Prompt the user to add a new item. This shows our ItemCreatePage in ao
-   * modal and then adds the new item to our data source if the user created one.
-   */
   addItem() {
-    let addModal = this.modalCtrl.create('ItemCreatePage');
-    addModal.onDidDismiss(item => {
+    let modal = this.modalCtrl.create('ItemCreatePage');
+    modal.onDidDismiss(item => {
       if (item) {
         this.leadsProvider.add(item);
       }
     })
-    addModal.present();
+    modal.present();
   }
 
-  /**
-   * Delete an item from the list of items.
-   */
+
+  openLeadsFilterModal() {
+    let modal = this.modalCtrl.create('LeadsFilterPage');
+    modal.onDidDismiss(item => {
+      if (item) {
+        // todo: filter by filter item
+      }
+    })
+    modal.present();
+  }
+
   deleteItem(item: Lead) {
     this.leadsProvider.delete(item);
   }
 
-  /**
-   * Navigate to the detail page for this item.
-   */
-  openItem(item: Lead) {
+  itemClicked(item: Lead) {
     this.navCtrl.push('ItemDetailPage', {
       item: item
     });

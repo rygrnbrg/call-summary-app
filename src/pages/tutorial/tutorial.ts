@@ -16,6 +16,7 @@ import { Lead } from '../../models/lead';
 export class TutorialPage {
   public priceRange;
   public item: Lead;
+  public resultLead: Lead;
   tutorialSlides: SummarySlide[];
   showSkip = true;
   dir: string = 'rtl';
@@ -38,19 +39,13 @@ export class TutorialPage {
     }, 300);
   }
 
-  startApp() {
-    this.navCtrl.setRoot('WelcomePage', {}, {
-      animate: true,
-      direction: 'forward'
-    });
-  }
-
   onSlideChangeStart(slider) {
     this.showSkip = !slider.isEnd();
   }
 
   ionViewDidLoad() {
-    this.tutorialSlides.forEach(slide=> SummarySlide.reset(slide));
+    this.tutorialSlides.forEach(slide => SummarySlide.reset(slide));
+    this.resultLead = new Lead(this.item.phone, this.item.name);
   }
 
   ionViewDidEnter() {
@@ -77,8 +72,17 @@ export class TutorialPage {
   }
 
   setBudget(slide: SummarySlide) {
+    this.resultLead.budgetMin = this.scalePriceRangeValue(this.priceRange.lower);
+    this.resultLead.budgetMax = this.scalePriceRangeValue(this.priceRange.upper);
+
     let transform = this.numberFormatPipe.transform;
-    slide.value = [transform(this.priceRange.lower * 100000), transform(this.priceRange.upper * 100000)];
+
+    slide.value = [transform(this.resultLead.budgetMin), transform(this.resultLead.budgetMax)];
+
+  }
+
+  private scalePriceRangeValue(value: number) {
+    return value * 100000;
   }
 
   private handleSingleValueButtonClick(slide: SummarySlide, button: ActionButton, index: number) {
@@ -88,15 +92,23 @@ export class TutorialPage {
   }
 
   submitSummary() {
-    let info = {};
-    this.tutorialSlides.forEach((slide) => {
-      info[slide.id] = this.getSlideValueString(slide);
-    });
-    let lead = new Lead(this.item.phone, this.item.name, info, this.item.avatar);
+    this.resultLead.area = this.getSimpleSlideValue('area');
+    this.resultLead.property = this.getSimpleSlideValue('property');
+    this.resultLead.rooms = this.getSimpleSlideValue('rooms');
+    this.resultLead.source = this.getSimpleSlideValue('source');
+    this.resultLead.type = this.getSimpleSlideValue('type');
 
-    this.leads.add(lead).then(() => this.navCtrl.setRoot('TabsPage', { tab: 'ListMasterPage' }, {
+    this.leads.add(this.resultLead).then(() => this.navCtrl.setRoot('TabsPage', { tab: 'ListMasterPage' }, {
       animate: true,
       direction: 'forward'
     }));
+  }
+
+  private getSlide(slideId: string) {
+    return this.tutorialSlides.find(slide => slide.id === slideId);
+  }
+
+  private getSimpleSlideValue(slideId): string[] {
+    return this.getSlide(slideId).buttons.filter(button => button.selected).map(button => button.title);
   }
 }

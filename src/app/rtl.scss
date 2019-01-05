@@ -1,5 +1,17 @@
 html[dir="rtl"]{
     .item{
-        padding-left: $content-padding;
+        padding-right: $content-padding;
+    }
+    ion-avatar[item-start]{
+        margin-right: 0;
+    }
+    ion-icon[item-start] + .item-inner{
+        margin-left: 0;
+    }
+    .item-md [item-end]{
+        margin-left: $content-margin;
+    }
+    .note-md{
+        font-size: 1.4rem;
     }
 }

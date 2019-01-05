@@ -22,7 +22,7 @@ export class TabsPage {
   tab1Title = "";
   tab2Title = "";
   constructor(public navCtrl: NavController, public translateService: TranslateService, public navParams: NavParams, private user: User) {
-    this.verifyUserLoggedIn();
+
   }
 
   ionViewDidLoad() {
@@ -30,16 +30,5 @@ export class TabsPage {
     if (tab) {
       this.tabRef.select(this.tabs.indexOf(tab));
     }
-  }
-
-  private verifyUserLoggedIn(): void{
-    this.user.authenticationState().subscribe((res) => {
-      if (res.emailVerified) {
-        this.user.loginExistingUser(res);
-      }
-      else {
-        this.navCtrl.push(LoginPage);
-      }
-    }, () => this.navCtrl.push(LoginPage));
   }
 }

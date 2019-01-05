@@ -111,5 +111,7 @@
   "GENERAL_PROCEED": "המשך",
   "GENERAL_SAVE": "שמור",
   "GENERAL_EMAIL":"דואר אלקטרוני",
-  "GENERAL_EMAIL_EXAMPLE":"email@gmail.com"
+  "GENERAL_EMAIL_EXAMPLE":"email@gmail.com",
+  "GENERAL_LOGOUT": "התנתק",
+  "GENERAL_SEARCH" : "חיפוש"
 }

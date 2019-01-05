@@ -6,48 +6,53 @@ import { SummarySlidesProvider } from '../../providers/summary-slides/summary-sl
 import { SummarySlide } from '../../models/summary-slide';
 import { Lead } from '../../models/lead';
 import { AvatarPipe } from '../../pipes/avatar/avatar';
+import { NumberFormatPipe } from '../../pipes/number-format/number-format';
 
 @IonicPage()
 @Component({
   selector: 'page-item-detail',
   templateUrl: 'item-detail.html',
-  providers: [AvatarPipe]
+  providers: [AvatarPipe, NumberFormatPipe]
 })
 
 export class ItemDetailPage {
-  item: any;
+  item: Lead;
   properties: ItemProperty[];
   private slides: SummarySlide[];
-  constructor(public navCtrl: NavController, navParams: NavParams, items: Items, summarySlidesProvider: SummarySlidesProvider) {
+  constructor(public navCtrl: NavController, navParams: NavParams, 
+  items: Items, summarySlidesProvider: SummarySlidesProvider, private numberFormatPipe: NumberFormatPipe) {
     this.slides = summarySlidesProvider.get();
-    this.item = navParams.get('item') || items.defaultItem;
+    this.item = navParams.get('item');
     this.properties = this.getProperties();
   }
 
   private getProperties(): ItemProperty[] {
-    let properties: ItemProperty[] = [];
-    let leadObject = new Lead("", "", {});
-    let keys = Object.keys(this.item);
-    let leadKeys = Object.keys(leadObject);
+    let props: ItemProperty[] = [];
 
-    keys.forEach(key => {
-      if (leadKeys.indexOf(key) === -1) {
-        let slide = this.getSlide(key);
-        properties.push({
-          icon: slide.icon,
-          title: slide.title,
-          value: this.item[key]
-        });
-      }
+    this.slides.forEach(slide => {
+      props.push({
+        icon: slide.icon,
+        title: slide.title,
+        value: this.getValueBySlide(slide)
+      });
     });
 
-    return properties;
+    return props;
   }
 
-  private getSlide(slideId: string): SummarySlide {
-    return this.slides.find((slide) => slide.id === slideId);
+  private getValueBySlide(slide: SummarySlide): string {
+    if (slide.isBudgetRange){
+      return  `${this.getBudget(this.item.budgetMin)} - ${this.getBudget(this.item.budgetMax)}`
+    }
+
+    let value: string[] = this.item[slide.id];
+    return value.join(', ');
   }
 
+  private getBudget(value: number): string {
+    let transform = this.numberFormatPipe.transform;
+    return transform(value).toString();
+  }
 }
 
 export interface ItemProperty {

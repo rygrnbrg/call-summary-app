@@ -29,7 +29,7 @@ export class ContentPage {
         this.callLog.hasReadPermission().then(hasPermission => {
           if (hasPermission) {
             this.callLog.getCallLog(this.getLogFilter(3)).then((result: Caller[]) => {
-              this.log = result.slice(0, 10).map((logItem) => new Lead(logItem.number, logItem.name, {}, logItem.thumbPhoto));
+              this.log = result.slice(0, 10).map((logItem) => new Lead(logItem.number, logItem.name, logItem.thumbPhoto));
             });
           }
           else {

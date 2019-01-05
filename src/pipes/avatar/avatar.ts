@@ -15,7 +15,7 @@ export class AvatarPipe implements PipeTransform {
   }
 
   transform(value: string): any {
-    if (value) {
+    if (value && value.length) {
       return this.domSanitizer.bypassSecurityTrustUrl(value);
     }
 

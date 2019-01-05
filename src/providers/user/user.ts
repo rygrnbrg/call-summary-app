@@ -22,7 +22,7 @@ export class User {
   public login(data: AuthenticationData): Promise<any> {
     return this.authProvider.doLogin(data).then(
       res => {
-        this._loggedIn(res);
+        this._user = res;
       },
       err => {
         return Promise.reject(err);
@@ -51,6 +51,10 @@ export class User {
   }
 
   public getUserData(): UserData {
+    if (!this._user){
+      return null;
+    }
+    
     return {
       id: this._user.uid,
       email: this._user.email
@@ -58,15 +62,10 @@ export class User {
   }
 
   public authenticationState(): Observable<firebase.User | null> {
-    return this.authProvider.afAuth.authState;
+    return this.authProvider.afAuth.authState
   }
 
   public logout() {
-    this._user = null;
+    this.authProvider.doLogout().then(this._user = null);
   }
-
-  private _loggedIn(user: firebase.User) {
-    this._user = user;
-  }
-
 }

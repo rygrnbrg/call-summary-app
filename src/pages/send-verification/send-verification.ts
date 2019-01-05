@@ -27,7 +27,7 @@ export class SendVerificationPage {
     public toastCtrl: ToastController,
     public alertCtrl: AlertController,
     public translateService: TranslateService) {
-    translateService.get(['SEND_VERIFICATION_SENT_SUCCESS_TITLE', 'SEND_VERIFICATION_SENT_SUCCESS_MESSAGE', 'VERIFY_BUTTON', 'GENERAL_LATER']).subscribe(values => {
+    translateService.get(['SEND_VERIFICATION_SENT_SUCCESS_TITLE', 'SEND_VERIFICATION_SENT_SUCCESS_MESSAGE', 'VERIFY_BUTTON']).subscribe(values => {
       this.translations = values;
     });
   }
@@ -43,36 +43,18 @@ export class SendVerificationPage {
     const prompt = this.alertCtrl.create({
       title: this.translations.SEND_VERIFICATION_SENT_SUCCESS_TITLE,
       message: this.translations.SEND_VERIFICATION_SENT_SUCCESS_MESSAGE,
-      buttons: [
-        {
-          text: this.translations.GENERAL_LATER,
-          cssClass: "danger-color",
-          handler: data => {
-            this.navCtrl.push(LoginPage);
-          }
-        }, {
+      buttons: [{
           text: this.translations.VERIFY_BUTTON,
           handler: data => {
-            this.doLogin();
+            this.gotoLogin();
           }
         }]
     });
     prompt.present();
   }
 
-  doLogin() {
-    var account: AuthenticationData = { email: this.navParams.get("email"), password: this.navParams.get("password") };
-    this.user.login(account).then(
-      res => {
-        this.navCtrl.push(MainPage);
-      },
-      (err: Error) => {
-        this.showToast(err.message);
-      });
-  }
-
-  login() {
-    this.navCtrl.setRoot('LoginPage');
+  gotoLogin() {
+    this.user.logout();
   }
 
   showToast(message: string) {

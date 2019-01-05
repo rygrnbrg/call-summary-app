@@ -1,6 +1,13 @@
 .bg-color{
     background-color: $background-color;
 }
+
+p.danger, .danger{
+    color: color($colors, danger);
+}
+p.light, .light{
+    color: color($colors, light);
+}
 .cover-bg{
     background-image: url('../assets/img/background-sky.jpg');
     background-size: 1563px 929px;

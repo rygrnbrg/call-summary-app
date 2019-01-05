@@ -8,7 +8,7 @@ export class SummarySlidesProvider {
   constructor() { 
     this.slides = [
       {
-        id: 'leadType',
+        id: 'type',
         title: 'סוג הליד',
         description: 'מעוניין ב',
         image: 'assets/img/ica-slidebox-img-1.png',
@@ -21,7 +21,7 @@ export class SummarySlidesProvider {
         icon: 'clipboard-outline'
       },
       {
-        id: 'propertyType',
+        id: 'property',
         title: 'נכס',
         description: 'סוג הנכס',
         image: 'assets/img/ica-slidebox-img-2.png',
@@ -34,7 +34,7 @@ export class SummarySlidesProvider {
         icon: 'home-outline'
       },
       {
-        id: 'numberOfRooms',
+        id: 'rooms',
         title: 'חדרים',
         description: 'מספר חדרים מבוקש',
         image: 'assets/img/ica-slidebox-img-3.png',
@@ -53,7 +53,7 @@ export class SummarySlidesProvider {
         description: 'תקציב בשקלים',
         image: 'assets/img/ica-slidebox-img-3.png',
         isBudgetRange: true,
-        min: 1,
+        min: 0,
         max: 10,
         icon: 'cash-outline'
       },

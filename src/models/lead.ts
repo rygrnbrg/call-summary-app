@@ -1,22 +1,22 @@
-export class LeadProperty {
-    key: string;
-    value: any;
-}
+import { attachEmbeddedView } from "@angular/core/src/view";
+
 export class Lead {
-    constructor(phone: string, name: string, info: Object, avatar?: string) {
+    constructor(phone: string, name: string, avatar?: string) {
         this.phone = phone;
         this.name = name;
         this.created = new Date();
-        this.avatar = avatar;
-        this.info = [];
-        for (let key in info) {
-            this.info.push({key: key, value: info[key]});
-        }
+        this.avatar = avatar? avatar : null;
     }
 
     avatar: string;
     name: string;
     phone: string;
     created: Date;
-    info: LeadProperty[];
+    type: string[];
+    property: string[];
+    rooms: string[];
+    area: string[];
+    source: string[];  
+    budgetMin: number;
+    budgetMax: number;
 }

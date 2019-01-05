@@ -32,10 +32,10 @@
             </ion-grid>
           </ion-buttons>
           <div *ngIf="slide.isBudgetRange">
-            <ion-label>{{priceRange.lower * 100000 | numberFormat}} - {{priceRange.upper * 100000 | numberFormat}}</ion-label>
+            <ion-label>{{ scalePriceRangeValue(priceRange.lower) | numberFormat}} - {{scalePriceRangeValue(priceRange.upper) | numberFormat}}</ion-label>
             <ion-range dualKnobs="true" [(ngModel)]="priceRange" min="slide.min" max="slide.max" step="0.1" snaps="false"
               color="secondary">
-              <ion-label range-right>500K</ion-label>
+              <ion-label range-right>0</ion-label>
               <ion-label range-left>10M</ion-label>
             </ion-range>
           </div>

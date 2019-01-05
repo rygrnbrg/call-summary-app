@@ -15,8 +15,9 @@ import { firestore } from 'firebase'
 export class LeadsProvider {
   private leadsCollectionRef: AngularFirestoreCollection;
   private leads$: Observable<firestore.DocumentData[]>;
-
+  private static searchArrayName: string = "searchTermsArray";
   constructor(public http: HttpClient, private afStore: AngularFirestore, user: User) {
+
     let userData = user.getUserData();
     this.leadsCollectionRef = this.afStore.collection('users').doc(userData.email).collection('leads', ref=> ref.orderBy('created','desc'));
     this.leads$ = this.leadsCollectionRef.valueChanges();
@@ -27,14 +28,7 @@ export class LeadsProvider {
   }
 
   add(item: Lead): Promise<firestore.DocumentReference> {
-    let itemObj = {
-      phone: item.phone,
-      name: item.name,
-      created: item.created,
-      avatar: item.avatar
-    };
-    item.info.forEach(prop=> itemObj[prop.key] = prop.value);
-    return this.leadsCollectionRef.add(itemObj);
+     return this.leadsCollectionRef.add(Object.assign({}, item));
   }
 
   delete(item: Lead) {

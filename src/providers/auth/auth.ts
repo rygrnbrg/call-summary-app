@@ -12,6 +12,7 @@ export class AuthProvider {
   public static emailStorageKey = "email";
 
   constructor(public afAuth: AngularFireAuth, public translateService: TranslateService, public localStorage: Storage) {
+    this.translateService.use('he');
     this.translateService.get([
       'SIGNUP_ERROR', 'SIGNUP_ERROR_WEAK', 'SIGNUP_ERROR_EMAIL_USED', 'LOGIN_WRONG_CREDENTIALS',
       'LOGIN_ERROR', 'LOGIN_EMAIL_NOT_VERIFIED', 'PASSWORD_RECOVERY_FAIL', 'PASSWORD_RECOVERY_NO_ACCOUNT']).subscribe((values) => {
