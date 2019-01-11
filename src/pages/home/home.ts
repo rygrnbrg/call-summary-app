@@ -7,11 +7,11 @@ import { Lead } from '../../models/lead';
 
 @IonicPage()
 @Component({
-  selector: 'page-content',
-  templateUrl: 'content.html',
+  selector: 'page-home',
+  templateUrl: 'home.html',
   providers: [AvatarPipe]
 })
-export class ContentPage {
+export class HomePage {
   log: Lead[];
   keys: string[];
 
@@ -43,7 +43,7 @@ export class ContentPage {
     else {//todo: mock remove
       this.log = [];
       for (let index = 0; index < 10; index++) {
-        this.log.push(new Lead("052862665" + index, "caller" + index, {}));
+        this.log.push(new Lead("052862665" + index, "caller" + index));
       }
     }
   }

@@ -1,7 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { IonicPage, MenuController, NavController, Platform, Slides, NavParams } from 'ionic-angular';
-import { SummarySlidesProvider } from '../../providers/summary-slides/summary-slides'
-import { SummarySlide, ActionButton } from '../../models/summary-slide'
+import { LeadPropertyMetadataProvider } from '../../providers/summary-slides/summary-slides'
+import { LeadPropertyMetadata, PropertyOption } from '../../models/lead-property-metadata'
 import { NumberFormatPipe } from '../../pipes/number-format/number-format';
 import { LeadsProvider } from '../../providers/leads/leads';
 import { Lead } from '../../models/lead';
@@ -17,7 +17,7 @@ export class TutorialPage {
   public priceRange;
   public item: Lead;
   public resultLead: Lead;
-  tutorialSlides: SummarySlide[];
+  tutorialSlides: LeadPropertyMetadata[];
   showSkip = true;
   dir: string = 'rtl';
 
@@ -25,12 +25,12 @@ export class TutorialPage {
 
   constructor(
     public navCtrl: NavController, public menu: MenuController, public platform: Platform,
-    public numberFormatPipe: NumberFormatPipe, public summarySlides: SummarySlidesProvider,
+    public numberFormatPipe: NumberFormatPipe, public leadPropertyMetadataProvider: LeadPropertyMetadataProvider,
     public leads: LeadsProvider, public navParams: NavParams) {
     this.item = navParams.get('item');
     this.dir = platform.dir();
     this.priceRange = { lower: 15, upper: 30 };
-    this.tutorialSlides = this.summarySlides.get();
+    this.tutorialSlides = this.leadPropertyMetadataProvider.get();
   }
 
   goToSlide(index: number) {
@@ -44,7 +44,7 @@ export class TutorialPage {
   }
 
   ionViewDidLoad() {
-    this.tutorialSlides.forEach(slide => SummarySlide.reset(slide));
+    this.tutorialSlides.forEach(slide => LeadPropertyMetadata.reset(slide));
     this.resultLead = new Lead(this.item.phone, this.item.name);
   }
 
@@ -58,7 +58,7 @@ export class TutorialPage {
     // this.menu.enable(true);
   }
 
-  answerButtonClick(slide: SummarySlide, button: ActionButton, index: number): void {
+  answerButtonClick(slide: LeadPropertyMetadata, button: PropertyOption, index: number): void {
     button.selected = !button.selected;
 
     if (!slide.multiValue) {
@@ -67,11 +67,11 @@ export class TutorialPage {
     }
   }
 
-  getSlideValueString(slide: SummarySlide): String {
-    return SummarySlide.getValueString(slide);
+  getSlideValueString(slide: LeadPropertyMetadata): String {
+    return LeadPropertyMetadata.getValueString(slide);
   }
 
-  setBudget(slide: SummarySlide) {
+  setBudget(slide: LeadPropertyMetadata) {
     this.resultLead.budgetMin = this.scalePriceRangeValue(this.priceRange.lower);
     this.resultLead.budgetMax = this.scalePriceRangeValue(this.priceRange.upper);
 
@@ -85,9 +85,9 @@ export class TutorialPage {
     return value * 100000;
   }
 
-  private handleSingleValueButtonClick(slide: SummarySlide, button: ActionButton, index: number) {
+  private handleSingleValueButtonClick(slide: LeadPropertyMetadata, button: PropertyOption, index: number) {
     if (button.selected) {
-      slide.buttons.forEach((item) => { item.selected = item === button ? true : false; });
+      slide.options.forEach((item) => { item.selected = item === button ? true : false; });
     }
   }
 
@@ -98,7 +98,7 @@ export class TutorialPage {
     this.resultLead.source = this.getSimpleSlideValue('source');
     this.resultLead.type = this.getSimpleSlideValue('type');
 
-    this.leads.add(this.resultLead).then(() => this.navCtrl.setRoot('TabsPage', { tab: 'ListMasterPage' }, {
+    this.leads.add(this.resultLead).then(() => this.navCtrl.setRoot('TabsPage', { tab: 'LeadsPage' }, {
       animate: true,
       direction: 'forward'
     }));
@@ -109,6 +109,6 @@ export class TutorialPage {
   }
 
   private getSimpleSlideValue(slideId): string[] {
-    return this.getSlide(slideId).buttons.filter(button => button.selected).map(button => button.title);
+    return this.getSlide(slideId).options.filter(button => button.selected).map(button => button.title);
   }
 }

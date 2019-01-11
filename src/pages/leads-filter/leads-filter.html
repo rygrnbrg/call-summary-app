@@ -1,9 +1,24 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>leads-filter</ion-title>
+    <ion-title></ion-title>
   </ion-navbar>
 </ion-header>
 
 <ion-content padding>
-
+  <ion-list *ngFor="let filter of filters">
+    <ion-list-header>
+      <ion-icon [name]="filter.metadata.icon" item-start></ion-icon>
+      <p>{{filter.metadata.title}}</p>
+      <ion-icon name="arrow-back" item-end></ion-icon>
+    </ion-list-header>
+    <ion-item>
+      <ion-grid>
+        <ion-row>
+          <ion-col *ngFor="let option of filter.metadata.options" col-6>
+              <button ion-button [outline]="option.selected" (click)="option.selected = !options.selected">{{option.title}}</button>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-item>
+  </ion-list>
 </ion-content>

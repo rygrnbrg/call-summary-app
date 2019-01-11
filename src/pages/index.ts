@@ -1,5 +1,9 @@
 // The page the user lands on after opening the app and without a session
-export const FirstRunPage = 'TabsPage';
+
+export const FirstRunPage = 'LeadsFilterPage';
+export const Tab1Root = 'LeadsFilterPage';
+
+// export const FirstRunPage = 'TabsPage';
 export const SignupPage = 'SignupPage';
 export const LoginPage = 'LoginPage';
 export const SendVerificationPage = 'SendVerificationPage';
@@ -7,6 +11,7 @@ export const SendVerificationPage = 'SendVerificationPage';
 // Change this if not using tabs
 export const MainPage = 'TabsPage';
 // The initial root pages for our tabs (remove if not using tabs)
-export const Tab1Root = 'ContentPage';
-export const Tab2Root = 'ListMasterPage';
+
+// export const Tab1Root = 'HomePage';
+export const Tab2Root = 'LeadsPage';
 // export const Tab3Root = 'SettingsPage';

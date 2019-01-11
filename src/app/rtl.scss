@@ -1,13 +1,11 @@
 html[dir="rtl"]{
-    .item{
-        padding-right: $content-padding;
+    .item-md ion-avatar[item-start]{
+        margin-right: $content-margin;
     }
-    ion-avatar[item-start]{
-        margin-right: 0;
-    }
-    ion-icon[item-start] + .item-inner{
+    .item-md ion-icon[item-start] + .item-inner{
         margin-left: 0;
     }
+
     .item-md [item-end]{
         margin-left: $content-margin;
     }

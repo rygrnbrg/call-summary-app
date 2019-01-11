@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import { ActionButton, SummarySlide } from '../../models/summary-slide'
+import { PropertyOption, LeadPropertyMetadata } from '../../models/lead-property-metadata'
 
 @Injectable()
-export class SummarySlidesProvider {
-  private slides: SummarySlide[] = [];
+export class LeadPropertyMetadataProvider {
+  private slides: LeadPropertyMetadata[] = [];
 
   constructor() { 
     this.slides = [
@@ -12,11 +12,11 @@ export class SummarySlidesProvider {
         title: 'סוג הליד',
         description: 'מעוניין ב',
         image: 'assets/img/ica-slidebox-img-1.png',
-        buttons: [
-          new ActionButton("להשכיר"),
-          new ActionButton("לקנות"),
-          new ActionButton("לשכור"),
-          new ActionButton("למכור")
+        options: [
+          new PropertyOption("להשכיר"),
+          new PropertyOption("לקנות"),
+          new PropertyOption("לשכור"),
+          new PropertyOption("למכור")
         ],
         icon: 'clipboard-outline'
       },
@@ -25,11 +25,11 @@ export class SummarySlidesProvider {
         title: 'נכס',
         description: 'סוג הנכס',
         image: 'assets/img/ica-slidebox-img-2.png',
-        buttons: [
-          new ActionButton("דירה"),
-          new ActionButton("פנטהאוס"),
-          new ActionButton("קוטג'"),
-          new ActionButton("אחר")
+        options: [
+          new PropertyOption("דירה"),
+          new PropertyOption("פנטהאוס"),
+          new PropertyOption("קוטג'"),
+          new PropertyOption("אחר")
         ],
         icon: 'home-outline'
       },
@@ -38,12 +38,12 @@ export class SummarySlidesProvider {
         title: 'חדרים',
         description: 'מספר חדרים מבוקש',
         image: 'assets/img/ica-slidebox-img-3.png',
-        buttons: [
-          new ActionButton("פחות מ-3"),
-          new ActionButton("3"),
-          new ActionButton("4"),
-          new ActionButton("5"),
-          new ActionButton("יותר מ-5")
+        options: [
+          new PropertyOption("פחות מ-3"),
+          new PropertyOption("3"),
+          new PropertyOption("4"),
+          new PropertyOption("5"),
+          new PropertyOption("יותר מ-5")
         ],
         icon: 'people-outline'
       },
@@ -62,16 +62,16 @@ export class SummarySlidesProvider {
         title: 'אזור',
         description: 'האזור המבוקש',
         multiValue: true,
-        buttons:[
-          new ActionButton('מרכז נתניה'),
-          new ActionButton('צפון נתניה'),
-          new ActionButton('דרום נתניה'),
-          new ActionButton('שכונות הרצף'),
-          new ActionButton('עיר ימים - פולג'),
-          new ActionButton('אגמים'),
-          new ActionButton('נורדאו'),
-          new ActionButton('דורה אזורים'),
-          new ActionButton('רצועת החוף')
+        options:[
+          new PropertyOption('מרכז נתניה'),
+          new PropertyOption('צפון נתניה'),
+          new PropertyOption('דרום נתניה'),
+          new PropertyOption('שכונות הרצף'),
+          new PropertyOption('עיר ימים - פולג'),
+          new PropertyOption('אגמים'),
+          new PropertyOption('נורדאו'),
+          new PropertyOption('דורה אזורים'),
+          new PropertyOption('רצועת החוף')
         ],
         icon: 'map-outline'
       },
@@ -80,20 +80,20 @@ export class SummarySlidesProvider {
         title: 'מקור',
         description: 'מאיפה הליד הגיע אלינו?', 
         multiValue: true,
-        buttons: [
-          new ActionButton('פייסבוק'),
-          new ActionButton('שלט'),
-          new ActionButton('עיתון'),
-          new ActionButton('אתר מצדה'),
-          new ActionButton('המלצה אישית'),
-          new ActionButton('אחר')
+        options: [
+          new PropertyOption('פייסבוק'),
+          new PropertyOption('שלט'),
+          new PropertyOption('עיתון'),
+          new PropertyOption('אתר מצדה'),
+          new PropertyOption('המלצה אישית'),
+          new PropertyOption('אחר')
         ],
         icon: 'link'
       }
     ];
   }
 
-  get() : SummarySlide[]{
+  get() : LeadPropertyMetadata[]{
     return Object.assign(this.slides);
   }
 }

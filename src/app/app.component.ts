@@ -21,10 +21,10 @@ export class MyApp {
   pages: any[] = [
     { title: 'Tutorial', component: 'TutorialPage' },
     { title: 'Tabs', component: 'TabsPage' },
-    { title: 'Content', component: 'ContentPage' },
+    { title: 'Home', component: 'HomePage' },
     { title: 'Login', component: 'LoginPage' },
     { title: 'Signup', component: 'SignupPage' },
-    { title: 'Master Detail', component: 'ListMasterPage' },
+    { title: 'Leads', component: 'LeadsPage' },
   ]
 
   constructor(private translate: TranslateService, platform: Platform, settings: Settings, private config: Config,

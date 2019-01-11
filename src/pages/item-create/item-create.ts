@@ -26,7 +26,7 @@ export class ItemCreatePage {
     public navParams: NavParams, 
     public avatarPipe: AvatarPipe) {
     let paramsLead = navParams.get("item");
-    let lead: Lead = paramsLead ? paramsLead : new Lead("", "", {});
+    let lead: Lead = paramsLead ? paramsLead : new Lead("", "");
     this.form = formBuilder.group({
       profilePic: [lead.avatar],
       name: [lead.name, Validators.required],
@@ -85,7 +85,7 @@ export class ItemCreatePage {
   done() {
     if (!this.form.valid) { return; }
     this.navCtrl.push('TutorialPage', {
-      item: new Lead(this.form.value.phone, this.form.value.name, {}, this.form.controls['profilePic'].value)
+      item: new Lead(this.form.value.phone, this.form.value.name, this.form.controls['profilePic'].value)
     });
     // this.viewCtrl.dismiss(this.form.value);
   }

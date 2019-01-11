@@ -12,7 +12,7 @@ import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import { Items } from '../mocks/providers/items';
 import { Settings, User, Api } from '../providers';
 import { MyApp } from './app.component';
-import { SummarySlidesProvider } from '../providers/summary-slides/summary-slides';
+import { LeadPropertyMetadataProvider } from '../providers/summary-slides/summary-slides';
 import { LeadsProvider } from '../providers/leads/leads';
 import { CallLog } from '@ionic-native/call-log';
 import { AuthProvider } from '../providers/auth/auth';
@@ -89,7 +89,7 @@ export function provideSettings(storage: Storage) {
     { provide: Settings, useFactory: provideSettings, deps: [Storage] },
     // Keep this to enable Ionic's runtime error handling during development
     { provide: ErrorHandler, useClass: IonicErrorHandler },
-    SummarySlidesProvider,
+    LeadPropertyMetadataProvider,
     LeadsProvider,
     CallLog,
     AngularFireAuth,

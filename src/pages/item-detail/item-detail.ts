@@ -2,8 +2,8 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
 import { Items } from '../../providers';
-import { SummarySlidesProvider } from '../../providers/summary-slides/summary-slides';
-import { SummarySlide } from '../../models/summary-slide';
+import { LeadPropertyMetadataProvider } from '../../providers/summary-slides/summary-slides';
+import { LeadPropertyMetadata } from '../../models/lead-property-metadata';
 import { Lead } from '../../models/lead';
 import { AvatarPipe } from '../../pipes/avatar/avatar';
 import { NumberFormatPipe } from '../../pipes/number-format/number-format';
@@ -18,10 +18,10 @@ import { NumberFormatPipe } from '../../pipes/number-format/number-format';
 export class ItemDetailPage {
   item: Lead;
   properties: ItemProperty[];
-  private slides: SummarySlide[];
+  private slides: LeadPropertyMetadata[];
   constructor(public navCtrl: NavController, navParams: NavParams, 
-  items: Items, summarySlidesProvider: SummarySlidesProvider, private numberFormatPipe: NumberFormatPipe) {
-    this.slides = summarySlidesProvider.get();
+  items: Items, leadPropertyMetadataProvider: LeadPropertyMetadataProvider, private numberFormatPipe: NumberFormatPipe) {
+    this.slides = leadPropertyMetadataProvider.get();
     this.item = navParams.get('item');
     this.properties = this.getProperties();
   }
@@ -40,7 +40,7 @@ export class ItemDetailPage {
     return props;
   }
 
-  private getValueBySlide(slide: SummarySlide): string {
+  private getValueBySlide(slide: LeadPropertyMetadata): string {
     if (slide.isBudgetRange){
       return  `${this.getBudget(this.item.budgetMin)} - ${this.getBudget(this.item.budgetMax)}`
     }

@@ -1,9 +1,9 @@
-export class SummarySlide {
+export class LeadPropertyMetadata {
   public id: string;
   public title: string;
   public description: string;
   public image?: string;
-  public buttons?: ActionButton[];
+  public options?: PropertyOption[];
   public isBudgetRange?: boolean;
   public min?: number;
   public max?: number;
@@ -11,27 +11,27 @@ export class SummarySlide {
   public multiValue?: boolean;
   public icon?: string;
 
-  static getValueString(slide: SummarySlide): string {
+  static getValueString(slide: LeadPropertyMetadata): string {
     if (slide.isBudgetRange && slide.value && slide.value.length === 2) {
       return `${slide.value[0]} - ${slide.value[1]}`;
     }
 
-    if (slide.buttons) {
-      return slide.buttons.filter(button => button.selected === true).map(button => button.title).join(', ');
+    if (slide.options) {
+      return slide.options.filter(button => button.selected === true).map(button => button.title).join(', ');
     }
 
     return "";
   }
 
-  static reset(slide: SummarySlide): void {
+  static reset(slide: LeadPropertyMetadata): void {
     slide.value = null;
-    if (slide.buttons) {
-      slide.buttons.forEach(button => button.selected = false);
+    if (slide.options) {
+      slide.options.forEach(button => button.selected = false);
     }
   }
 }
 
-export class ActionButton {
+export class PropertyOption {
   title: string;
   selected: boolean
 

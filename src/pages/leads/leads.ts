@@ -10,11 +10,11 @@ import { subscriptionLogsToBeFn } from 'rxjs/internal/testing/TestScheduler';
 
 @IonicPage()
 @Component({
-  selector: 'page-list-master',
-  templateUrl: 'list-master.html',
+  selector: 'page-leads',
+  templateUrl: 'leads.html',
   providers: [AvatarPipe]
 })
-export class ListMasterPage {
+export class LeadsPage {
   leads: firebase.firestore.DocumentData[];
   leadsSearchResults: firebase.firestore.DocumentData[];
   subscriptions: Subscription[];

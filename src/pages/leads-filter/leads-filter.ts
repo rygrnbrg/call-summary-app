@@ -1,3 +1,5 @@
+import { LeadFilter } from './../../models/lead-filter';
+import { LeadPropertyMetadataProvider } from './../../providers/summary-slides/summary-slides';
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ViewController } from 'ionic-angular';
 
@@ -7,18 +9,24 @@ import { IonicPage, NavController, NavParams, ViewController } from 'ionic-angul
   templateUrl: 'leads-filter.html',
 })
 export class LeadsFilterPage {
+  filters: LeadFilter[];
 
-  filterValues;
+  constructor(private navCtrl: NavController, private navParams: NavParams, private viewCtrl: ViewController,
+    private leadPropertyMetadataProvider: LeadPropertyMetadataProvider) {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private viewCtrl: ViewController) {
+  }
+
+  ionViewWillEnter() {
+    let metadata = this.leadPropertyMetadataProvider.get();
+    this.filters = metadata.map(md => <LeadFilter>{ id: md.id, metadata : md });  
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad LeadsFilterPage');
+
   }
 
-  done(){
-    this.viewCtrl.dismiss(this.filterValues);
+  done() {
+    this.viewCtrl.dismiss(this.filters);
   }
 
 }
