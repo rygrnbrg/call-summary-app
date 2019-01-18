@@ -1,7 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { IonicPage, MenuController, NavController, Platform, Slides, NavParams } from 'ionic-angular';
 import { LeadPropertyMetadataProvider } from '../../providers/summary-slides/summary-slides'
-import { LeadPropertyMetadata, PropertyOption } from '../../models/lead-property-metadata'
+import { LeadPropertyMetadata, PropertyOption, LeadPropertyType } from '../../models/lead-property-metadata'
 import { NumberFormatPipe } from '../../pipes/number-format/number-format';
 import { LeadsProvider } from '../../providers/leads/leads';
 import { Lead } from '../../models/lead';
@@ -17,6 +17,7 @@ export class TutorialPage {
   public priceRange;
   public item: Lead;
   public resultLead: Lead;
+  public leadPropertyType = LeadPropertyType;
   tutorialSlides: LeadPropertyMetadata[];
   showSkip = true;
   dir: string = 'rtl';
@@ -48,20 +49,10 @@ export class TutorialPage {
     this.resultLead = new Lead(this.item.phone, this.item.name);
   }
 
-  ionViewDidEnter() {
-    // the root left menu should be disabled on the tutorial page
-    // this.menu.enable(false);
-  }
-
-  ionViewWillLeave() {
-    // enable the root left menu when leaving the tutorial page
-    // this.menu.enable(true);
-  }
-
   answerButtonClick(slide: LeadPropertyMetadata, button: PropertyOption, index: number): void {
     button.selected = !button.selected;
 
-    if (!slide.multiValue) {
+    if (slide.type === LeadPropertyType.StringSinglValue) {
       this.handleSingleValueButtonClick(slide, button, index);
       this.goToSlide(index + 1);
     }
@@ -104,11 +95,11 @@ export class TutorialPage {
     }));
   }
 
-  private getSlide(slideId: string) {
-    return this.tutorialSlides.find(slide => slide.id === slideId);
+  private getSlide(propertyId: string) {
+    return this.tutorialSlides.find(slide => slide.id === propertyId);
   }
 
-  private getSimpleSlideValue(slideId): string[] {
-    return this.getSlide(slideId).options.filter(button => button.selected).map(button => button.title);
+  private getSimpleSlideValue(propertyId: string): string[] {
+    return this.getSlide(propertyId).options.filter(button => button.selected).map(button => button.title);
   }
 }

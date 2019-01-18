@@ -1,4 +1,18 @@
 {
+  
+  "GENERAL_LATER":"אחר כך",
+  "GENERAL_CANCEL": "ביטול",
+  "GENERAL_APPROVE": "אישור",
+  "GENERAL_PROCEED": "המשך",
+  "GENERAL_SAVE": "שמור",
+  "GENERAL_EMAIL":"דואר אלקטרוני",
+  "GENERAL_EMAIL_EXAMPLE":"email@gmail.com",
+  "GENERAL_LOGOUT": "התנתק",
+  "GENERAL_SEARCH" : "חיפוש",
+  "GENERAL_BACK": "חזור",
+  "GENERAL_SELECTIONS": "בחירות",
+  "GENERAL_FILTER": "סנן",
+
   "NAME": "שם",
   "PASSWORD": "סיסמה",
   "EMAIL": "דואר אלקטרוני",
@@ -6,11 +20,6 @@
   "SIGNUP": "הרשמה",
 
   "MAP_TITLE": "מפה",
-
-  "GENERAL_BACK": "חזור",
-  "GENERAL_SELECTIONS": "בחירות",
-
-  "SUMMARY_SLIDES_SUBMIT": "אישור",
 
   "TUTORIAL_SLIDE1_TITLE": "סוג הליד",
   "TUTORIAL_SLIDE1_DESCRIPTION": "מעוניין ב",
@@ -78,7 +87,7 @@
   "SEND_VERIFICATION_BUTTON": "שלחו לי קישור לאימות",
   "AUTH_PASSWORD_VERIFICATION_ERROR": "שליחת דואר אלקטרוני לאיפוס סיסמה נכשלה. אנא נסה שנית",
 
-  "LIST_MASTER_TITLE": "לידים",
+  "LEADS_PAGE_TITLE": "לידים",
   "LIST_LOADING_ERROR": "טעינת הרשימה נכשלה",
 
   "ITEM_CREATE_TITLE": "ליד חדש",
@@ -105,13 +114,5 @@
   "PASSWORD_RECOVERY_FAIL": "איפוס הסיסמה נכשל, אנא נסה שנית",
   "PASSWORD_RECOVERY_NO_ACCOUNT": "הכתובת שהוזנה לא רשומה אצלנו במערכת",
 
-  "GENERAL_LATER":"אחר כך",
-  "GENERAL_CANCEL": "ביטול",
-  "GENERAL_APPROVE": "אישור",
-  "GENERAL_PROCEED": "המשך",
-  "GENERAL_SAVE": "שמור",
-  "GENERAL_EMAIL":"דואר אלקטרוני",
-  "GENERAL_EMAIL_EXAMPLE":"email@gmail.com",
-  "GENERAL_LOGOUT": "התנתק",
-  "GENERAL_SEARCH" : "חיפוש"
+  "FILTER_PAGEE_HEADER":"סנן לפי"
 }

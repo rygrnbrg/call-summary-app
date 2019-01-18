@@ -1,23 +1,44 @@
+export enum LeadPropertyType {
+  Budget,
+  StringMultivalue,
+  StringSinglValue
+}
+
 export class LeadPropertyMetadata {
   public id: string;
   public title: string;
   public description: string;
   public image?: string;
   public options?: PropertyOption[];
-  public isBudgetRange?: boolean;
   public min?: number;
   public max?: number;
   public value?: any[];
-  public multiValue?: boolean;
   public icon?: string;
+  public type: LeadPropertyType;
 
-  static getValueString(slide: LeadPropertyMetadata): string {
-    if (slide.isBudgetRange && slide.value && slide.value.length === 2) {
-      return `${slide.value[0]} - ${slide.value[1]}`;
-    }
+  static getValueString(leadPropertyMetadata: LeadPropertyMetadata): string {
+    switch (leadPropertyMetadata.type) {
+      case LeadPropertyType.Budget:
+        if (
+          leadPropertyMetadata.value &&
+          leadPropertyMetadata.value.length === 2
+        ) {
+          return `${leadPropertyMetadata.value[0]} - ${leadPropertyMetadata.value[1]}`;
+        }
+        break;
 
-    if (slide.options) {
-      return slide.options.filter(button => button.selected === true).map(button => button.title).join(', ');
+      case LeadPropertyType.StringMultivalue:
+      case LeadPropertyType.StringSinglValue:
+        if (leadPropertyMetadata.options) {
+          return leadPropertyMetadata.options
+            .filter(option => option.selected === true)
+            .map(option => option.title)
+            .join(", ");
+        }
+        break;
+        
+      default:
+        return "";
     }
 
     return "";
@@ -26,14 +47,14 @@ export class LeadPropertyMetadata {
   static reset(slide: LeadPropertyMetadata): void {
     slide.value = null;
     if (slide.options) {
-      slide.options.forEach(button => button.selected = false);
+      slide.options.forEach(option => (option.selected = false));
     }
   }
 }
 
 export class PropertyOption {
   title: string;
-  selected: boolean
+  selected: boolean;
 
   constructor(title: string, selected?: boolean) {
     this.title = title;

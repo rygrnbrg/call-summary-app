@@ -3,10 +3,9 @@ import { IonicPage, ModalController, NavController, LoadingController, Loading, 
 import { LeadsProvider } from '../../providers/leads/leads';
 import { Lead } from '../../models/lead';
 import { AvatarPipe } from '../../pipes/avatar/avatar';
-import { Observable, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { User } from '../../providers';
-import { subscriptionLogsToBeFn } from 'rxjs/internal/testing/TestScheduler';
 
 @IonicPage()
 @Component({
@@ -32,7 +31,7 @@ export class LeadsPage {
     this.loading.present();
     let leadsSubscription = this.leadsProvider.get().subscribe(
       (res) => {
-        this.leads = res;
+        this.leads = res.map(lead=> this.leadsProvider.convertDbObjectToLead(lead));
         this.loading.dismiss();
       },
       (err) => {
@@ -77,15 +76,20 @@ export class LeadsPage {
     modal.present();
   }
 
-
-  openLeadsFilterModal() {
-    let modal = this.modalCtrl.create('LeadsFilterPage');
-    modal.onDidDismiss(item => {
-      if (item) {
-        // todo: filter by filter item
-      }
-    })
-    modal.present();
+  public filterLeadsClick(){
+    this.leadsSearchResults = [];
+    let filterModal = this.modalCtrl.create('LeadsFilterPage');
+    filterModal.onDidDismiss(data => {
+     this.leadsProvider.filter(data).get().then(
+       (querySnapshot)=>{
+         querySnapshot.forEach(doc=>{
+           this.leadsSearchResults.push(doc.data());
+         });
+       }
+     )
+   });
+   
+    filterModal.present();
   }
 
   deleteItem(item: Lead) {

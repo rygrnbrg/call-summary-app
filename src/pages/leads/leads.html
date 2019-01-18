@@ -1,15 +1,34 @@
 <ion-header>
   <ion-navbar>
     <ion-title></ion-title>
-    <button ion-button menuToggle>
+    <button ion-button menuToggle large>
       <ion-icon ion-button name="menu"></ion-icon>
     </button>
   </ion-navbar>
 </ion-header>
 
 <ion-content>
-  <leads-list [leads]="leads" (itemClicked)="itemClicked($event)"></leads-list>
-  <ion-fab class="slide-fab" bottom left>
+  <ion-list>
+    <ion-list-header>
+      {{ 'LEADS_PAGE_TITLE' | translate }}
+      <button ion-button clear item-end icon-start (click)="filterLeadsClick()">
+        {{ "GENERAL_FILTER" | translate }}
+        <ion-icon name="funnel"></ion-icon>
+      </button>
+    </ion-list-header>
+  </ion-list>
+
+  <leads-list
+    [leads]="leads"
+    (itemClicked)="itemClicked($event)"
+  ></leads-list>
+
+  <leads-list
+    [leads]="leadsSearchResults"
+    (itemClicked)="itemClicked($event)"
+  ></leads-list>
+  
+  <ion-fab bottom left>
     <button ion-fab (click)="addItem()">
       <ion-icon name="add"></ion-icon>
     </button>

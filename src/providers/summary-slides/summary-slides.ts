@@ -1,3 +1,4 @@
+import { LeadPropertyType } from './../../models/lead-property-metadata';
 import { Injectable } from '@angular/core';
 import { PropertyOption, LeadPropertyMetadata } from '../../models/lead-property-metadata'
 
@@ -18,7 +19,8 @@ export class LeadPropertyMetadataProvider {
           new PropertyOption("לשכור"),
           new PropertyOption("למכור")
         ],
-        icon: 'clipboard-outline'
+        icon: 'clipboard-outline',
+        type: LeadPropertyType.StringSinglValue
       },
       {
         id: 'property',
@@ -31,7 +33,8 @@ export class LeadPropertyMetadataProvider {
           new PropertyOption("קוטג'"),
           new PropertyOption("אחר")
         ],
-        icon: 'home-outline'
+        icon: 'home-outline',
+        type: LeadPropertyType.StringSinglValue
       },
       {
         id: 'rooms',
@@ -45,23 +48,23 @@ export class LeadPropertyMetadataProvider {
           new PropertyOption("5"),
           new PropertyOption("יותר מ-5")
         ],
-        icon: 'people-outline'
+        icon: 'people-outline',
+        type: LeadPropertyType.StringSinglValue
       },
       {
         id: 'budget',
         title: 'תקציב',
         description: 'תקציב בשקלים',
         image: 'assets/img/ica-slidebox-img-3.png',
-        isBudgetRange: true,
         min: 0,
         max: 10,
-        icon: 'cash-outline'
+        icon: 'cash-outline',
+        type: LeadPropertyType.Budget
       },
       {
         id: 'area',
         title: 'אזור',
         description: 'האזור המבוקש',
-        multiValue: true,
         options:[
           new PropertyOption('מרכז נתניה'),
           new PropertyOption('צפון נתניה'),
@@ -73,13 +76,13 @@ export class LeadPropertyMetadataProvider {
           new PropertyOption('דורה אזורים'),
           new PropertyOption('רצועת החוף')
         ],
-        icon: 'map-outline'
+        icon: 'map-outline',
+        type: LeadPropertyType.StringMultivalue,
       },
       {
         id: 'source',
         title: 'מקור',
         description: 'מאיפה הליד הגיע אלינו?', 
-        multiValue: true,
         options: [
           new PropertyOption('פייסבוק'),
           new PropertyOption('שלט'),
@@ -88,7 +91,8 @@ export class LeadPropertyMetadataProvider {
           new PropertyOption('המלצה אישית'),
           new PropertyOption('אחר')
         ],
-        icon: 'link'
+        icon: 'link',
+        type: LeadPropertyType.StringMultivalue,
       }
     ];
   }
