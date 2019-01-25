@@ -1,3 +1,4 @@
+import { LeadFilter } from './../../models/lead-filter';
 import { Component } from '@angular/core';
 import { IonicPage, ModalController, NavController, LoadingController, Loading, ToastController } from 'ionic-angular';
 import { LeadsProvider } from '../../providers/leads/leads';
@@ -6,6 +7,7 @@ import { AvatarPipe } from '../../pipes/avatar/avatar';
 import { Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { User } from '../../providers';
+import { LeadPropertyType } from '../../models/lead-property-metadata';
 
 @IonicPage()
 @Component({
@@ -19,6 +21,8 @@ export class LeadsPage {
   subscriptions: Subscription[];
   loading: Loading;
   translations: any;
+  activeFilters: LeadFilter[];
+  filterSearchRunning: boolean;
 
   constructor(private navCtrl: NavController, private leadsProvider: LeadsProvider,
     private modalCtrl: ModalController, loadingCtrl: LoadingController,
@@ -31,7 +35,7 @@ export class LeadsPage {
     this.loading.present();
     let leadsSubscription = this.leadsProvider.get().subscribe(
       (res) => {
-        this.leads = res.map(lead=> this.leadsProvider.convertDbObjectToLead(lead));
+        this.leads = res.map(lead => this.leadsProvider.convertDbObjectToLead(lead));
         this.loading.dismiss();
       },
       (err) => {
@@ -76,20 +80,53 @@ export class LeadsPage {
     modal.present();
   }
 
-  public filterLeadsClick(){
-    this.leadsSearchResults = [];
+  public filterLeadsClick(): void {
     let filterModal = this.modalCtrl.create('LeadsFilterPage');
-    filterModal.onDidDismiss(data => {
-     this.leadsProvider.filter(data).get().then(
-       (querySnapshot)=>{
-         querySnapshot.forEach(doc=>{
-           this.leadsSearchResults.push(doc.data());
-         });
-       }
-     )
-   });
-   
+    filterModal.onDidDismiss((data: LeadFilter[]) => {
+      if (!data) {
+        return;
+      }
+
+      this.leadsSearchResults = []
+      let filters = data.filter(item => item.value !== null);
+      if (!filters.length) {
+        this.activeFilters = null;
+        return;
+      }
+
+      this.activeFilters = filters;
+      let multivalueFilters = this.activeFilters.filter(filter => filter.type === LeadPropertyType.StringMultivalue);
+
+      this.filterSearchRunning = true;
+      this.leadsProvider.filter(this.activeFilters).get().then(
+        (querySnapshot) => {
+          this.filterSearchRunning = false;
+          querySnapshot.forEach(doc => {
+            let data = doc.data();
+            let isNotIncludedInMultivalueFilters =
+              multivalueFilters.some(filter => !this.isIncludedInMultivalueFilter(filter, data));
+            if (isNotIncludedInMultivalueFilters) {
+              return;
+            }
+            this.leadsSearchResults.push(data);
+          });
+        }
+      )
+    });
+
     filterModal.present();
+  }
+
+  private isIncludedInMultivalueFilter(filter: LeadFilter, lead: any) {
+    return (<string[]>filter.value).some(value => (<string[]>lead[filter.id]).indexOf(value) > -1);
+  }
+
+  public cleanFilters() {
+    this.activeFilters = null;
+  }
+
+  public searchHasNoResults() {
+    return (!this.filterSearchRunning) && this.leadsSearchResults && this.leadsSearchResults.length === 0 && this.activeFilters;
   }
 
   deleteItem(item: Lead) {

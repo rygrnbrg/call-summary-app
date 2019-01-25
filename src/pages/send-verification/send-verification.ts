@@ -2,15 +2,6 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ToastController, AlertController } from 'ionic-angular';
 import { User } from '../../providers';
 import { TranslateService } from '@ngx-translate/core';
-import { LoginPage, MainPage } from '..';
-import { AuthenticationData } from '../../models/authentication';
-
-/**
- * Generated class for the SendVerificationPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
 
 @IonicPage()
 @Component({

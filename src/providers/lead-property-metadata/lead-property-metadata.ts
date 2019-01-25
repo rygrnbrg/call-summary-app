@@ -1,13 +1,14 @@
-import { LeadPropertyType } from './../../models/lead-property-metadata';
+import { LeadPropertyType } from '../../models/lead-property-metadata';
 import { Injectable } from '@angular/core';
 import { PropertyOption, LeadPropertyMetadata } from '../../models/lead-property-metadata'
+import * as _ from "lodash";
 
 @Injectable()
 export class LeadPropertyMetadataProvider {
-  private slides: LeadPropertyMetadata[] = [];
+  private properties: LeadPropertyMetadata[] = [];
 
   constructor() { 
-    this.slides = [
+    this.properties = [
       {
         id: 'type',
         title: 'סוג הליד',
@@ -20,7 +21,7 @@ export class LeadPropertyMetadataProvider {
           new PropertyOption("למכור")
         ],
         icon: 'clipboard-outline',
-        type: LeadPropertyType.StringSinglValue
+        type: LeadPropertyType.StringSingleValue
       },
       {
         id: 'property',
@@ -34,7 +35,7 @@ export class LeadPropertyMetadataProvider {
           new PropertyOption("אחר")
         ],
         icon: 'home-outline',
-        type: LeadPropertyType.StringSinglValue
+        type: LeadPropertyType.StringSingleValue
       },
       {
         id: 'rooms',
@@ -49,15 +50,13 @@ export class LeadPropertyMetadataProvider {
           new PropertyOption("יותר מ-5")
         ],
         icon: 'people-outline',
-        type: LeadPropertyType.StringSinglValue
+        type: LeadPropertyType.StringSingleValue
       },
       {
         id: 'budget',
         title: 'תקציב',
         description: 'תקציב בשקלים',
         image: 'assets/img/ica-slidebox-img-3.png',
-        min: 0,
-        max: 10,
         icon: 'cash-outline',
         type: LeadPropertyType.Budget
       },
@@ -92,12 +91,14 @@ export class LeadPropertyMetadataProvider {
           new PropertyOption('אחר')
         ],
         icon: 'link',
-        type: LeadPropertyType.StringMultivalue,
+        type: LeadPropertyType.StringSingleValue,
       }
     ];
   }
 
   get() : LeadPropertyMetadata[]{
-    return Object.assign(this.slides);
+    let copy : LeadPropertyMetadata[] = [];
+    this.properties.forEach(prop=> copy.push(_.cloneDeep(prop)));
+    return copy;
   }
 }

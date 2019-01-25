@@ -21,15 +21,16 @@ import { LeadPropertyType } from "../../models/lead-property-metadata";
 export class LeadsProvider {
   private leadsCollectionRef: AngularFirestoreCollection;
   private leads$: Observable<firestore.DocumentData[]>;
-  private static arrayToDbObjectsKeys = ["type", "property", "rooms"];
   private static standardLeadKeys = [
     "avatar",
     "name",
     "phone",
     "created",
-    "budgetMin",
-    "budgetMax",
+    "budget",
     "area",
+    "type",
+    "property",
+    "rooms",
     "source"
   ];
 
@@ -46,77 +47,66 @@ export class LeadsProvider {
     this.leads$ = this.leadsCollectionRef.valueChanges();
   }
 
-  get(): Observable<firestore.DocumentData[]> {
+  public get(): Observable<firestore.DocumentData[]> {
     return this.leads$;
   }
 
-  filter(filters: LeadFilter[]): Query {
+  /**
+  * Filter function does not support multivalues. Filter multivalues in consumer code
+  */
+  public filter(filters: LeadFilter[]): Query {
     let query: Query = this.leadsCollectionRef.ref;
 
+    query = this.addBudgetFilter(filters, query);
+    query = this.addStringFilters(filters, query);
+ 
+    return query;
+  }
+
+  public convertDbObjectToLead(item: firebase.firestore.DocumentData): Lead {
+    let lead = <Lead>{};
+    LeadsProvider.standardLeadKeys.forEach(key => (lead[key] = item[key]));
+    return lead;
+  }
+
+  public add(item: Lead): Promise<firestore.DocumentReference> {
+    let dbObject = this.getLeadDbObject(item);
+    return this.leadsCollectionRef.add(dbObject);
+  }
+
+  public delete(item: Lead) {}
+
+  private addBudgetFilter(filters: LeadFilter[], query: Query): Query {
     filters
-      .filter(filter => filter.metadata.type === LeadPropertyType.StringSinglValue)
+      .filter(filter => filter.metadata.type === LeadPropertyType.Budget)
       .forEach(filter => {
-        if (filter.metadata.options) {
-          filter.metadata.options
-            .filter(option => option.selected)
-            .forEach(option => {
-              let optionFieldName = this.getKeyValueDbName(
-                filter.id,
-                option.title
-              );
-              query = query.where(optionFieldName, "==", true);
-            });
+        if (filter.value) {
+          query = query
+            .where("budget", "<=", filter.value + 200000)
+            .where("budget", ">=", filter.value - 200000);
         }
       });
 
     return query;
   }
 
-  add(item: Lead): Promise<firestore.DocumentReference> {
-    let dbObject = this.getLeadDbObject(item);
-    return this.leadsCollectionRef.add(dbObject);
-  }
+  private addStringFilters(filters: LeadFilter[], query: Query): Query {
+    filters
+      .filter(
+        filter => filter.metadata.type === LeadPropertyType.StringSingleValue
+      )
+      .forEach(filter => {
+        if (filter.value) {
+          query = query.where(filter.id, "==", filter.value);
+        }
+      });
 
-  delete(item: Lead) {}
+    return query;
+  }
 
   private getLeadDbObject(item: Lead): Object {
     let leadObj = {};
     LeadsProvider.standardLeadKeys.forEach(key => (leadObj[key] = item[key]));
-
-    LeadsProvider.arrayToDbObjectsKeys.forEach(key => {
-      let arrObj = this.arrayToDbObject(item[key], key);
-      Object.assign(leadObj, arrObj);
-    });
     return leadObj;
-  }
-
-  private arrayToDbObject(arr: string[], key: string) {
-    let arrObj = {};
-
-    arr.forEach(item => {
-      let fieldName = this.getKeyValueDbName(key, item);
-      arrObj[fieldName] = true;
-    });
-
-    return arrObj;
-  }
-
-  private getKeyValueDbName(key: string, value: string) {
-    return `${key}_${value}`;
-  }
-
-  private getValue(item: object, key: string) {
-    let itemKeys = Object.keys(item);
-    let fieldName = itemKeys.find(itemKey => itemKey.startsWith(key));
-    return fieldName.split("_")[1];
-  }
-
-  public convertDbObjectToLead(item: firebase.firestore.DocumentData): Lead {
-    let lead = <Lead>{};
-    LeadsProvider.standardLeadKeys.forEach(key => (lead[key] = item[key]));
-    LeadsProvider.arrayToDbObjectsKeys.forEach(
-      key => (lead[key] = this.getValue(item, key))
-    );
-    return lead;
   }
 }

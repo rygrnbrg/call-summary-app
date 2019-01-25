@@ -1,7 +1,9 @@
-import { LeadPropertyMetadata } from './lead-property-metadata';
+import { LeadPropertyType, LeadPropertyMetadata } from './lead-property-metadata';
 
 export class LeadFilter{
-    public id: string;
     public metadata: LeadPropertyMetadata;
+    public id: string;
     public selected: boolean;
+    public type: LeadPropertyType;
+    public value: any;
 }

@@ -1,5 +1,3 @@
-import { attachEmbeddedView } from "@angular/core/src/view";
-
 export class Lead {
     constructor(phone: string, name: string, avatar?: string) {
         this.phone = phone;
@@ -12,11 +10,10 @@ export class Lead {
     name: string;
     phone: string;
     created: Date;
-    type: string[];
-    property: string[];
-    rooms: string[];
+    type: string;
+    property: string;
+    rooms: string;
+    source: string;  
+    budget: number;
     area: string[];
-    source: string[];  
-    budgetMin: number;
-    budgetMax: number;
 }

@@ -1,12 +1,8 @@
 import { Component } from "@angular/core";
 import { IonicPage, NavController, NavParams } from "ionic-angular";
-
 import { Items } from "../../providers";
-import { LeadPropertyMetadataProvider } from "../../providers/summary-slides/summary-slides";
-import {
-  LeadPropertyMetadata,
-  LeadPropertyType
-} from "../../models/lead-property-metadata";
+import { LeadPropertyMetadataProvider } from "../../providers/lead-property-metadata/lead-property-metadata";
+import { LeadPropertyMetadata, LeadPropertyType } from "../../models/lead-property-metadata";
 import { Lead } from "../../models/lead";
 import { AvatarPipe } from "../../pipes/avatar/avatar";
 import { NumberFormatPipe } from "../../pipes/number-format/number-format";
@@ -49,11 +45,9 @@ export class ItemDetailPage {
 
   private getPropertyString(property: LeadPropertyMetadata): string {
     switch (property.type) {
-      
+
       case LeadPropertyType.Budget:
-        return `${this.getBudget(this.item.budgetMin)} - ${this.getBudget(
-          this.item.budgetMax
-        )}`;
+        return this.getBudget(this.item.budget);
 
       case LeadPropertyType.StringMultivalue:
         let value: string[] = this.item[property.id];

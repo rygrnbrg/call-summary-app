@@ -1,4 +1,3 @@
-import { ModalController } from 'ionic-angular';
 import { Component, Input, Output, EventEmitter } from "@angular/core";
 import { Lead } from "../../models/lead";
 import { AvatarPipe } from "../../pipes/avatar/avatar";

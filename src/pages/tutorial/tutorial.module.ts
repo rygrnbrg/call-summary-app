@@ -1,3 +1,4 @@
+import { ComponentsModule } from './../../components/components.module';
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
 import { TutorialPage } from './tutorial';
@@ -11,7 +12,8 @@ import { PipesModule } from '../../pipes/pipes.module';
   imports: [
     IonicPageModule.forChild(TutorialPage),
     TranslateModule.forChild(),
-    PipesModule
+    PipesModule, 
+    ComponentsModule
   ],
   exports: [
     TutorialPage

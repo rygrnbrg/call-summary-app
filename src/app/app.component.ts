@@ -27,8 +27,8 @@ export class MyApp {
     { title: 'Leads', component: 'LeadsPage' },
   ]
 
-  constructor(private translate: TranslateService, platform: Platform, settings: Settings, private config: Config,
-    private statusBar: StatusBar, private splashScreen: SplashScreen, private user: User) {
+  constructor(private translate: TranslateService, platform: Platform, private config: Config,
+    private statusBar: StatusBar, private splashScreen: SplashScreen, private user: User, private settings: Settings) {
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.

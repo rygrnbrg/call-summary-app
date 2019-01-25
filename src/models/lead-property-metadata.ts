@@ -1,7 +1,7 @@
 export enum LeadPropertyType {
   Budget,
   StringMultivalue,
-  StringSinglValue
+  StringSingleValue
 }
 
 export class LeadPropertyMetadata {
@@ -10,38 +10,43 @@ export class LeadPropertyMetadata {
   public description: string;
   public image?: string;
   public options?: PropertyOption[];
-  public min?: number;
-  public max?: number;
-  public value?: any[];
+  public value?: any[] | any;
   public icon?: string;
   public type: LeadPropertyType;
 
-  static getValueString(leadPropertyMetadata: LeadPropertyMetadata): string {
+  static getValueString(
+    leadPropertyMetadata: LeadPropertyMetadata,
+    value?: any
+  ): string {
     switch (leadPropertyMetadata.type) {
       case LeadPropertyType.Budget:
-        if (
-          leadPropertyMetadata.value &&
-          leadPropertyMetadata.value.length === 2
-        ) {
-          return `${leadPropertyMetadata.value[0]} - ${leadPropertyMetadata.value[1]}`;
+        if (value) {
+          return value;
         }
-        break;
+        return leadPropertyMetadata.value;
+      case LeadPropertyType.StringSingleValue:
+        if (value) {
+          return value;
+        }
+
+        return LeadPropertyMetadata.optionsToString(leadPropertyMetadata.options);
 
       case LeadPropertyType.StringMultivalue:
-      case LeadPropertyType.StringSinglValue:
-        if (leadPropertyMetadata.options) {
-          return leadPropertyMetadata.options
-            .filter(option => option.selected === true)
-            .map(option => option.title)
-            .join(", ");
+        if (value){
+          return (<string[]>value).join(', ');
         }
-        break;
-        
+        return this.optionsToString(leadPropertyMetadata.options);
+
       default:
         return "";
     }
+  }
 
-    return "";
+  private static optionsToString(options: PropertyOption[]) {
+    return options
+      .filter(option => option.selected === true)
+      .map(option => option.title)
+      .join(", ");
   }
 
   static reset(slide: LeadPropertyMetadata): void {

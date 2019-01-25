@@ -1,4 +1,19 @@
-<!-- Generated template for the BudgetSliderComponent component -->
-<div>
-  {{text}}
-</div>
+<ion-label class="budget-value-label"> {{ value | numberFormat }} </ion-label>
+<ion-range
+  dualKnobs="false"
+  [(ngModel)]="_value"
+  [max]="rangeMaxValue"
+  step="1"
+  color="secondary"
+>
+  <ion-label range-left>{{ actualMaxValue | numberFormat }}</ion-label>
+</ion-range>
+<ion-grid padding>
+  <ion-row>
+    <ion-col col-4 *ngFor="let item of presetBudgets">
+      <button ion-button block text-center small (click)="setActualValue(item)" [color]="item===value ? 'secondary' : 'primary'">
+        {{ item | numberFormat }}
+      </button>
+    </ion-col>
+  </ion-row>
+</ion-grid>

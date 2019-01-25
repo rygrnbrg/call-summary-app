@@ -1,39 +1,44 @@
 <ion-header>
-  <ion-navbar> <ion-title></ion-title> </ion-navbar>
+  <ion-navbar>
+    <ion-buttons start>
+      <button ion-button navPop>
+        <ion-icon name="md-close"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title>
+    </ion-title>
+  </ion-navbar>
 </ion-header>
 
 <ion-content padding no-bounce>
   <div class="fab-pad">
-    <h3>{{ "FILTER_PAGEE_HEADER" | translate }}</h3>
+    <h3>{{ "FILTER_PAGE_HEADER" | translate }}</h3>
     <ion-list>
       <div *ngFor="let filter of filters">
-        <ion-list-header (click)="filterClick(filter)">
+        <ion-list-header class="no-margin" (click)="filterClick(filter)">
           <ion-icon [name]="filter.metadata.icon" item-start></ion-icon>
           <p>{{ filter.metadata.title }}</p>
-          <ion-icon
-            [name]="filter.selected ? 'arrow-down' : 'arrow-back'"
-            item-end
-          ></ion-icon>
+          <ion-icon [name]="filter.selected ? 'arrow-down' : 'arrow-back'" item-end></ion-icon>
           <p [hidden]="filter.selected || !getFilterValueString(filter)">
             {{ getFilterValueString(filter) }}
           </p>
         </ion-list-header>
-        <ion-item [hidden]="!filter.selected">
-          <ion-grid>
-            <ion-row>
-              <ion-col *ngFor="let option of filter.metadata.options" col-6>
-                <button
-                  block
-                  ion-button
-                  [outline]="!option.selected"
-                  (click)="optionClick(filter, option)"
-                >
-                  {{ option.title }}
-                </button>
-              </ion-col>
-            </ion-row>
-          </ion-grid>
-        </ion-item>
+        <div *ngIf="filter.metadata.type !== leadPropertyType.Budget">
+          <ion-item [hidden]="!filter.selected" class="item-grid">
+            <ion-grid>
+              <ion-row>
+                <ion-col *ngFor="let option of filter.metadata.options" col-6>
+                  <button block ion-button small [color]="option.selected? 'secondary' : 'primary'"(click)="optionClick(filter, option)">
+                    {{ option.title }}
+                  </button>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+          </ion-item>
+        </div>
+        <div *ngIf="filter.metadata.type === leadPropertyType.Budget" [hidden]="!filter.selected">
+          <budget-slider (valueChanged)="setBudget(filter, $event)"></budget-slider>
+        </div>
       </div>
     </ion-list>
   </div>

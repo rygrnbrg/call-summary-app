@@ -12,6 +12,7 @@
   "GENERAL_BACK": "חזור",
   "GENERAL_SELECTIONS": "בחירות",
   "GENERAL_FILTER": "סנן",
+  "GENERAL_SEARCH_NO_RESULTS": "לא נמצאו תוצאות",
 
   "NAME": "שם",
   "PASSWORD": "סיסמה",
@@ -114,5 +115,7 @@
   "PASSWORD_RECOVERY_FAIL": "איפוס הסיסמה נכשל, אנא נסה שנית",
   "PASSWORD_RECOVERY_NO_ACCOUNT": "הכתובת שהוזנה לא רשומה אצלנו במערכת",
 
-  "FILTER_PAGEE_HEADER":"סנן לפי"
+  "FILTER_PAGE_HEADER":"סנן לפי",
+  "LEADS_CLEAR_FILTERS":"נקה סינון",
+  "LEADS_FILTER_BY":"תוצאות מסוננות לפי"
 }

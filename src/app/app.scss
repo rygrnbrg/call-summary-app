@@ -25,6 +25,14 @@ ion-list-header{
      h1, h2, p{
          text-align: initial;
      }
+     &.no-margin{
+         margin-bottom: 0;
+     }
+}
+.item-grid{
+    ion-label.label{
+        margin: 0;
+    }
 }
 .pad-left-right{
     padding-left: $content-padding * 2;
