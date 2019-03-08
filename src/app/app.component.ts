@@ -1,11 +1,10 @@
 import { Component, ViewChild } from '@angular/core';
-import { SplashScreen } from '@ionic-native/splash-screen';
-import { StatusBar } from '@ionic-native/status-bar';
+import { SplashScreen } from '@ionic-native/splash-screen/ngx';
+import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { TranslateService } from '@ngx-translate/core';
 import { Config, Nav, Platform } from 'ionic-angular';
-
 import { FirstRunPage } from '../pages';
-import { Settings, User } from '../providers';
+import { User } from '../providers';
 import { AvatarPipe } from '../pipes/avatar/avatar';
 
 @Component({
@@ -28,7 +27,7 @@ export class MyApp {
   ]
 
   constructor(private translate: TranslateService, platform: Platform, private config: Config,
-    private statusBar: StatusBar, private splashScreen: SplashScreen, private user: User, private settings: Settings) {
+    private statusBar: StatusBar, private splashScreen: SplashScreen, private user: User) {
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.

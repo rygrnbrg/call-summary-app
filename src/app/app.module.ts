@@ -2,9 +2,8 @@ import { LeadPropertyMetadataProvider } from './../providers/lead-property-metad
 import { HttpClient, HttpClientModule } from "@angular/common/http";
 import { ErrorHandler, NgModule } from "@angular/core";
 import { BrowserModule } from "@angular/platform-browser";
-import { Camera } from "@ionic-native/camera";
-import { SplashScreen } from "@ionic-native/splash-screen";
-import { StatusBar } from "@ionic-native/status-bar";
+import { SplashScreen } from "@ionic-native/splash-screen/ngx";
+import { StatusBar } from "@ionic-native/status-bar/ngx";
 import { IonicStorageModule, Storage } from "@ionic/storage";
 import { TranslateLoader, TranslateModule } from "@ngx-translate/core";
 import { TranslateHttpLoader } from "@ngx-translate/http-loader";
@@ -13,15 +12,12 @@ import { Items } from "../mocks/providers/items";
 import { Settings, User, Api } from "../providers";
 import { MyApp } from "./app.component";
 import { LeadsProvider } from "../providers/leads/leads";
-import { CallLog } from "@ionic-native/call-log";
+import { CallLog } from "@ionic-native/call-log/ngx";
 import { AuthProvider } from "../providers/auth/auth";
 import { environment } from "../environments/environment";
 import { AngularFireModule } from "angularfire2";
 import { AngularFireAuth } from "angularfire2/auth";
-import {
-  AngularFirestore,
-  AngularFirestoreModule
-} from "angularfire2/firestore";
+import { AngularFirestore, AngularFirestoreModule } from "angularfire2/firestore";
 import { PipesModule } from "../pipes/pipes.module";
 import { ComponentsModule } from "../components/components.module";
 
@@ -73,7 +69,6 @@ export function provideSettings(storage: Storage) {
     Api,
     Items,
     User,
-    Camera,
     SplashScreen,
     StatusBar,
     { provide: Settings, useFactory: provideSettings, deps: [Storage] },
@@ -87,4 +82,4 @@ export function provideSettings(storage: Storage) {
     AngularFirestore
   ]
 })
-export class AppModule {}
+export class AppModule { }

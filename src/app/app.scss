@@ -143,3 +143,13 @@ ion-header::after {
     background: color($colors, success);
 }
   
+.inline-badge{
+    margin: $content-margin/4;
+    padding: $content-padding/2;
+    white-space: normal;
+    text-align: right;
+
+    ion-icon{
+        margin-right: $content-margin/2;
+    }
+}

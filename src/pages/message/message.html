@@ -1,0 +1,29 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title></ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+<ion-content padding>
+  <ion-list>
+    <ion-badge *ngFor="let contact of contacts | slice:0:contactsHeaderLimit" class="inline-badge">
+      {{contact.name}}
+      <ion-icon name="close" (click)="removeContact(contact)" [hidden]="contacts.length === 1"></ion-icon>
+    </ion-badge>
+    <ion-badge class="inline-badge" [hidden]="contacts.length <= contactsHeaderLimit">
+      + {{contacts.length - contactsHeaderLimit}} נוספים
+    </ion-badge>
+  </ion-list>
+  <ion-list>
+    <ion-item-divider>
+      <ion-textarea class="sms-box" rows="5" placeholder="{{'TYPE_SMS_PLACEHOLDER' | translate}}" [(ngModel)]="messageText"></ion-textarea>
+    </ion-item-divider>
+  </ion-list>
+
+    <ion-fab bottom left [hidden]="!messageText.length">
+    <button ion-fab (click)="send()">
+      <ion-icon name="send"></ion-icon>
+    </button>
+  </ion-fab>
+</ion-content>

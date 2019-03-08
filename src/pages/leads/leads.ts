@@ -79,6 +79,16 @@ export class LeadsPage {
     })
     modal.present();
   }
+  
+  sendMessage() {
+    // let modal = this.modalCtrl.create('MessagePage', { items: });
+    // modal.onDidDismiss(item => {
+    //   if (item) {
+    //     this.leadsProvider.add(item);
+    //   }
+    // })
+    // modal.present();
+  }
 
   public filterLeadsClick(): void {
     let filterModal = this.modalCtrl.create('LeadsFilterPage');

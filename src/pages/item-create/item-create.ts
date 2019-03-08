@@ -1,6 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Camera } from '@ionic-native/camera';
 import { IonicPage, NavController, ViewController, NavParams } from 'ionic-angular';
 import { Lead } from '../../models/lead';
 import { AvatarPipe } from '../../pipes/avatar/avatar';
@@ -22,7 +21,6 @@ export class ItemCreatePage {
     public navCtrl: NavController,
     public viewCtrl: ViewController,
     public formBuilder: FormBuilder,
-    public camera: Camera,
     public navParams: NavParams, 
     public avatarPipe: AvatarPipe) {
     let paramsLead = navParams.get("item");
@@ -41,22 +39,6 @@ export class ItemCreatePage {
 
   ionViewDidLoad() {
 
-  }
-
-  getPicture() {
-    if (Camera['installed']()) {
-      this.camera.getPicture({
-        destinationType: this.camera.DestinationType.DATA_URL,
-        targetWidth: 96,
-        targetHeight: 96
-      }).then((data) => {
-        this.form.patchValue({ 'profilePic': 'data:image/jpg;base64,' + data });
-      }, (err) => {
-        alert('Unable to take photo');
-      })
-    } else {
-      this.fileInput.nativeElement.click();
-    }
   }
 
   processWebImage(event) {

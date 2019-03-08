@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, Platform, ModalController } from 'ionic-angular';
-import { CallLog, CallLogObject } from '@ionic-native/call-log';
+import { CallLog, CallLogObject } from '@ionic-native/call-log/ngx';
 import { Caller } from '../../models/caller';
 import { AvatarPipe } from '../../pipes/avatar/avatar';
 import { Lead } from '../../models/lead';
