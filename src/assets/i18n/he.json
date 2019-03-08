@@ -120,5 +120,6 @@
   "LEADS_FILTER_BY":"תוצאות מסוננות לפי",
   "TYPE_SMS_PLACEHOLDER": "כתוב הודעה...",
   "SMS_MESSAGE_WILL_BE_SENT_TO": "הודעתך תישלח ל",
-  "CONTACTS": "אנשי קשר"
+  "CONTACTS": "אנשי קשר",
+  "MESSAGE_PAGE_TITLE": "שליחת מסרון"
 }

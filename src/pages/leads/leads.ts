@@ -2,7 +2,7 @@ import { LeadFilter } from './../../models/lead-filter';
 import { Component } from '@angular/core';
 import { IonicPage, ModalController, NavController, LoadingController, Loading, ToastController } from 'ionic-angular';
 import { LeadsProvider } from '../../providers/leads/leads';
-import { Lead } from '../../models/lead';
+import { Lead, Contact } from '../../models/lead';
 import { AvatarPipe } from '../../pipes/avatar/avatar';
 import { Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
@@ -81,13 +81,15 @@ export class LeadsPage {
   }
   
   sendMessage() {
-    // let modal = this.modalCtrl.create('MessagePage', { items: });
-    // modal.onDidDismiss(item => {
-    //   if (item) {
-    //     this.leadsProvider.add(item);
-    //   }
-    // })
-    // modal.present();
+    let leads = this.activeFilters? this.leadsSearchResults: this.leads;
+    let contacts = leads.map((lead:Lead) => new Contact(lead.phone, lead.name));
+    let modal = this.modalCtrl.create('MessagePage', { contacts: contacts});
+    modal.onDidDismiss(item => {
+      if (item) {
+        this.leadsProvider.add(item);
+      }
+    })
+    modal.present();
   }
 
   public filterLeadsClick(): void {

@@ -1,3 +1,4 @@
+import { DealType } from './../../models/lead-property-metadata';
 import { Input, Output, EventEmitter } from "@angular/core";
 import { Component } from "@angular/core";
 import { Settings } from "../../providers";
@@ -7,8 +8,9 @@ import { Settings } from "../../providers";
   templateUrl: "budget-slider.html"
 })
 export class BudgetSliderComponent {
-  @Input()
-  public value: number;
+  @Input() public value: number;
+  @Input() public dealType: number;
+
   public rangeMaxValue: number;
   public actualMaxValue: number;
   public presetBudgets: number[];
@@ -16,12 +18,27 @@ export class BudgetSliderComponent {
   private static ScaleFactor = 100000;
 
   @Output() valueChanged = new EventEmitter<number>();
-  constructor(settings: Settings) {
-      let allSettings = settings.allSettings;
-      this.actualMaxValue = allSettings.maxBudget;
+  constructor(private settings: Settings) {
+
+  }
+
+  ngOnInit() {
+    let allSettings = this.settings.allSettings;
+    
+    if (allSettings) {
+      if (this.dealType === DealType.Sell) {
+        this.actualMaxValue = allSettings.maxBudget;
+        this.value = this.value ? this.value : allSettings.defaultBudget;
+        this.presetBudgets = allSettings.presetBudgets;
+      }
+      else {
+        this.actualMaxValue = allSettings.maxRentBudget;
+        this.value = this.value ? this.value : allSettings.defaultRentBudget;
+        this.presetBudgets = allSettings.presetRentBudgets;
+
+      }
       this.rangeMaxValue = this.actualToRangeValue(this.actualMaxValue);
-      this.value = this.value? this.value : allSettings.defaultBudget;
-      this.presetBudgets = allSettings.presetBudgets;
+    }
   }
 
   set _value(value: number) {
@@ -33,7 +50,7 @@ export class BudgetSliderComponent {
     return this.actualToRangeValue(this.value);
   }
 
-  public setActualValue(value: number){
+  public setActualValue(value: number) {
     this._value = this.actualToRangeValue(value);
   }
 

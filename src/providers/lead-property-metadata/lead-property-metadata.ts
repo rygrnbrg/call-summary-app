@@ -1,3 +1,4 @@
+import { DealType } from './../../models/lead-property-metadata';
 import { LeadPropertyType } from '../../models/lead-property-metadata';
 import { Injectable } from '@angular/core';
 import { PropertyOption, LeadPropertyMetadata } from '../../models/lead-property-metadata'
@@ -7,7 +8,7 @@ import * as _ from "lodash";
 export class LeadPropertyMetadataProvider {
   private properties: LeadPropertyMetadata[] = [];
 
-  constructor() { 
+  constructor() {
     this.properties = [
       {
         id: 'type',
@@ -64,7 +65,7 @@ export class LeadPropertyMetadataProvider {
         id: 'area',
         title: 'אזור',
         description: 'האזור המבוקש',
-        options:[
+        options: [
           new PropertyOption('מרכז נתניה'),
           new PropertyOption('צפון נתניה'),
           new PropertyOption('דרום נתניה'),
@@ -81,7 +82,7 @@ export class LeadPropertyMetadataProvider {
       {
         id: 'source',
         title: 'מקור',
-        description: 'מאיפה הליד הגיע אלינו?', 
+        description: 'מאיפה הליד הגיע אלינו?',
         options: [
           new PropertyOption('פייסבוק'),
           new PropertyOption('שלט'),
@@ -96,9 +97,24 @@ export class LeadPropertyMetadataProvider {
     ];
   }
 
-  get() : LeadPropertyMetadata[]{
-    let copy : LeadPropertyMetadata[] = [];
-    this.properties.forEach(prop=> copy.push(_.cloneDeep(prop)));
+  get(): LeadPropertyMetadata[] {
+    let copy: LeadPropertyMetadata[] = [];
+    this.properties.forEach(prop => copy.push(_.cloneDeep(prop)));
     return copy;
   }
+
+  getDealType(properties: LeadPropertyMetadata[]): DealType {
+    let typeProperty = properties.find(prop => prop.id === "type");
+    
+    if (typeProperty) {
+      let selectedOption = typeProperty.options.find(option => option.selected === true);
+
+      if (selectedOption && (selectedOption.title === "להשכיר" || selectedOption.title === "לשכור")) {
+          return DealType.Rent;
+        }
+    }
+
+    return DealType.Sell;
+  }
 }
+

@@ -1,10 +1,7 @@
 // The page the user lands on after opening the app and without a session
 
-export const FirstRunPage = 'MessagePage';
-export const MainPage = 'MessagePage';
-
-// export const FirstRunPage = 'TabsPage';
-// export const MainPage = 'TabsPage';
+export const FirstRunPage = 'TabsPage';
+export const MainPage = 'TabsPage';
 
 export const SignupPage = 'SignupPage';
 export const LoginPage = 'LoginPage';

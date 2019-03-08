@@ -31,8 +31,8 @@
               </ion-row>
             </ion-grid>
           </ion-buttons>
-          <div *ngIf="slide.type === leadPropertyType.Budget">
-            <budget-slider (valueChanged)="setBudget(slide, $event)"></budget-slider>
+          <div *ngIf="slide.type === leadPropertyType.Budget && isSlideActive(slide)">
+            <budget-slider [dealType]="dealType" (valueChanged)="setBudget(slide, $event)"></budget-slider>
           </div>
         </div>
         <ion-fab bottom center>

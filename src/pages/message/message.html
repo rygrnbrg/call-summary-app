@@ -1,8 +1,12 @@
 <ion-header>
   <ion-navbar>
-    <ion-title></ion-title>
+    <ion-title>{{ 'MESSAGE_PAGE_TITLE' | translate }}</ion-title>
+    <ion-buttons start>
+      <button ion-button (click)="cancel()">
+        <ion-icon name="close"></ion-icon>
+      </button>
+    </ion-buttons>
   </ion-navbar>
-
 </ion-header>
 
 <ion-content padding>

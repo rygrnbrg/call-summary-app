@@ -1,6 +1,6 @@
 import { Contact } from './../../models/lead';
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController, ViewController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController, ViewController, Platform } from 'ionic-angular';
 import { SMS } from '@ionic-native/sms/ngx';
 import { TranslateService } from '@ngx-translate/core';
 
@@ -10,7 +10,7 @@ import { TranslateService } from '@ngx-translate/core';
   templateUrl: 'message.html',
 })
 export class MessagePage {
-  public contacts: Contact[];
+  public contacts: Contact[] = [];
   public contactsHeaderLimit: number = 5;
   public messageText: string = "";
   private translations: any;
@@ -20,32 +20,20 @@ export class MessagePage {
     private sms: SMS,
     private alertCtrl: AlertController,
     private translateService: TranslateService,
-    private viewCtrl: ViewController
+    private viewCtrl: ViewController,
+    private platform: Platform
   ) {
     this.translateService.get([
       'SMS_MESSAGE_WILL_BE_SENT_TO', 'CONTACTS', 'GENERAL_CANCEL', 'GENERAL_APPROVE']).subscribe(values => {
         this.translations = values;
       });
 
-    this.contacts = [
-      { name: "Roy Grinberg", phone: "0528626684" },
-      { name: "Roy Grinberg", phone: "0528626684" },
-      { name: "Roy Grinberg", phone: "0528626684" },
-      { name: "Roy Grinberg", phone: "0528626684" },
-      { name: "Roy Grinberg", phone: "0528626684" },
-      { name: "Roy Grinberg", phone: "0528626684" },
-      { name: "Roy Grinberg", phone: "0528626684" },
-    ];
-
+    this.contacts = this.navParams.get("contacts");
   }
 
 
   ionViewDidLoad() {
-    this.sms.hasPermission().then((granted: boolean)=>{
-      if (!granted){
-        this.viewCtrl.dismiss(true);
-      }
-    });
+    this.getSmsPermission();
   }
 
   public removeContact(contact: Contact) {
@@ -60,6 +48,21 @@ export class MessagePage {
       this.presentConfirmSMS();
     }
   }
+
+  public cancel() {
+    this.viewCtrl.dismiss();
+  }
+
+  private getSmsPermission(): void {
+    if (this.platform.is("cordova")) {
+      this.sms.hasPermission().then((granted: boolean) => {
+        if (!granted) {
+          this.viewCtrl.dismiss(true);
+        }
+      });
+    }
+  }
+
 
   private presentConfirmSMS() {
     let message = `${this.translations.SMS_MESSAGE_WILL_BE_SENT_TO}-${this.contacts.length} ${this.translations.CONTACTS}`;

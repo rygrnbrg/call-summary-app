@@ -57,9 +57,6 @@ export class ItemCreatePage {
       return 'url(' + avatar + ')';
   }
 
-  /**
-   * The user cancelled, so we dismiss without sending data back.
-   */
   cancel() {
     this.viewCtrl.dismiss();
   }

@@ -66,3 +66,7 @@ export class PropertyOption {
     this.selected = selected;
   }
 }
+
+export enum DealType{
+  Sell, Rent
+}
