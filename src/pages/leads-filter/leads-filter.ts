@@ -67,6 +67,8 @@ export class LeadsFilterPage {
       default:
         break;
     }
+
+    filter.selected = false;
   }
 
   public setBudget(filter: LeadFilter, value: number) {

@@ -23,22 +23,20 @@ export class BudgetSliderComponent {
   }
 
   ngOnInit() {
-    let allSettings = this.settings.allSettings;
-    
-    if (allSettings) {
+    this.settings.allSettings.then((settings)=>{
       if (this.dealType === DealType.Sell) {
-        this.actualMaxValue = allSettings.maxBudget;
-        this.value = this.value ? this.value : allSettings.defaultBudget;
-        this.presetBudgets = allSettings.presetBudgets;
+        this.actualMaxValue = settings.maxBudget;
+        this.value = this.value ? this.value : settings.defaultBudget;
+        this.presetBudgets = settings.presetBudgets;
       }
       else {
-        this.actualMaxValue = allSettings.maxRentBudget;
-        this.value = this.value ? this.value : allSettings.defaultRentBudget;
-        this.presetBudgets = allSettings.presetRentBudgets;
+        this.actualMaxValue = settings.maxRentBudget;
+        this.value = this.value ? this.value : settings.defaultRentBudget;
+        this.presetBudgets = settings.presetRentBudgets;
 
       }
       this.rangeMaxValue = this.actualToRangeValue(this.actualMaxValue);
-    }
+    });
   }
 
   set _value(value: number) {

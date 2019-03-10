@@ -67,7 +67,14 @@ export class Settings {
     return this.setAll(this.settings);
   }
 
-  get allSettings() {
-    return this.settings;
+  get allSettings(): Promise<any> {
+    if (this.settings){
+      return Promise.resolve(this.settings);
+    }
+    else {
+      return this.load().then(()=>{
+        return this.settings;
+      });
+    }
   }
 }
