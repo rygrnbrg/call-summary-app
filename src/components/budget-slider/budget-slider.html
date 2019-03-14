@@ -1,17 +1,18 @@
 <ion-label class="budget-value-label"> {{ value | numberFormat }} </ion-label>
 <ion-range
   dualKnobs="false"
-  [(ngModel)]="_value"
-  [max]="rangeMaxValue"
+  [(ngModel)]="sliderValue"
+  [max]="sliderMaxValue"
   step="1"
   color="secondary"
+  (ionChange)="onSliderChange($event)"
 >
-  <ion-label range-left>{{ actualMaxValue | numberFormat }}</ion-label>
+  <ion-label range-left>{{ maxValue | numberFormat }}</ion-label>
 </ion-range>
 <ion-grid padding>
   <ion-row>
     <ion-col col-4 *ngFor="let item of presetBudgets">
-      <button ion-button block text-center small (click)="setActualValue(item)" [color]="item===value ? 'secondary' : 'primary'">
+      <button ion-button block text-center small (click)="setValue(item)" [color]="item===value ? 'secondary' : 'primary'">
         {{ item | numberFormat }}
       </button>
     </ion-col>

@@ -37,7 +37,12 @@
           </ion-item>
         </div>
         <div *ngIf="filter.metadata.type === leadPropertyType.Budget" [hidden]="!filter.selected">
-          <budget-slider (valueChanged)="setBudget(filter, $event)"></budget-slider>
+          <budget-slider 
+          [value]="filter.value"
+          *ngIf="filter.selected" 
+          (valueChanged)="setBudget(filter, $event)" 
+          (customValueSelected)="setBudget(filter, $event); filter.selected = false;"
+          ></budget-slider>
         </div>
       </div>
     </ion-list>

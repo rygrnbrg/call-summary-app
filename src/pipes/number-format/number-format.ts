@@ -12,6 +12,9 @@ export class NumberFormatPipe implements PipeTransform {
    * Takes a value and makes it lowercase.
    */
   transform(value: number) {
+    if (!value){
+      return "0";
+    }
     if (value >= 1000000){
       return value/1000000 + "M";
     }
@@ -19,6 +22,6 @@ export class NumberFormatPipe implements PipeTransform {
       return value/1000 + "K";
     }
     
-    return value;
+    return value.toFixed(0);
   }
 }

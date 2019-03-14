@@ -11,13 +11,15 @@ export class BudgetSliderComponent {
   @Input() public value: number;
   @Input() public dealType: number;
 
-  public rangeMaxValue: number;
-  public actualMaxValue: number;
+  public sliderMaxValue: number;
+  public maxValue: number;
   public presetBudgets: number[];
 
-  private static ScaleFactor = 100000;
+  private scaleFactor = 10000;
+  private sliderValue: number;
 
   @Output() valueChanged = new EventEmitter<number>();
+  @Output() customValueSelected = new EventEmitter<number>();
   constructor(private settings: Settings) {
 
   }
@@ -25,38 +27,42 @@ export class BudgetSliderComponent {
   ngOnInit() {
     this.settings.allSettings.then((settings)=>{
       if (this.dealType === DealType.Sell) {
-        this.actualMaxValue = settings.maxBudget;
+        this.scaleFactor = 100000;
+        this.maxValue = settings.maxBudget;
         this.value = this.value ? this.value : settings.defaultBudget;
         this.presetBudgets = settings.presetBudgets;
       }
       else {
-        this.actualMaxValue = settings.maxRentBudget;
+        this.scaleFactor = 100;
+        this.maxValue = settings.maxRentBudget;
         this.value = this.value ? this.value : settings.defaultRentBudget;
         this.presetBudgets = settings.presetRentBudgets;
 
       }
-      this.rangeMaxValue = this.actualToRangeValue(this.actualMaxValue);
+      this.sliderMaxValue = this.actualToRangeValue(this.maxValue);
     });
   }
 
-  set _value(value: number) {
-    this.value = this.rangeValueToActual(value);
-    this.valueChanged.emit(this.value);
+  public onSliderChange(ionRange: any){
+    this.sliderValue = ionRange.value;
+    this.value = this.rangeValueToActual(this.sliderValue);
+    this.onValueChange();
   }
 
-  get _value() {
-    return this.actualToRangeValue(this.value);
-  }
-
-  public setActualValue(value: number) {
-    this._value = this.actualToRangeValue(value);
+  public setValue(value: number) {
+    this.sliderValue = this.actualToRangeValue(value);
+    this.customValueSelected.emit(value);
   }
 
   private rangeValueToActual(value: number): number {
-    return value * BudgetSliderComponent.ScaleFactor;
+    return value * this.scaleFactor;
   }
 
   private actualToRangeValue(value: number): number {
-    return value / BudgetSliderComponent.ScaleFactor;
+    return value / this.scaleFactor;
+  }
+
+  private onValueChange(){
+    this.valueChanged.emit(this.value);
   }
 }
