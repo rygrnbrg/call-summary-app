@@ -1,3 +1,4 @@
+import { LeadType, LeadPropertyType, LeadTypeID } from './../../models/lead-property-metadata';
 import { LeadFilter } from './../../models/lead-filter';
 import { Component } from '@angular/core';
 import { IonicPage, ModalController, NavController, LoadingController, Loading, ToastController } from 'ionic-angular';
@@ -7,7 +8,6 @@ import { AvatarPipe } from '../../pipes/avatar/avatar';
 import { Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { User } from '../../providers';
-import { LeadPropertyType } from '../../models/lead-property-metadata';
 
 @IonicPage()
 @Component({
@@ -16,6 +16,7 @@ import { LeadPropertyType } from '../../models/lead-property-metadata';
   providers: [AvatarPipe]
 })
 export class LeadsPage {
+  leadsDictionary: { [id: string]: firebase.firestore.DocumentData[] } = {};
   leads: firebase.firestore.DocumentData[];
   leadsSearchResults: firebase.firestore.DocumentData[];
   subscriptions: Subscription[];
@@ -23,37 +24,55 @@ export class LeadsPage {
   translations: any;
   activeFilters: LeadFilter[];
   filterSearchRunning: boolean;
+  leadTypes: LeadType[];
+  selectedLeadType: LeadType;
 
   constructor(private navCtrl: NavController, private leadsProvider: LeadsProvider,
     private modalCtrl: ModalController, loadingCtrl: LoadingController,
     private translateService: TranslateService, private toastCtrl: ToastController, private user: User) {
     this.loading = loadingCtrl.create();
     this.subscriptions = [];
+    this.leadTypes = LeadType.getAllLeadTypes();
+    this.selectedLeadType = this.leadTypes[0];
   }
 
   ionViewDidLoad() {
     this.loading.present();
-    let leadsSubscription = this.leadsProvider.get().subscribe(
-      (res) => {
-        this.leads = res.map(lead => this.leadsProvider.convertDbObjectToLead(lead));
-        this.loading.dismiss();
-      },
-      (err) => {
-        if (this.user.getUserData() === null) {
-          return;
-        }
-
-        this.loading.dismiss();
-        console.error(err);
-        this.showToast(this.translations.LIST_LOADING_ERROR);
-      });
+    this.initLeadSubscription();
 
     let translationSubscription = this.translateService.get([
       'LIST_LOADING_ERROR']).subscribe(values => {
         this.translations = values;
       });
 
-    this.subscriptions.push(leadsSubscription, translationSubscription);
+    this.subscriptions.push(translationSubscription);
+  }
+
+  private initLeadSubscription() {
+    let leadTypeKey = this.selectedLeadType.id.toString().toLowerCase();
+
+    if (this.leadsDictionary[leadTypeKey]) {
+      this.leads = this.leadsDictionary[leadTypeKey];
+    }
+    else {
+      let leadsSubscription = this.leadsProvider.get(this.selectedLeadType.id).subscribe(
+        (res) => {
+          this.leadsDictionary[leadTypeKey] = res.map(lead => this.leadsProvider.convertDbObjectToLead(lead));
+          this.leads = this.leadsDictionary[leadTypeKey];
+          this.loading.dismiss();
+        },
+        (err) => {
+          if (this.user.getUserData() === null) {
+            return;
+          }
+
+          this.loading.dismiss();
+          console.error(err);
+          this.showToast(this.translations.LIST_LOADING_ERROR);
+        });
+
+      this.subscriptions.push(leadsSubscription);
+    }
   }
 
   ionViewDidLeave() {
@@ -79,11 +98,11 @@ export class LeadsPage {
     })
     modal.present();
   }
-  
+
   sendMessage() {
-    let leads = this.activeFilters? this.leadsSearchResults: this.leads;
-    let contacts = leads.map((lead:Lead) => new Contact(lead.phone, lead.name));
-    let modal = this.modalCtrl.create('MessagePage', { contacts: contacts});
+    let leads = this.activeFilters ? this.leadsSearchResults : this.getLeadSubscription(this.selectedLeadType.id);
+    let contacts = leads.map((lead: Lead) => new Contact(lead.phone, lead.name));
+    let modal = this.modalCtrl.create('MessagePage', { contacts: contacts });
     modal.onDidDismiss(item => {
       if (item) {
         this.leadsProvider.add(item);
@@ -92,8 +111,17 @@ export class LeadsPage {
     modal.present();
   }
 
+  public leadTypeChanged(leadType: LeadType) {
+    this.selectedLeadType = leadType;
+    this.initLeadSubscription();
+  }
+
+  public compareWithLeadType(currentValue: LeadType, compareValue: LeadType): boolean {
+    return currentValue.id === compareValue.id;
+  }
+
   public filterLeadsClick(): void {
-    let filterModal = this.modalCtrl.create('LeadsFilterPage', {"filters" : this.activeFilters});
+    let filterModal = this.modalCtrl.create('LeadsFilterPage', { "filters": this.activeFilters });
     filterModal.onDidDismiss((data: LeadFilter[]) => {
       if (!data) {
         return;
@@ -110,7 +138,7 @@ export class LeadsPage {
       let multivalueFilters = this.activeFilters.filter(filter => filter.type === LeadPropertyType.StringMultivalue);
 
       this.filterSearchRunning = true;
-      this.leadsProvider.filter(this.activeFilters).get().then(
+      this.leadsProvider.filter(this.activeFilters, this.selectedLeadType.id).get().then(
         (querySnapshot) => {
           this.filterSearchRunning = false;
           querySnapshot.forEach(doc => {

@@ -1,3 +1,4 @@
+import { LeadTypeID, LeadType } from './../../models/lead-property-metadata';
 import { LeadPropertyMetadataProvider } from './../lead-property-metadata/lead-property-metadata';
 import { LeadFilter } from "./../../models/lead-filter";
 import { HttpClient } from "@angular/common/http";
@@ -20,8 +21,8 @@ import { LeadPropertyType, DealType } from "../../models/lead-property-metadata"
 */
 @Injectable()
 export class LeadsProvider {
-  private leadsCollectionRef: AngularFirestoreCollection;
-  private leads$: Observable<firestore.DocumentData[]>;
+  private leadsDictionary: { [id: string]: AngularFirestoreCollection<firestore.DocumentData> } = {};
+
   private static standardLeadKeys = [
     "avatar",
     "name",
@@ -29,7 +30,6 @@ export class LeadsProvider {
     "created",
     "budget",
     "area",
-    "type",
     "property",
     "rooms",
     "source"
@@ -39,29 +39,35 @@ export class LeadsProvider {
     public http: HttpClient,
     private afStore: AngularFirestore,
     private leadPropertyMetadataProvider: LeadPropertyMetadataProvider,
-    user: User
+    private user: User
   ) {
-    let userData = user.getUserData();
-    this.leadsCollectionRef = this.afStore
-      .collection("users")
-      .doc(userData.email)
-      .collection("leads", ref => ref.orderBy("created", "desc"));
-    this.leads$ = this.leadsCollectionRef.valueChanges();
+    this.initLeadCollections()
   }
 
-  public get(): Observable<firestore.DocumentData[]> {
-    return this.leads$;
+  private initLeadCollections() {
+    let userData = this.user.getUserData();
+    LeadType.getAllLeadTypes().forEach(leadType => {
+      let leadsCollectionRef = this.afStore
+        .collection("users")
+        .doc(userData.email)
+        .collection("leads_" + leadType.id.toString().toLowerCase(), ref => ref.orderBy("created", "desc"));
+      this.leadsDictionary[leadType.id.toString()] = leadsCollectionRef;
+    });
+  }
+
+  public get(leadTypeId: LeadTypeID): Observable<firestore.DocumentData[]> {
+    return this.leadsDictionary[leadTypeId.toString()].valueChanges();
   }
 
   /**
   * Filter function does not support multivalues. Filter multivalues in consumer code
   */
-  public filter(filters: LeadFilter[]): Query {
-    let query: Query = this.leadsCollectionRef.ref;
+  public filter(filters: LeadFilter[], leadTypeId: LeadTypeID): Query {
+    let query: Query = this.leadsDictionary[leadTypeId.toString()].ref;
 
     query = this.addBudgetFilter(filters, query);
     query = this.addStringFilters(filters, query);
- 
+
     return query;
   }
 
@@ -73,13 +79,16 @@ export class LeadsProvider {
 
   public add(item: Lead): Promise<firestore.DocumentReference> {
     let dbObject = this.getLeadDbObject(item);
-    return this.leadsCollectionRef.add(dbObject);
+    return this.leadsDictionary[item.type.toString()].add(dbObject);
   }
 
-  public delete(item: Lead) {}
+  public delete(item: Lead) {
+
+  }
+
   private addBudgetFilter(filters: LeadFilter[], query: Query): Query {
     let dealType = this.leadPropertyMetadataProvider.getDealType(filters.map(filter => filter.metadata));
-    let range = dealType === DealType.Sell? 200000 : 1500;
+    let range = dealType === DealType.Sell ? 200000 : 1500;
     filters
       .filter(filter => filter.metadata.type === LeadPropertyType.Budget)
       .forEach(filter => {

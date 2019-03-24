@@ -22,28 +22,6 @@
 
   "MAP_TITLE": "מפה",
 
-  "TUTORIAL_SLIDE1_TITLE": "סוג הליד",
-  "TUTORIAL_SLIDE1_DESCRIPTION": "מעוניין ב",
-  "TUTORIAL_SLIDE1_BUTTON1": "להשכיר",
-  "TUTORIAL_SLIDE1_BUTTON2": "לקנות",
-  "TUTORIAL_SLIDE1_BUTTON3": "לשכור",
-  "TUTORIAL_SLIDE1_BUTTON4": "למכור",
-
-  "TUTORIAL_SLIDE2_TITLE": "נכס",
-  "TUTORIAL_SLIDE2_DESCRIPTION": "סוג הנכס",
-  "TUTORIAL_SLIDE2_BUTTON1": "דירה",
-  "TUTORIAL_SLIDE2_BUTTON2": "פנטהאוס",
-  "TUTORIAL_SLIDE2_BUTTON3": "קוטג'",
-  "TUTORIAL_SLIDE2_BUTTON4": "אחר",
-
-  "TUTORIAL_SLIDE3_TITLE": "חדרים",
-  "TUTORIAL_SLIDE3_DESCRIPTION": "מספר חדרים",
-  "TUTORIAL_SLIDE3_BUTTON1": "פחות מ-3",
-  "TUTORIAL_SLIDE3_BUTTON2": "3",
-  "TUTORIAL_SLIDE3_BUTTON3": "4",
-  "TUTORIAL_SLIDE3_BUTTON4": "5",
-  "TUTORIAL_SLIDE3_BUTTON5": "יותק מ-5",
-
   "TUTORIAL_SLIDE4_TITLE": "תקציב",
   "TUTORIAL_SLIDE4_DESCRIPTION": "תקציב בשקלים",
 
@@ -122,5 +100,13 @@
   "TYPE_SMS_PLACEHOLDER": "כתוב הודעה...",
   "SMS_MESSAGE_WILL_BE_SENT_TO": "הודעתך תישלח ל",
   "CONTACTS": "אנשי קשר",
-  "MESSAGE_PAGE_TITLE": "שליחת מסרון"
+  "MESSAGE_PAGE_TITLE": "שליחת מסרון",
+  "BUYER": "קונה",
+  "SELLER": "מוכר", 
+  "TENANT": "שוכר",
+  "LANDLORD": "משכיר",
+  "BUYER_ACTION": "לקנות",
+  "SELLER_ACTION": "למכור", 
+  "TENANT_ACTION": "לשכור",
+  "LANDLORD_ACTION": "להשכיר"
 }

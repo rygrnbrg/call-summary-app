@@ -60,10 +60,12 @@ export class LeadPropertyMetadata {
 export class PropertyOption {
   title: string;
   selected: boolean;
+  id?: any;
 
-  constructor(title: string, selected?: boolean) {
+  constructor(title: string, selected?: boolean, id?: any) {
     this.title = title;
     this.selected = selected;
+    this.id = id;
   }
 }
 
@@ -71,6 +73,30 @@ export enum DealType{
   Sell, Rent
 }
 
-export enum LeadType{
-  Buyer, Seller, Tenant, Landlord
+export enum LeadTypeID{
+  Buyer = "Buyer",
+  Seller = "Seller", 
+  Tenant = "Tenant", 
+  Landlord = "Landlord"
+}
+
+export class LeadType{
+  id: LeadTypeID;
+  translation: string;
+  actionTranslation: string;
+
+  constructor(id: LeadTypeID){
+    this.id = id;
+    this.translation = id.toString().toUpperCase();
+    this.actionTranslation = id.toString().toUpperCase() + "_ACTION";
+  }
+
+  public static getAllLeadTypes(): LeadType[]{
+    return [
+      new LeadType(LeadTypeID.Buyer),
+      new LeadType(LeadTypeID.Seller),
+      new LeadType(LeadTypeID.Tenant),
+      new LeadType(LeadTypeID.Landlord)
+    ]
+  }
 }

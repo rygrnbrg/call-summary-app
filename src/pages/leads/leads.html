@@ -1,17 +1,25 @@
 <ion-header>
   <ion-navbar>
-    <ion-title></ion-title>
+    <!-- <ion-title>{{ 'LEADS_PAGE_TITLE' | translate }}</ion-title> -->
     <button ion-button menuToggle large>
-      <ion-icon ion-button name="menu"></ion-icon>
+      <ion-icon ion-button name="menu">
+      </ion-icon>
     </button>
   </ion-navbar>
 </ion-header>
 
 <ion-content>
   <ion-list>
-    <ion-list-header>
-      {{ 'LEADS_PAGE_TITLE' | translate }}
+    <ion-item>
+      <ion-label>{{ 'LEAD_TYPE_SELECTION' | translate }}</ion-label>
+      <ion-select [(ngModel)]="selectedLeadType" interface="popover" (ionChange)="leadTypeChanged($event)" [compareWith]="compareWithLeadType">
+        <ion-option [value]="leadType" *ngFor="let leadType of leadTypes">{{ leadType.actionTranslation | translate }}</ion-option>
+      </ion-select>
+    </ion-item>
+  </ion-list>
 
+  <ion-list>
+    <ion-list-header>
       <button ion-button item-end icon-start (click)="cleanFilters()" [hidden]="!activeFilters">
         {{"LEADS_CLEAR_FILTERS" | translate}}
         <ion-icon name="close"></ion-icon>
@@ -28,7 +36,7 @@
 
     <leads-list [hidden]="activeFilters" [leads]="leads" (itemClicked)="itemClicked($event)"></leads-list>
     <leads-list [hidden]="!activeFilters" [leads]="leadsSearchResults" (itemClicked)="itemClicked($event)"></leads-list>
-    <ion-item [hidden]="!searchHasNoResults()" text-center>     
+    <ion-item [hidden]="!searchHasNoResults()" text-center>
       {{"GENERAL_SEARCH_NO_RESULTS" | translate}}
     </ion-item>
   </ion-list>

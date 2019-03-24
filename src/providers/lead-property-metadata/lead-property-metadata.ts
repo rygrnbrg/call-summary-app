@@ -1,4 +1,4 @@
-import { DealType } from './../../models/lead-property-metadata';
+import { DealType, LeadTypeID } from './../../models/lead-property-metadata';
 import { LeadPropertyType } from '../../models/lead-property-metadata';
 import { Injectable } from '@angular/core';
 import { PropertyOption, LeadPropertyMetadata } from '../../models/lead-property-metadata'
@@ -16,10 +16,10 @@ export class LeadPropertyMetadataProvider {
         description: 'מעוניין ב',
         image: 'assets/img/ica-slidebox-img-1.png',
         options: [
-          new PropertyOption("להשכיר"),
-          new PropertyOption("לקנות"),
-          new PropertyOption("לשכור"),
-          new PropertyOption("למכור")
+          new PropertyOption("להשכיר", false, LeadTypeID.Landlord),
+          new PropertyOption("לקנות", false, LeadTypeID.Buyer),
+          new PropertyOption("לשכור", false, LeadTypeID.Tenant),
+          new PropertyOption("למכור", false, LeadTypeID.Seller)
         ],
         icon: 'clipboard-outline',
         type: LeadPropertyType.StringSingleValue
@@ -105,13 +105,13 @@ export class LeadPropertyMetadataProvider {
 
   getDealType(properties: LeadPropertyMetadata[]): DealType {
     let typeProperty = properties.find(prop => prop.id === "type");
-    
+
     if (typeProperty) {
       let selectedOption = typeProperty.options.find(option => option.selected === true);
 
       if (selectedOption && (selectedOption.title === "להשכיר" || selectedOption.title === "לשכור")) {
-          return DealType.Rent;
-        }
+        return DealType.Rent;
+      }
     }
 
     return DealType.Sell;

@@ -1,3 +1,4 @@
+import { LeadTypeID } from './lead-property-metadata';
 export class Contact {
     name: string;
     phone: string;
@@ -19,7 +20,7 @@ export class Lead extends Contact {
     name: string;
     phone: string;
     created: Date;
-    type: string;
+    type: LeadTypeID;
     property: string;
     rooms: string;
     source: string;  

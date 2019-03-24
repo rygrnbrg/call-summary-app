@@ -1,3 +1,4 @@
+import { LeadTypeID } from './../../models/lead-property-metadata';
 import { Component, ViewChild } from "@angular/core";
 import { IonicPage, MenuController, NavController, Platform, Slides, NavParams } from "ionic-angular";
 import { LeadPropertyMetadataProvider } from "../../providers/lead-property-metadata/lead-property-metadata";
@@ -87,7 +88,7 @@ export class TutorialPage {
     this.resultLead.property = this.getSimpleSlideValue("property");
     this.resultLead.rooms = this.getSimpleSlideValue("rooms");
     this.resultLead.source = this.getSimpleSlideValue("source");
-    this.resultLead.type = this.getSimpleSlideValue("type");
+    this.resultLead.type = this.getTypeValue();
 
     this.leads.add(this.resultLead).then(() =>
       this.navCtrl.setRoot(
@@ -131,6 +132,13 @@ export class TutorialPage {
     }
 
     return null;
+  }
+
+  private getTypeValue(): LeadTypeID{
+    let propertyId = "type";
+    return this.getSlide(propertyId)
+      .options.filter(button => button.selected)
+      .map(button => button.id)[0];
   }
 
   public setDealType(): void {
