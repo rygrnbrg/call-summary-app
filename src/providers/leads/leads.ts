@@ -1,3 +1,4 @@
+import { LeadPropertyMetadataProvider } from './../lead-property-metadata/lead-property-metadata';
 import { LeadFilter } from "./../../models/lead-filter";
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
@@ -10,7 +11,7 @@ import {
 import { Observable } from "rxjs/Rx";
 import { User } from "..";
 import { firestore } from "firebase";
-import { LeadPropertyType } from "../../models/lead-property-metadata";
+import { LeadPropertyType, DealType } from "../../models/lead-property-metadata";
 /*
   Generated class for the LeadsProvider provider.
 
@@ -37,6 +38,7 @@ export class LeadsProvider {
   constructor(
     public http: HttpClient,
     private afStore: AngularFirestore,
+    private leadPropertyMetadataProvider: LeadPropertyMetadataProvider,
     user: User
   ) {
     let userData = user.getUserData();
@@ -75,15 +77,16 @@ export class LeadsProvider {
   }
 
   public delete(item: Lead) {}
-
   private addBudgetFilter(filters: LeadFilter[], query: Query): Query {
+    let dealType = this.leadPropertyMetadataProvider.getDealType(filters.map(filter => filter.metadata));
+    let range = dealType === DealType.Sell? 200000 : 1500;
     filters
       .filter(filter => filter.metadata.type === LeadPropertyType.Budget)
       .forEach(filter => {
         if (filter.value) {
           query = query
-            .where("budget", "<=", filter.value + 200000)
-            .where("budget", ">=", filter.value - 200000);
+            .where("budget", "<=", filter.value + range)
+            .where("budget", ">=", filter.value - range);
         }
       });
 

@@ -70,3 +70,7 @@ export class PropertyOption {
 export enum DealType{
   Sell, Rent
 }
+
+export enum LeadType{
+  Buyer, Seller, Tenant, Landlord
+}

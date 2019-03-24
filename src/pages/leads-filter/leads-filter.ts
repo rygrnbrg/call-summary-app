@@ -1,12 +1,13 @@
 
 import {
   PropertyOption,
-  LeadPropertyType
+  LeadPropertyType,
+  DealType
 } from "./../../models/lead-property-metadata";
 import { LeadFilter } from "./../../models/lead-filter";
 import { LeadPropertyMetadataProvider } from "./../../providers/lead-property-metadata/lead-property-metadata";
 import { Component } from "@angular/core";
-import { IonicPage, ViewController } from "ionic-angular";
+import { IonicPage, ViewController, NavParams } from "ionic-angular";
 import { LeadPropertyMetadata } from "../../models/lead-property-metadata";
 import { NumberFormatPipe } from "../../pipes/number-format/number-format";
 
@@ -24,7 +25,8 @@ export class LeadsFilterPage {
   constructor(
     private viewCtrl: ViewController,
     private numberFormatPipe: NumberFormatPipe,
-    leadPropertyMetadataProvider: LeadPropertyMetadataProvider
+    private leadPropertyMetadataProvider: LeadPropertyMetadataProvider,
+    private navParams: NavParams
   ) {
     this.leadPropertyMetadata = leadPropertyMetadataProvider.get();
   }
@@ -39,6 +41,10 @@ export class LeadsFilterPage {
     }
 
     return value;
+  }
+
+  public getDealType(): DealType {
+    return this.leadPropertyMetadataProvider.getDealType(this.filters.map(filter => filter.metadata));
   }
 
   private getBudgetString(value: number): string {
@@ -56,7 +62,7 @@ export class LeadsFilterPage {
     switch (filter.type) {
       case LeadPropertyType.StringSingleValue:
         this.handleSingleOptionValueClick(filter, option);
-        filter.value = option.title;
+        filter.value = option.selected? option.title : null;
         break;
 
       case LeadPropertyType.StringMultivalue:
@@ -95,6 +101,15 @@ export class LeadsFilterPage {
           value: null
         }
     );
+
+    let paramsfilters: LeadFilter[] = this.navParams.get("filters");
+    if (paramsfilters) {
+      paramsfilters.forEach(paramFilter => {
+        let index = this.filters.findIndex(filter => filter.id === paramFilter.id);
+        this.filters[index] = paramFilter;
+      });
+    }
+
   }
 
   done() {

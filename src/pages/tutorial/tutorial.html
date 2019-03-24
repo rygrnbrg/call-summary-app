@@ -32,7 +32,10 @@
             </ion-grid>
           </ion-buttons>
           <div *ngIf="slide.type === leadPropertyType.Budget && isSlideActive(slide)">
-            <budget-slider [dealType]="dealType" (valueChanged)="setBudget(slide, $event)"></budget-slider>
+            <budget-slider 
+            [dealType]="dealType" 
+            [value]="this.resultLead.budget" 
+            (valueChanged)="setBudget(slide, $event)"></budget-slider>
           </div>
         </div>
         <ion-fab bottom center>

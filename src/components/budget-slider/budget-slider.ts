@@ -25,25 +25,31 @@ export class BudgetSliderComponent {
   }
 
   ngOnInit() {
-    this.settings.allSettings.then((settings)=>{
+    this.settings.allSettings.then((settings) => {
       if (this.dealType === DealType.Sell) {
         this.scaleFactor = 100000;
         this.maxValue = settings.maxBudget;
-        this.value = this.value ? this.value : settings.defaultBudget;
+        this.initValue(settings.defaultBudget);
         this.presetBudgets = settings.presetBudgets;
       }
       else {
         this.scaleFactor = 100;
         this.maxValue = settings.maxRentBudget;
-        this.value = this.value ? this.value : settings.defaultRentBudget;
+        this.initValue(settings.defaultRentBudget);
         this.presetBudgets = settings.presetRentBudgets;
-
       }
       this.sliderMaxValue = this.actualToRangeValue(this.maxValue);
     });
   }
+  private initValue(defaultValue: number) {
+    if (!this.value) {
+      this.value = defaultValue;
+      this.valueChanged.emit(this.value);
+    }
+    this.sliderValue = this.actualToRangeValue(this.value);    
+  }
 
-  public onSliderChange(ionRange: any){
+  public onSliderChange(ionRange: any) {
     this.sliderValue = ionRange.value;
     this.value = this.rangeValueToActual(this.sliderValue);
     this.onValueChange();
@@ -62,7 +68,7 @@ export class BudgetSliderComponent {
     return value / this.scaleFactor;
   }
 
-  private onValueChange(){
+  private onValueChange() {
     this.valueChanged.emit(this.value);
   }
 }

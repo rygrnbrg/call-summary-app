@@ -93,7 +93,7 @@ export class LeadsPage {
   }
 
   public filterLeadsClick(): void {
-    let filterModal = this.modalCtrl.create('LeadsFilterPage');
+    let filterModal = this.modalCtrl.create('LeadsFilterPage', {"filters" : this.activeFilters});
     filterModal.onDidDismiss((data: LeadFilter[]) => {
       if (!data) {
         return;

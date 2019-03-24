@@ -1,5 +1,5 @@
 <div>{{"LEADS_FILTER_BY" | translate}}</div>
-<ion-badge *ngFor="let filter of filters" color="success" class="inline-badge">
+<ion-chip *ngFor="let filter of filters" color="success">
   <ion-icon [name]="filter.metadata.icon"></ion-icon>
-    {{getFilterValueString(filter)}}
-</ion-badge>
+  <ion-label>{{getFilterValueString(filter)}}</ion-label>
+</ion-chip>
