@@ -72,9 +72,22 @@ export class LeadsProvider {
     return query;
   }
 
-  public convertDbObjectToLead(item: firebase.firestore.DocumentData): Lead {
+  public updateLeadRelevance(item: Lead, isRelevant: boolean): Promise<void> {
+    let data = {};
+    data[LeadPropertyMetadataProvider.relevanceKey] = isRelevant;
+    let promise = this.leadsDictionary[item.type.toString()].ref.where("phone", "==", item.phone).get();
+    return promise.then((querySnapshot)=>{
+      querySnapshot.forEach(x=>{
+        return x.ref.update(data);
+      });
+    });
+  }
+
+  public convertDbObjectToLead(item: firebase.firestore.DocumentData, leadType: LeadTypeID): Lead {
     let lead = <Lead>{};
     LeadsProvider.standardLeadKeys.forEach(key => (lead[key] = item[key]));
+    lead.type = leadType;
+    lead.relevant = item[LeadPropertyMetadataProvider.relevanceKey];
     return lead;
   }
 

@@ -39,19 +39,20 @@ export class LeadsPage {
   constructor(
     private navCtrl: NavController,
     private leadsProvider: LeadsProvider,
-    private modalCtrl: ModalController, loadingCtrl: LoadingController,
+    private modalCtrl: ModalController, 
+    private loadingCtrl: LoadingController,
     private translateService: TranslateService,
     private toastCtrl: ToastController,
     private leadPropertyMetadataProvider: LeadPropertyMetadataProvider,
     private user: User) {
-    this.loading = loadingCtrl.create();
+  }
+
+  ionViewDidLoad() {
+    this.loading = this.loadingCtrl.create();
     this.subscriptions = [];
     this.leadTypes = LeadType.getAllLeadTypes();
     this.selectedLeadType = this.leadTypes[0];
     this.selectedDealType = this.leadPropertyMetadataProvider.getDealTypeByLeadType(this.selectedLeadType.id);
-  }
-
-  ionViewDidLoad() {
     this.loading.present();
     this.initLeadSubscription();
 
@@ -72,7 +73,7 @@ export class LeadsPage {
     else {
       let leadsSubscription = this.leadsProvider.get(this.selectedLeadType.id).subscribe(
         (res) => {
-          this.leadsDictionary[leadTypeKey] = res.map(lead => this.leadsProvider.convertDbObjectToLead(lead));
+          this.leadsDictionary[leadTypeKey] = res.map(lead => this.leadsProvider.convertDbObjectToLead(lead, this.selectedLeadType.id));
           this.leads = this.leadsDictionary[leadTypeKey];
           this.loading.dismiss();
         },
@@ -95,7 +96,7 @@ export class LeadsPage {
     this.loading.dismiss();
   }
 
-  showToast(message: string) {
+  private showToast(message: string) {
     let toast = this.toastCtrl.create({
       message: message,
       duration: 3000,
@@ -171,8 +172,9 @@ export class LeadsPage {
     filterModal.present();
   }
 
-  private filterLeadsByRange(){
-      this.leadsSearchResults = this.queryLeadsSearchResults.filter(x=> this.inBudgetRange(x)); 
+  private filterLeadsByRange() {
+    let filteredQueryResults = this.queryLeadsSearchResults.filter(x => this.inBudgetRange(x));
+    this.leadsSearchResults = filteredQueryResults.map(lead => this.leadsProvider.convertDbObjectToLead(lead, this.selectedLeadType.id));
   }
 
   private setShowBudgetSlider(): void {

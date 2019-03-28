@@ -25,7 +25,7 @@
         <ion-label [hidden]="!relevant">{{'LEAD_RELEVANCE_STATUS_YES' | translate }}</ion-label>
         <ion-icon name="close" icon item-start color="primary" [hidden]="relevant" color="danger"></ion-icon>
         <ion-label [hidden]="relevant">{{'LEAD_RELEVANCE_STATUS_NO' | translate }}</ion-label>
-        <ion-toggle [(ngModel)]="relevant"></ion-toggle>
+        <ion-toggle [(ngModel)]="relevant" (ionChange)="relevantChanged($event)"></ion-toggle>
       </ion-item>
       <ion-item *ngFor="let prop of properties">
         <ion-icon [name]="prop.icon" icon item-start color="secondary"></ion-icon>

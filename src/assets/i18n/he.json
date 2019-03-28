@@ -13,6 +13,7 @@
   "GENERAL_SELECTIONS": "בחירות",
   "GENERAL_FILTER": "סנן",
   "GENERAL_SEARCH_NO_RESULTS": "לא נמצאו תוצאות",
+  "GENERAL_ACTION_ERROR" : "הפעולה נכשלה",
 
   "NAME": "שם",
   "PASSWORD": "סיסמה",

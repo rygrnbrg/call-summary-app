@@ -1,3 +1,4 @@
+import { Lead } from './../../models/lead';
 import { Pipe, PipeTransform } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 /**
@@ -7,6 +8,7 @@ import { DomSanitizer } from '@angular/platform-browser';
  */
 @Pipe({
   name: 'avatar',
+  pure: false
 })
 export class AvatarPipe implements PipeTransform {
 
@@ -14,11 +16,15 @@ export class AvatarPipe implements PipeTransform {
 
   }
 
-  transform(value: string): any {
+  transform(value: string, item?: Lead): any {
     // if (value && value.length) {
     //   return this.domSanitizer.bypassSecurityTrustUrl(value);
     // }
+    if (!item || item.relevant){
+      return 'assets/img/profile_avatar.png';      
+    }
 
-    return 'assets/img/profile_avatar.png';
+    return 'assets/img/profile_avatar_danger.png';      
+
   }
 }

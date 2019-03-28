@@ -1,11 +1,13 @@
+import { LeadsProvider } from './../../providers/leads/leads';
 import { Component } from "@angular/core";
-import { IonicPage, NavController, NavParams } from "ionic-angular";
+import { IonicPage, NavController, NavParams, ToastController } from "ionic-angular";
 import { Items } from "../../providers";
 import { LeadPropertyMetadataProvider } from "../../providers/lead-property-metadata/lead-property-metadata";
 import { LeadPropertyMetadata, LeadPropertyType } from "../../models/lead-property-metadata";
 import { Lead } from "../../models/lead";
 import { AvatarPipe } from "../../pipes/avatar/avatar";
 import { NumberFormatPipe } from "../../pipes/number-format/number-format";
+import { TranslateService } from '@ngx-translate/core';
 
 @IonicPage()
 @Component({
@@ -14,22 +16,33 @@ import { NumberFormatPipe } from "../../pipes/number-format/number-format";
   providers: [AvatarPipe, NumberFormatPipe]
 })
 export class ItemDetailPage {
-  item: Lead;
-  properties: ItemProperty[];
-  relevant: boolean;
-
+  public item: Lead;
+  public properties: ItemProperty[];
+  public relevant: boolean;
+  private translations: any;
   private leadPropertiesMetadata: LeadPropertyMetadata[];
+
   constructor(
-    public navCtrl: NavController,
     navParams: NavParams,
     leadPropertyMetadataProvider: LeadPropertyMetadataProvider,
-    private numberFormatPipe: NumberFormatPipe
+    private toastCtrl: ToastController,
+    private leadsProvider: LeadsProvider,
+    private numberFormatPipe: NumberFormatPipe,
+    private translateService: TranslateService
   ) {
     this.leadPropertiesMetadata = leadPropertyMetadataProvider.get();
     this.item = navParams.get("item");
     this.properties = this.getProperties();
     this.relevant = this.item.relevant;
   }
+
+    ionViewDidLoad() {
+    let translationSubscription = this.translateService.get([
+      'GENERAL_ACTION_ERROR']).subscribe(values => {
+        this.translations = values;
+      });
+  }
+
 
   private getProperties(): ItemProperty[] {
     let props: ItemProperty[] = [];
@@ -43,6 +56,24 @@ export class ItemDetailPage {
     });
 
     return props;
+  }
+
+  public relevantChanged(){
+    this.leadsProvider.updateLeadRelevance(this.item, this.relevant).then(()=>{
+      this.item.relevant = this.relevant;
+    }).catch(()=>{
+      this.showToast(this.translations.GENERAL_ACTION_ERROR);
+      this.relevant = this.item.relevant;
+    });
+  }
+
+  private showToast(message: string) {
+    let toast = this.toastCtrl.create({
+      message: message,
+      duration: 3000,
+      position: 'top'
+    });
+    toast.present();
   }
 
   private getPropertyString(property: LeadPropertyMetadata): string {
