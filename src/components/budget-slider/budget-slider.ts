@@ -12,7 +12,9 @@ export class BudgetSliderComponent {
   @Input() public dealType: number;
 
   public sliderMaxValue: number;
+  public sliderMinValue: number;
   public maxValue: number;
+  public minValue: number;
   public presetBudgets: number[];
 
   private scaleFactor = 10000;
@@ -29,16 +31,19 @@ export class BudgetSliderComponent {
       if (this.dealType === DealType.Sell) {
         this.scaleFactor = 100000;
         this.maxValue = settings.maxBudget;
+        this.minValue = settings.minBudget;
         this.initValue(settings.defaultBudget);
         this.presetBudgets = settings.presetBudgets;
       }
       else {
         this.scaleFactor = 100;
         this.maxValue = settings.maxRentBudget;
+        this.minValue = settings.minRentBudget;
         this.initValue(settings.defaultRentBudget);
         this.presetBudgets = settings.presetRentBudgets;
       }
       this.sliderMaxValue = this.actualToRangeValue(this.maxValue);
+      this.sliderMinValue = this.actualToRangeValue(this.minValue);
     });
   }
   private initValue(defaultValue: number) {

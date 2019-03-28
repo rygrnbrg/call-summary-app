@@ -30,9 +30,11 @@ export function createTranslateLoader(http: HttpClient) {
 export function provideSettings(storage: Storage) {
   return new Settings(storage, {
     defaultBudget: 1500000,
+    minBudget: 500000,
     maxBudget: 5000000,
     presetBudgets: [500000, 1000000, 1500000, 2000000, 2500000, 3000000],
     defaultRentBudget: 4000,
+    minRentBudget: 2000,
     maxRentBudget: 10000,
     presetRentBudgets:[3500,4000,4500,5000,5500,6000,6500,7000,8000]
   });

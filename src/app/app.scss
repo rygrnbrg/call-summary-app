@@ -24,6 +24,10 @@ p.light, .light{
     margin-left: $content-margin;
 }
 
+ion-list-header.list-header {
+    margin-bottom: 0;
+}
+
 ion-chip{
     ion-label.label{
         margin-right:0;

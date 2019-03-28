@@ -53,8 +53,8 @@ export class LeadsProvider {
     });
   }
 
-  public get(leadTypeId: LeadTypeID): Observable<firestore.DocumentData[]> {
-    return this.leadsDictionary[leadTypeId.toString()].valueChanges();
+  public get(leadTypeId: LeadTypeID): Query {
+    return this.leadsDictionary[leadTypeId.toString()].ref.limit(300);
   }
 
   /**

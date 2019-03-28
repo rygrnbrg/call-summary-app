@@ -3,11 +3,12 @@
   dualKnobs="false"
   [(ngModel)]="sliderValue"
   [max]="sliderMaxValue"
+  [min]="sliderMinValue"
   step="1"
   color="secondary"
   (ionChange)="onSliderChange($event)"
 >
-  <ion-label range-left>{{ maxValue | numberFormat }}</ion-label>
+  <!-- <ion-label range-left>{{ maxValue | numberFormat }}</ion-label> -->
 </ion-range>
 <ion-grid padding>
   <ion-row>

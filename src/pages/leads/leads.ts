@@ -71,9 +71,9 @@ export class LeadsPage {
       this.leads = this.leadsDictionary[leadTypeKey];
     }
     else {
-      let leadsSubscription = this.leadsProvider.get(this.selectedLeadType.id).subscribe(
+      this.leadsProvider.get(this.selectedLeadType.id).get().then(
         (res) => {
-          this.leadsDictionary[leadTypeKey] = res.map(lead => this.leadsProvider.convertDbObjectToLead(lead, this.selectedLeadType.id));
+          this.leadsDictionary[leadTypeKey] = res.docs.map(lead => this.leadsProvider.convertDbObjectToLead(lead.data(), this.selectedLeadType.id));
           this.leads = this.leadsDictionary[leadTypeKey];
           this.loading.dismiss();
         },
@@ -86,8 +86,6 @@ export class LeadsPage {
           console.error(err);
           this.showToast(this.translations.LIST_LOADING_ERROR);
         });
-
-      this.subscriptions.push(leadsSubscription);
     }
   }
 
