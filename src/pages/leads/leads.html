@@ -1,6 +1,17 @@
 <ion-header>
   <ion-navbar>
     <!-- <ion-title>{{ 'LEADS_PAGE_TITLE' | translate }}</ion-title> -->
+    <ion-buttons end>
+      <button ion-button item-start icon-start (click)="cleanFilters()" [hidden]="!activeFilters">
+        {{"LEADS_CLEAR_FILTERS" | translate}}
+        <ion-icon name="close"></ion-icon>
+      </button>
+      <button ion-button clear item-start icon-start (click)="filterLeadsClick()" [hidden]="activeFilters">
+        {{ "GENERAL_FILTER" | translate }}
+        <ion-icon name="funnel"></ion-icon>
+      </button>
+    </ion-buttons>
+
     <button ion-button menuToggle large>
       <ion-icon ion-button name="menu">
       </ion-icon>
@@ -9,22 +20,15 @@
 </ion-header>
 
 <ion-content>
-  <lead-type-select [value]="selectedLeadType" label="LEAD_TYPE_SELECTION" (valueChanged)="leadTypeChanged($event)" ></lead-type-select>
+  <lead-type-select [value]="selectedLeadType" label="LEAD_TYPE_SELECTION" (valueChanged)="leadTypeChanged($event)"></lead-type-select>
   <ion-list>
-    <ion-list-header>
-      <button ion-button item-end icon-start (click)="cleanFilters()" [hidden]="!activeFilters">
-        {{"LEADS_CLEAR_FILTERS" | translate}}
-        <ion-icon name="close"></ion-icon>
-      </button>
-      <button ion-button clear item-end icon-start (click)="filterLeadsClick()">
-        {{ "GENERAL_FILTER" | translate }}
-        <ion-icon name="funnel"></ion-icon>
-      </button>
-
-    </ion-list-header>
     <div class="filtered-list-header" [hidden]="!activeFilters">
       <filtered-by [filters]="activeFilters"></filtered-by>
     </div>
+
+    <range-budget-slider *ngIf="showBudgetSlider" [value]="budgetValue" [minMaxValues]="budgetMinMaxValues" [dealType]="selectedDealType"
+      (valueChanged)="budgetChanged($event)">
+    </range-budget-slider>
 
     <leads-list [hidden]="activeFilters" [leads]="leads" (itemClicked)="itemClicked($event)"></leads-list>
     <leads-list [hidden]="!activeFilters" [leads]="leadsSearchResults" (itemClicked)="itemClicked($event)"></leads-list>

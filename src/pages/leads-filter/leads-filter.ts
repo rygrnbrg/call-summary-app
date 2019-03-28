@@ -64,8 +64,9 @@ export class LeadsFilterPage {
         break;
 
       case LeadPropertyType.StringMultivalue:
-        option.selected = !option.selected;
-        filter.value = filter.metadata.options.filter(option => option.selected).map(option => option.title);
+        this.handleSingleOptionValueClick(filter, option);
+        let valueResult = filter.metadata.options.filter(option => option.selected).map(option => option.title);
+        filter.value = valueResult.length? valueResult: null;
         break;
 
       default:

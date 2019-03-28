@@ -6,12 +6,14 @@ import { IonicModule } from 'ionic-angular';
 import { BudgetSliderComponent } from './budget-slider/budget-slider';
 import { FilteredByComponent } from './filtered-by/filtered-by';
 import { LeadTypeSelectComponent } from './lead-type-select/lead-type-select';
+import { RangeBudgetSliderComponent } from './range-budget-slider/range-budget-slider';
 
 @NgModule({
 	declarations: [LeadsListComponent,
     BudgetSliderComponent,
     FilteredByComponent,
-    LeadTypeSelectComponent],
+    LeadTypeSelectComponent,
+    RangeBudgetSliderComponent],
 	imports: [
 		TranslateModule.forChild(),
 		PipesModule,
@@ -20,6 +22,7 @@ import { LeadTypeSelectComponent } from './lead-type-select/lead-type-select';
 	exports: [LeadsListComponent,
     BudgetSliderComponent,
     FilteredByComponent,
-    LeadTypeSelectComponent]
+    LeadTypeSelectComponent,
+    RangeBudgetSliderComponent]
 })
 export class ComponentsModule {}

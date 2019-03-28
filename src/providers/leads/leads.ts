@@ -59,13 +59,15 @@ export class LeadsProvider {
   }
 
   /**
-  * Filter function does not support multivalues. Filter multivalues in consumer code
+  * Filter function does not support range values. Range values in consumer code.
+  * Multivalue will support only list with 1 item.
   */
   public filter(filters: LeadFilter[], leadTypeId: LeadTypeID): Query {
     let query: Query = this.leadsDictionary[leadTypeId.toString()].ref;
 
-    query = this.addBudgetFilter(filters, query);
+    // query = this.addBudgetFilter(filters, query);
     query = this.addStringFilters(filters, query);
+    query = this.addMultivalueFilters(filters, query);
 
     return query;
   }
@@ -115,6 +117,19 @@ export class LeadsProvider {
     return query;
   }
 
+  private addMultivalueFilters(filters: LeadFilter[], query: Query): Query {
+    filters
+      .filter(
+        filter => filter.metadata.type === LeadPropertyType.StringMultivalue
+      )
+      .forEach(filter => {
+        if (filter.value && filter.value.length === 1) {
+          query = query.where(filter.id, "array-contains", filter.value[0]);
+        }
+      });
+
+    return query;
+  }
   private getLeadDbObject(item: Lead): Object {
     let leadObj = {};
     LeadsProvider.standardLeadKeys.forEach(key => (leadObj[key] = item[key]));

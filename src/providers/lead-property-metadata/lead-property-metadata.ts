@@ -63,7 +63,7 @@ export class LeadPropertyMetadataProvider {
         image: 'assets/img/ica-slidebox-img-3.png',
         icon: 'cash-outline',
         type: LeadPropertyType.Budget,
-        filterable: true
+        filterable: false
       },
       {
         id: 'area',

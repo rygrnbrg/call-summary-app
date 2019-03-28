@@ -1,4 +1,5 @@
-import { LeadType, LeadPropertyType } from './../../models/lead-property-metadata';
+import { LeadPropertyMetadataProvider } from './../../providers/lead-property-metadata/lead-property-metadata';
+import { LeadType, LeadPropertyType, DealType } from './../../models/lead-property-metadata';
 import { LeadFilter } from './../../models/lead-filter';
 import { Component } from '@angular/core';
 import { IonicPage, ModalController, NavController, LoadingController, Loading, ToastController } from 'ionic-angular';
@@ -8,6 +9,7 @@ import { AvatarPipe } from '../../pipes/avatar/avatar';
 import { Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { User } from '../../providers';
+import { rangeValue } from '../../components/range-budget-slider/range-budget-slider';
 
 @IonicPage()
 @Component({
@@ -18,6 +20,7 @@ import { User } from '../../providers';
 export class LeadsPage {
   leadsDictionary: { [id: string]: firebase.firestore.DocumentData[] } = {};
   leads: firebase.firestore.DocumentData[];
+  queryLeadsSearchResults: firebase.firestore.DocumentData[];
   leadsSearchResults: firebase.firestore.DocumentData[];
   subscriptions: Subscription[];
   loading: Loading;
@@ -26,18 +29,24 @@ export class LeadsPage {
   filterSearchRunning: boolean;
   leadTypes: LeadType[];
   selectedLeadType: LeadType;
+  selectedDealType: DealType;
+  showBudgetSlider: boolean = false;
+  budgetMinMaxValues: rangeValue;
+  budgetValue: rangeValue;
 
   constructor(
-    private navCtrl: NavController, 
+    private navCtrl: NavController,
     private leadsProvider: LeadsProvider,
     private modalCtrl: ModalController, loadingCtrl: LoadingController,
-    private translateService: TranslateService, 
-    private toastCtrl: ToastController, 
+    private translateService: TranslateService,
+    private toastCtrl: ToastController,
+    private leadPropertyMetadataProvider: LeadPropertyMetadataProvider,
     private user: User) {
     this.loading = loadingCtrl.create();
     this.subscriptions = [];
     this.leadTypes = LeadType.getAllLeadTypes();
     this.selectedLeadType = this.leadTypes[0];
+    this.selectedDealType = this.leadPropertyMetadataProvider.getDealTypeByLeadType(this.selectedLeadType.id);
   }
 
   ionViewDidLoad() {
@@ -115,8 +124,14 @@ export class LeadsPage {
     modal.present();
   }
 
+  public budgetChanged(range: rangeValue) {
+    this.budgetValue = range;
+    this.filterLeadsByRange();
+  }
+
   public leadTypeChanged(leadType: LeadType) {
     this.selectedLeadType = leadType;
+    this.selectedDealType = this.leadPropertyMetadataProvider.getDealTypeByLeadType(this.selectedLeadType.id);
     this.initLeadSubscription();
     this.cleanFilters();
   }
@@ -128,7 +143,7 @@ export class LeadsPage {
         return;
       }
 
-      this.leadsSearchResults = []
+      this.queryLeadsSearchResults = []
       let filters = data.filter(item => item.value !== null);
       if (!filters.length) {
         this.activeFilters = null;
@@ -136,21 +151,17 @@ export class LeadsPage {
       }
 
       this.activeFilters = filters;
-      let multivalueFilters = this.activeFilters.filter(filter => filter.type === LeadPropertyType.StringMultivalue);
-
       this.filterSearchRunning = true;
       this.leadsProvider.filter(this.activeFilters, this.selectedLeadType.id).get().then(
         (querySnapshot) => {
           this.filterSearchRunning = false;
+          this.setBudgetMinMaxValues(querySnapshot);
+          this.setShowBudgetSlider();
           querySnapshot.forEach(doc => {
             let data = doc.data();
-            let isNotIncludedInMultivalueFilters =
-              multivalueFilters.some(filter => !this.isIncludedInMultivalueFilter(filter, data));
-            if (isNotIncludedInMultivalueFilters) {
-              return;
-            }
-            this.leadsSearchResults.push(data);
+            this.queryLeadsSearchResults.push(data);
           });
+          this.filterLeadsByRange();
         }
       )
     });
@@ -158,14 +169,55 @@ export class LeadsPage {
     filterModal.present();
   }
 
-  
+  private filterLeadsByRange(){
+      this.leadsSearchResults = this.queryLeadsSearchResults.filter(x=> this.inBudgetRange(x)); 
+  }
 
-  private isIncludedInMultivalueFilter(filter: LeadFilter, lead: any) {
-    return (<string[]>filter.value).some(value => (<string[]>lead[filter.id]).indexOf(value) > -1);
+  private setShowBudgetSlider(): void {
+    if (!this.budgetMinMaxValues || !this.activeFilters) {
+      this.showBudgetSlider = false;
+    }
+    else if (this.budgetMinMaxValues.upper === this.budgetMinMaxValues.lower) {
+      this.showBudgetSlider = false;
+    }
+    else {
+      this.showBudgetSlider = true;
+    }
+  }
+
+  private setBudgetMinMaxValues(querySnapshot: firebase.firestore.QuerySnapshot): void {
+    if (!querySnapshot || querySnapshot.size === 0) {
+      this.budgetMinMaxValues = { lower: 0, upper: 0 };
+      return;
+    }
+
+    let range: rangeValue = { lower: 100000000, upper: 0 };
+    let budgetFilterId = this.leadPropertyMetadataProvider.get().find(x => x.type === LeadPropertyType.Budget);
+
+    querySnapshot.forEach(doc => {
+      let data = doc.data();
+      let value = <number>data[budgetFilterId.id];
+      if (value < range.lower) {
+        range.lower = value;
+      }
+      if (value > range.upper) {
+        range.upper = value;
+      }
+    });
+
+    this.budgetMinMaxValues = range;
+    this.budgetValue = range;
+  }
+
+  private inBudgetRange(lead: any) {
+    let budgetFilterId = this.leadPropertyMetadataProvider.get().find(x => x.type === LeadPropertyType.Budget);
+    let value = <number>lead[budgetFilterId.id];
+    return value >= this.budgetValue.lower && value <= this.budgetValue.upper;
   }
 
   public cleanFilters() {
     this.activeFilters = null;
+    this.showBudgetSlider = false;
   }
 
   public searchHasNoResults() {
