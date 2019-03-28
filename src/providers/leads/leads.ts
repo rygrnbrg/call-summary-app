@@ -24,7 +24,6 @@ export class LeadsProvider {
   private leadsDictionary: { [id: string]: AngularFirestoreCollection<firestore.DocumentData> } = {};
 
   private static standardLeadKeys = [
-    "avatar",
     "name",
     "phone",
     "created",

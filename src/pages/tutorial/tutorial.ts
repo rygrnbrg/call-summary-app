@@ -48,7 +48,7 @@ export class TutorialPage {
     this.leadPropertiesMetadata.forEach(slide =>
       LeadPropertyMetadata.reset(slide)
     );
-    this.resultLead = new Lead(this.item.phone, this.item.name);
+    this.resultLead = new Lead(this.item.phone, this.item.name, this.item.type);
   }
 
   public onSlideChangeStart(slider) {
@@ -88,7 +88,6 @@ export class TutorialPage {
     this.resultLead.property = this.getSimpleSlideValue("property");
     this.resultLead.rooms = this.getSimpleSlideValue("rooms");
     this.resultLead.source = this.getSimpleSlideValue("source");
-    this.resultLead.type = this.getTypeValue();
 
     this.leads.add(this.resultLead).then(() =>
       this.navCtrl.setRoot(
@@ -132,13 +131,6 @@ export class TutorialPage {
     }
 
     return null;
-  }
-
-  private getTypeValue(): LeadTypeID{
-    let propertyId = "type";
-    return this.getSlide(propertyId)
-      .options.filter(button => button.selected)
-      .map(button => button.id)[0];
   }
 
   public setDealType(): void {

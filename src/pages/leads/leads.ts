@@ -1,4 +1,4 @@
-import { LeadType, LeadPropertyType, LeadTypeID } from './../../models/lead-property-metadata';
+import { LeadType, LeadPropertyType } from './../../models/lead-property-metadata';
 import { LeadFilter } from './../../models/lead-filter';
 import { Component } from '@angular/core';
 import { IonicPage, ModalController, NavController, LoadingController, Loading, ToastController } from 'ionic-angular';
@@ -27,9 +27,13 @@ export class LeadsPage {
   leadTypes: LeadType[];
   selectedLeadType: LeadType;
 
-  constructor(private navCtrl: NavController, private leadsProvider: LeadsProvider,
+  constructor(
+    private navCtrl: NavController, 
+    private leadsProvider: LeadsProvider,
     private modalCtrl: ModalController, loadingCtrl: LoadingController,
-    private translateService: TranslateService, private toastCtrl: ToastController, private user: User) {
+    private translateService: TranslateService, 
+    private toastCtrl: ToastController, 
+    private user: User) {
     this.loading = loadingCtrl.create();
     this.subscriptions = [];
     this.leadTypes = LeadType.getAllLeadTypes();
@@ -100,7 +104,7 @@ export class LeadsPage {
   }
 
   sendMessage() {
-    let leads = this.activeFilters ? this.leadsSearchResults : this.getLeadSubscription(this.selectedLeadType.id);
+    let leads = this.activeFilters ? this.leadsSearchResults : this.leads;
     let contacts = leads.map((lead: Lead) => new Contact(lead.phone, lead.name));
     let modal = this.modalCtrl.create('MessagePage', { contacts: contacts });
     modal.onDidDismiss(item => {
@@ -114,14 +118,11 @@ export class LeadsPage {
   public leadTypeChanged(leadType: LeadType) {
     this.selectedLeadType = leadType;
     this.initLeadSubscription();
-  }
-
-  public compareWithLeadType(currentValue: LeadType, compareValue: LeadType): boolean {
-    return currentValue.id === compareValue.id;
+    this.cleanFilters();
   }
 
   public filterLeadsClick(): void {
-    let filterModal = this.modalCtrl.create('LeadsFilterPage', { "filters": this.activeFilters });
+    let filterModal = this.modalCtrl.create('LeadsFilterPage', { "filters": this.activeFilters, "leadType": this.selectedLeadType });
     filterModal.onDidDismiss((data: LeadFilter[]) => {
       if (!data) {
         return;
@@ -156,6 +157,8 @@ export class LeadsPage {
 
     filterModal.present();
   }
+
+  
 
   private isIncludedInMultivalueFilter(filter: LeadFilter, lead: any) {
     return (<string[]>filter.value).some(value => (<string[]>lead[filter.id]).indexOf(value) > -1);

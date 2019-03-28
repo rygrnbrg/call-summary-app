@@ -1,0 +1,8 @@
+  <ion-list>
+    <ion-item>
+      <ion-label>{{ label | translate }}</ion-label>
+      <ion-select [(ngModel)]="selectedLeadType" interface="popover" (ionChange)="leadTypeChanged($event)" [compareWith]="compareWithLeadType">
+        <ion-option [value]="leadType" *ngFor="let leadType of leadTypes">{{ leadType.actionTranslation | translate }}</ion-option>
+      </ion-select>
+    </ion-item>
+  </ion-list>

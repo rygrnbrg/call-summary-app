@@ -10,10 +10,10 @@ export class Contact {
 }
 
 export class Lead extends Contact {
-    constructor(phone: string, name: string, avatar?: string) {
+    constructor(phone: string, name: string, type?: LeadTypeID) {
         super(phone, name);
         this.created = new Date();
-        this.avatar = avatar? avatar : null;
+        this.type = type;
     }
 
     avatar: string;

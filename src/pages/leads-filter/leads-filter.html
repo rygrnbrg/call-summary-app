@@ -39,7 +39,7 @@
         <div *ngIf="filter.metadata.type === leadPropertyType.Budget" [hidden]="!filter.selected">
           <budget-slider 
           [value]="filter.value"
-          [dealType]="getDealType()"
+          [dealType]="dealType"
           *ngIf="filter.selected"       
           (valueChanged)="setBudget(filter, $event)" 
           (customValueSelected)="setBudget(filter, $event); filter.selected = false;"

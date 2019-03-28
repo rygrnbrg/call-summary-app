@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { IonicPage, NavController, ViewController, NavParams } from 'ionic-angular';
 import { Lead } from '../../models/lead';
 import { AvatarPipe } from '../../pipes/avatar/avatar';
+import { LeadType } from '../../models/lead-property-metadata';
 
 @IonicPage()
 @Component({
@@ -16,7 +17,9 @@ export class ItemCreatePage {
   isReadyToSave: boolean;
   item: any;
   form: FormGroup;
-
+  leadTypes: LeadType[];
+  selectedLeadType: LeadType;
+  
   constructor(
     public navCtrl: NavController,
     public viewCtrl: ViewController,
@@ -30,11 +33,16 @@ export class ItemCreatePage {
       name: [lead.name, Validators.required],
       phone: [lead.phone]
     });
-
+    this.leadTypes = LeadType.getAllLeadTypes();
+    this.selectedLeadType = this.leadTypes[0];
     // Watch the form for changes, and
     this.form.valueChanges.subscribe((v) => {
       this.isReadyToSave = this.form.valid;
     });
+  }
+
+  public leadTypeChanged(leadType: LeadType) {
+    this.selectedLeadType = leadType;
   }
 
   ionViewDidLoad() {
@@ -63,8 +71,9 @@ export class ItemCreatePage {
 
   done() {
     if (!this.form.valid) { return; }
+    let lead = new Lead(this.form.value.phone, this.form.value.name, this.selectedLeadType.id);
     this.navCtrl.push('TutorialPage', {
-      item: new Lead(this.form.value.phone, this.form.value.name, this.form.controls['profilePic'].value)
+      item: lead
     });
     // this.viewCtrl.dismiss(this.form.value);
   }

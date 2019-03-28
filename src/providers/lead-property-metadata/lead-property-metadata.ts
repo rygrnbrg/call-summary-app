@@ -10,20 +10,21 @@ export class LeadPropertyMetadataProvider {
 
   constructor() {
     this.properties = [
-      {
-        id: 'type',
-        title: 'סוג הליד',
-        description: 'מעוניין ב',
-        image: 'assets/img/ica-slidebox-img-1.png',
-        options: [
-          new PropertyOption("להשכיר", false, LeadTypeID.Landlord),
-          new PropertyOption("לקנות", false, LeadTypeID.Buyer),
-          new PropertyOption("לשכור", false, LeadTypeID.Tenant),
-          new PropertyOption("למכור", false, LeadTypeID.Seller)
-        ],
-        icon: 'clipboard-outline',
-        type: LeadPropertyType.StringSingleValue
-      },
+      // {
+      //   id: 'type',
+      //   title: 'סוג הליד',
+      //   description: 'מעוניין ב',
+      //   image: 'assets/img/ica-slidebox-img-1.png',
+      //   options: [
+      //     new PropertyOption("להשכיר", false, LeadTypeID.Landlord),
+      //     new PropertyOption("לקנות", false, LeadTypeID.Buyer),
+      //     new PropertyOption("לשכור", false, LeadTypeID.Tenant),
+      //     new PropertyOption("למכור", false, LeadTypeID.Seller)
+      //   ],
+      //   icon: 'clipboard-outline',
+      //   type: LeadPropertyType.StringSingleValue,
+      //   filterable: false
+      // },
       {
         id: 'property',
         title: 'נכס',
@@ -36,7 +37,8 @@ export class LeadPropertyMetadataProvider {
           new PropertyOption("אחר")
         ],
         icon: 'home-outline',
-        type: LeadPropertyType.StringSingleValue
+        type: LeadPropertyType.StringSingleValue,
+        filterable: true
       },
       {
         id: 'rooms',
@@ -51,7 +53,8 @@ export class LeadPropertyMetadataProvider {
           new PropertyOption("יותר מ-5")
         ],
         icon: 'people-outline',
-        type: LeadPropertyType.StringSingleValue
+        type: LeadPropertyType.StringSingleValue,
+        filterable: true
       },
       {
         id: 'budget',
@@ -59,7 +62,8 @@ export class LeadPropertyMetadataProvider {
         description: 'תקציב בשקלים',
         image: 'assets/img/ica-slidebox-img-3.png',
         icon: 'cash-outline',
-        type: LeadPropertyType.Budget
+        type: LeadPropertyType.Budget,
+        filterable: true
       },
       {
         id: 'area',
@@ -78,6 +82,7 @@ export class LeadPropertyMetadataProvider {
         ],
         icon: 'map-outline',
         type: LeadPropertyType.StringMultivalue,
+        filterable: true
       },
       {
         id: 'source',
@@ -93,6 +98,7 @@ export class LeadPropertyMetadataProvider {
         ],
         icon: 'link',
         type: LeadPropertyType.StringSingleValue,
+        filterable: false
       }
     ];
   }
@@ -115,6 +121,14 @@ export class LeadPropertyMetadataProvider {
     }
 
     return DealType.Sell;
+  }
+
+  getDealTypeByLeadType(leadTypeId: LeadTypeID): DealType {
+    if (leadTypeId === LeadTypeID.Buyer || leadTypeId === LeadTypeID.Seller){
+      return DealType.Sell
+    }
+
+    return DealType.Rent;
   }
 }
 

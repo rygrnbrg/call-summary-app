@@ -71,6 +71,7 @@
   "LEAD_TYPE_SELECTION": "מציג לידים המעוניינים",
 
   "ITEM_CREATE_TITLE": "ליד חדש",
+  "ITEM_CREATE_TYPE_SELECT_TITLE": "צור ליד החדש המעוניין",
   "ITEM_CREATE_CHOOSE_IMAGE": "הוסף תמונה",
   "ITEM_PHONE_PLACEHOLDER": "טלפון",
   "ITEM_NAME_PLACEHOLDER": "שם",
@@ -101,12 +102,15 @@
   "SMS_MESSAGE_WILL_BE_SENT_TO": "הודעתך תישלח ל",
   "CONTACTS": "אנשי קשר",
   "MESSAGE_PAGE_TITLE": "שליחת מסרון",
-  "BUYER": "קונה",
+  "BUYER": "רוכש",
   "SELLER": "מוכר", 
   "TENANT": "שוכר",
   "LANDLORD": "משכיר",
-  "BUYER_ACTION": "לקנות",
+  "INTERESTED_IN": "מעוניין",
+  "BUYER_ACTION": "לרכוש",
   "SELLER_ACTION": "למכור", 
   "TENANT_ACTION": "לשכור",
-  "LANDLORD_ACTION": "להשכיר"
+  "LANDLORD_ACTION": "להשכיר",
+  "DETAILS":"פרטים",
+  "PROPERTIES": "מאפיינים"
 }

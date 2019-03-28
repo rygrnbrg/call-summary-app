@@ -6,3 +6,6 @@
     item.created.toDate() | date: "shortDate"
     }}</ion-note>
 </ion-item>
+<ion-item lines="none" [hidden]="!leads || leads?.length" text-center>
+  {{"GENERAL_SEARCH_NO_RESULTS" | translate}}
+</ion-item>

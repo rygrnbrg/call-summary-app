@@ -5,11 +5,7 @@
 </ion-header>
 
 <ion-content no-bounce>
-  <ion-slides
-    pager="true"
-    paginationType="progress"
-    dir="{{ dir }}"
-    (ionSlideWillChange)="onSlideChangeStart($event)">
+  <ion-slides pager="true" paginationType="progress" dir="{{ dir }}" (ionSlideWillChange)="onSlideChangeStart($event)">
     <ion-slide *ngFor="let slide of leadPropertiesMetadata; let i = index">
       <ion-content class="pad-left-right">
         <div class="fab-pad">
@@ -19,11 +15,7 @@
             <ion-grid>
               <ion-row>
                 <ion-col col-6 *ngFor="let button of slide.options">
-                  <button
-                    color="secondary"
-                    ion-button
-                    block
-                    (click)="answerButtonClick(slide, button, i)"
+                  <button color="secondary" ion-button block (click)="answerButtonClick(slide, button, i)"
                     [color]="button.selected ? 'secondary' : 'primary'">
                     {{ button.title }}
                   </button>
@@ -32,23 +24,15 @@
             </ion-grid>
           </ion-buttons>
           <div *ngIf="slide.type === leadPropertyType.Budget && isSlideActive(slide)">
-            <budget-slider 
-            [dealType]="dealType" 
-            [value]="this.resultLead.budget" 
-            (valueChanged)="setBudget(slide, $event)"></budget-slider>
+            <budget-slider [dealType]="dealType" [value]="this.resultLead.budget"
+              (valueChanged)="setBudget(slide, $event)"></budget-slider>
           </div>
         </div>
         <ion-fab bottom center>
-          <button
-            ion-fab
-            (click)="goToSlide(i + 1)"
-            [hidden]="slide.type !== leadPropertyType.Budget">
+          <button ion-fab (click)="goToSlide(i + 1)" [hidden]="slide.type !== leadPropertyType.Budget">
             {{ "GENERAL_APPROVE" | translate }}
           </button>
-          <button
-            ion-fab
-            (click)="goToSlide(i + 1)"
-            [hidden]="slide.type !== leadPropertyType.StringMultivalue">
+          <button ion-fab (click)="goToSlide(i + 1)" [hidden]="slide.type !== leadPropertyType.StringMultivalue">
             {{ "GENERAL_APPROVE" | translate }}
           </button>
         </ion-fab>
@@ -59,22 +43,21 @@
         <div class="fab-pad">
           <ion-list class="items-list">
             <ion-list-header>
-              <ion-avatar item-start>
-                <img [src]="item.avatar | avatar" />
-              </ion-avatar>
-              <h2>{{ item.name }}</h2>
-              <p>{{ item.phone }}</p>
+              {{ "DETAILS" | translate }}
             </ion-list-header>
-            <ion-item
-              *ngFor="let slide of leadPropertiesMetadata; let i = index"
-              (click)="goToSlide(i)"
-            >
-              <ion-icon
-                [name]="slide.icon"
-                icon
-                item-start
-                color="secondary"
-              ></ion-icon>
+            <ion-item>
+              <ion-icon name="person-add" icon item-start color="primary"></ion-icon>
+              <p>{{ item.name }}, {{ "INTERESTED_IN" | translate }} {{ item.type | leadType | translate }}</p>
+            </ion-item>
+            <ion-item>
+              <ion-icon name="phone-portrait" icon item-start color="primary"></ion-icon>
+              <p>{{ item.phone }}</p>
+            </ion-item>
+            <ion-list-header>
+              {{ "PROPERTIES" | translate }}
+            </ion-list-header>
+            <ion-item *ngFor="let slide of leadPropertiesMetadata; let i = index" (click)="goToSlide(i)">
+              <ion-icon [name]="slide.icon" icon item-start color="secondary"></ion-icon>
               <h2>{{ slide.title }}</h2>
               <span>{{ getSlideValueString(slide) }}</span>
             </ion-item>

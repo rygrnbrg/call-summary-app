@@ -2,7 +2,8 @@
 import {
   PropertyOption,
   LeadPropertyType,
-  DealType
+  DealType,
+  LeadType
 } from "./../../models/lead-property-metadata";
 import { LeadFilter } from "./../../models/lead-filter";
 import { LeadPropertyMetadataProvider } from "./../../providers/lead-property-metadata/lead-property-metadata";
@@ -21,12 +22,13 @@ export class LeadsFilterPage {
   public filters: LeadFilter[];
   public leadPropertyType = LeadPropertyType;
   public leadPropertyMetadata: LeadPropertyMetadata[];
+  public dealType: DealType;
 
   constructor(
     private viewCtrl: ViewController,
     private numberFormatPipe: NumberFormatPipe,
-    private leadPropertyMetadataProvider: LeadPropertyMetadataProvider,
-    private navParams: NavParams
+    private navParams: NavParams,
+    private leadPropertyMetadataProvider: LeadPropertyMetadataProvider
   ) {
     this.leadPropertyMetadata = leadPropertyMetadataProvider.get();
   }
@@ -41,10 +43,6 @@ export class LeadsFilterPage {
     }
 
     return value;
-  }
-
-  public getDealType(): DealType {
-    return this.leadPropertyMetadataProvider.getDealType(this.filters.map(filter => filter.metadata));
   }
 
   private getBudgetString(value: number): string {
@@ -91,7 +89,7 @@ export class LeadsFilterPage {
   }
 
   ionViewWillEnter() {
-    this.filters = this.leadPropertyMetadata.map(
+    this.filters = this.leadPropertyMetadata.filter(x=> x.filterable).map(
       md =>
         <LeadFilter>{
           id: md.id,
@@ -103,6 +101,8 @@ export class LeadsFilterPage {
     );
 
     let paramsfilters: LeadFilter[] = this.navParams.get("filters");
+    let leadType: LeadType = this.navParams.get("leadType");
+    this.dealType = this.leadPropertyMetadataProvider.getDealTypeByLeadType(leadType.id);
     if (paramsfilters) {
       paramsfilters.forEach(paramFilter => {
         let index = this.filters.findIndex(filter => filter.id === paramFilter.id);

@@ -28,6 +28,11 @@ ion-radio{
     margin-left: $content-margin !important;
 }
 
+ion-list-header.list-header{
+    text-align: right;
+    border-top: none;
+}
+
 
 ion-list-header{
      h1, h2, p{

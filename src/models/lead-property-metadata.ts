@@ -13,6 +13,7 @@ export class LeadPropertyMetadata {
   public value?: any[] | any;
   public icon?: string;
   public type: LeadPropertyType;
+  public filterable: boolean;
 
   static getValueString(
     leadPropertyMetadata: LeadPropertyMetadata,
