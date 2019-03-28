@@ -112,5 +112,7 @@
   "TENANT_ACTION": "לשכור",
   "LANDLORD_ACTION": "להשכיר",
   "DETAILS":"פרטים",
-  "PROPERTIES": "מאפיינים"
+  "PROPERTIES": "מאפיינים",
+  "LEAD_RELEVANCE_STATUS_YES": "רלבנטי",
+  "LEAD_RELEVANCE_STATUS_NO": "לא רלבנטי"
 }

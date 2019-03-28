@@ -26,4 +26,5 @@ export class Lead extends Contact {
     source: string;  
     budget: number;
     area: string[];
+    relevant: boolean;
 }

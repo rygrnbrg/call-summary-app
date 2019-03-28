@@ -16,27 +16,29 @@ import { NumberFormatPipe } from "../../pipes/number-format/number-format";
 export class ItemDetailPage {
   item: Lead;
   properties: ItemProperty[];
-  private slides: LeadPropertyMetadata[];
+  relevant: boolean;
+
+  private leadPropertiesMetadata: LeadPropertyMetadata[];
   constructor(
     public navCtrl: NavController,
     navParams: NavParams,
-    items: Items,
     leadPropertyMetadataProvider: LeadPropertyMetadataProvider,
     private numberFormatPipe: NumberFormatPipe
   ) {
-    this.slides = leadPropertyMetadataProvider.get();
+    this.leadPropertiesMetadata = leadPropertyMetadataProvider.get();
     this.item = navParams.get("item");
     this.properties = this.getProperties();
+    this.relevant = this.item.relevant;
   }
 
   private getProperties(): ItemProperty[] {
     let props: ItemProperty[] = [];
 
-    this.slides.forEach(slide => {
+    this.leadPropertiesMetadata.forEach(item => {
       props.push({
-        icon: slide.icon,
-        title: slide.title,
-        value: this.getPropertyString(slide)
+        icon: item.icon,
+        title: item.title,
+        value: this.getPropertyString(item)
       });
     });
 

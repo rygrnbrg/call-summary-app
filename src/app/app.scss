@@ -156,6 +156,10 @@ ion-header::after {
 
 .items-list{
     margin-bottom: 0;
+    ion-icon.icon{
+        min-width: 24px;
+        text-align: center;
+    }
 }
 
 .swiper-pagination-progress .swiper-pagination-progressbar{

@@ -20,6 +20,13 @@
         <p>{{item.phone}}</p>
         <ion-note item-end *ngIf="item.created">{{item.created.toDate() | date: 'shortDate'}}</ion-note>
       </ion-item-divider>
+      <ion-item>
+        <ion-icon name="checkmark" icon item-start color="primary" [hidden]="!relevant" color="success"></ion-icon>
+        <ion-label [hidden]="!relevant">{{'LEAD_RELEVANCE_STATUS_YES' | translate }}</ion-label>
+        <ion-icon name="close" icon item-start color="primary" [hidden]="relevant" color="danger"></ion-icon>
+        <ion-label [hidden]="relevant">{{'LEAD_RELEVANCE_STATUS_NO' | translate }}</ion-label>
+        <ion-toggle [(ngModel)]="relevant"></ion-toggle>
+      </ion-item>
       <ion-item *ngFor="let prop of properties">
         <ion-icon [name]="prop.icon" icon item-start color="secondary"></ion-icon>
         <h2>{{prop.title}}</h2>

@@ -7,6 +7,7 @@ import * as _ from "lodash";
 @Injectable()
 export class LeadPropertyMetadataProvider {
   private properties: LeadPropertyMetadata[] = [];
+  public static relevanceKey = "relevant";
 
   constructor() {
     this.properties = [

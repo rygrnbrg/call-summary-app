@@ -33,6 +33,8 @@ export class LeadsPage {
   showBudgetSlider: boolean = false;
   budgetMinMaxValues: rangeValue;
   budgetValue: rangeValue;
+  totalLeadCount: number;
+  viewLeadCount: number;
 
   constructor(
     private navCtrl: NavController,
