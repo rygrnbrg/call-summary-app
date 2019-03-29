@@ -3,6 +3,8 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController, ViewController, Platform } from 'ionic-angular';
 import { SMS } from '@ionic-native/sms/ngx';
 import { TranslateService } from '@ngx-translate/core';
+import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
+import { smsResult } from '../../models/smsResult';
 
 @IonicPage()
 @Component({
@@ -15,13 +17,15 @@ export class MessagePage {
   public messageText: string = "";
   private translations: any;
 
-  constructor(public navCtrl: NavController,
+  constructor(
+    public navCtrl: NavController,
     public navParams: NavParams,
     private sms: SMS,
     private alertCtrl: AlertController,
     private translateService: TranslateService,
     private viewCtrl: ViewController,
-    private platform: Platform
+    private platform: Platform,
+    private androidPermissions: AndroidPermissions
   ) {
     this.translateService.get([
       'SMS_MESSAGE_WILL_BE_SENT_TO', 'CONTACTS', 'GENERAL_CANCEL', 'GENERAL_APPROVE']).subscribe(values => {
@@ -33,7 +37,18 @@ export class MessagePage {
 
 
   ionViewDidLoad() {
-    this.getSmsPermission();
+    this.askAndroidSMSPermissions();
+  }
+
+  private askAndroidSMSPermissions() {
+    if (this.platform.is("cordova")) {
+      this.androidPermissions.checkPermission(this.androidPermissions.PERMISSION.SEND_SMS).then(
+        result => console.log('Ceck permission?', result.hasPermission),
+        err => this.androidPermissions.requestPermission(this.androidPermissions.PERMISSION.SEND_SMS).then(requestResult => {
+          console.log('Request permission?', requestResult.hasPermission)
+        })
+      );
+    }
   }
 
   public removeContact(contact: Contact) {
@@ -90,13 +105,22 @@ export class MessagePage {
 
   private sendSMS() {
     let phones = this.contacts.map(contact => contact.phone);
-    this.sms.send(phones, this.messageText).then(
-      (value) => {
-        this.viewCtrl.dismiss(true);
-      },
-      (reason) => {
-        console.log(reason);
-      }
-    );
+    if (this.platform.is("cordova")) {
+      this.sms.send(phones, this.messageText).then(
+        (value) => {
+          console.log(value);
+          let result: smsResult = { success: true, sentCount: phones.length };
+          this.viewCtrl.dismiss(result);
+        },
+        (reason) => {
+          console.log(reason);
+        }
+      );
+    }
+    else {
+      let result: smsResult = { success: true, sentCount: phones.length };
+      this.viewCtrl.dismiss(result);
+    }
+
   }
 }

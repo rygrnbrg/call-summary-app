@@ -10,6 +10,7 @@ import { Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { User } from '../../providers';
 import { rangeValue } from '../../components/range-budget-slider/range-budget-slider';
+import { smsResult } from '../../models/smsResult';
 
 @IonicPage()
 @Component({
@@ -35,6 +36,7 @@ export class LeadsPage {
   budgetValue: rangeValue;
   totalLeadCount: number;
   viewLeadCount: number;
+  leadsFoundMessage: string;
 
   constructor(
     private navCtrl: NavController,
@@ -57,7 +59,7 @@ export class LeadsPage {
     this.initLeadSubscription();
 
     let translationSubscription = this.translateService.get([
-      'LIST_LOADING_ERROR']).subscribe(values => {
+      'LIST_LOADING_ERROR', 'LEADS_RECIEVED_MESSAGE', 'LEADS_FOUND']).subscribe(values => {
         this.translations = values;
       });
 
@@ -88,6 +90,43 @@ export class LeadsPage {
         });
     }
   }
+ 
+  public filterLeadsClick(): void {
+    let filterModal = this.modalCtrl.create('LeadsFilterPage', { "filters": this.activeFilters, "leadType": this.selectedLeadType });
+    filterModal.onDidDismiss((data: LeadFilter[]) => {
+      if (!data) {
+        return;
+      }
+      this.queryLeadsSearchResults = []
+      let filters = data.filter(item => item.value !== null);
+      if (!filters.length) {
+        this.activeFilters = null;
+        return;
+      }
+
+      this.activeFilters = filters;
+      this.filterSearchRunning = true;
+      let loading = this.loadingCtrl.create();
+      loading.present();
+      this.leadsProvider.filter(this.activeFilters, this.selectedLeadType.id).get().then(
+        (querySnapshot) => {
+          loading.dismiss();
+          this.filterSearchRunning = false;
+          this.setBudgetMinMaxValues(querySnapshot);
+          this.setShowBudgetSlider();
+          this.leadsFoundMessage = this.translations.LEADS_FOUND.replace("{numberOfLeads}", querySnapshot.size);
+          querySnapshot.forEach(doc => {
+            let data = doc.data();
+            this.queryLeadsSearchResults.push(data);
+          });
+          this.filterLeadsByRange();
+        }
+      ).catch(reason=> loading.dismiss());
+    });
+
+    filterModal.present();
+  }
+
 
   ionViewDidLeave() {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
@@ -117,9 +156,10 @@ export class LeadsPage {
     let leads = this.activeFilters ? this.leadsSearchResults : this.leads;
     let contacts = leads.map((lead: Lead) => new Contact(lead.phone, lead.name));
     let modal = this.modalCtrl.create('MessagePage', { contacts: contacts });
-    modal.onDidDismiss(item => {
-      if (item) {
-        this.leadsProvider.add(item);
+    modal.onDidDismiss((result: smsResult) => {
+      if (result && result.success) {
+        let message = this.translations.LEADS_RECIEVED_MESSAGE.replace("{numberOfLeads}", result.sentCount);
+        this.showToast(message);
       }
     })
     modal.present();
@@ -135,39 +175,6 @@ export class LeadsPage {
     this.selectedDealType = this.leadPropertyMetadataProvider.getDealTypeByLeadType(this.selectedLeadType.id);
     this.initLeadSubscription();
     this.cleanFilters();
-  }
-
-  public filterLeadsClick(): void {
-    let filterModal = this.modalCtrl.create('LeadsFilterPage', { "filters": this.activeFilters, "leadType": this.selectedLeadType });
-    filterModal.onDidDismiss((data: LeadFilter[]) => {
-      if (!data) {
-        return;
-      }
-
-      this.queryLeadsSearchResults = []
-      let filters = data.filter(item => item.value !== null);
-      if (!filters.length) {
-        this.activeFilters = null;
-        return;
-      }
-
-      this.activeFilters = filters;
-      this.filterSearchRunning = true;
-      this.leadsProvider.filter(this.activeFilters, this.selectedLeadType.id).get().then(
-        (querySnapshot) => {
-          this.filterSearchRunning = false;
-          this.setBudgetMinMaxValues(querySnapshot);
-          this.setShowBudgetSlider();
-          querySnapshot.forEach(doc => {
-            let data = doc.data();
-            this.queryLeadsSearchResults.push(data);
-          });
-          this.filterLeadsByRange();
-        }
-      )
-    });
-
-    filterModal.present();
   }
 
   private filterLeadsByRange() {

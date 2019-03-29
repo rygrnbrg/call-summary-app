@@ -1,3 +1,4 @@
+import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
 import { MessagePage } from './message';
@@ -13,7 +14,8 @@ import { TranslateModule } from '@ngx-translate/core';
     TranslateModule.forChild()
   ],
   providers: [
-    SMS
+    SMS,
+    AndroidPermissions
   ]
 })
 export class MessagePageModule {}

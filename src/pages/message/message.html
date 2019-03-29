@@ -11,10 +11,10 @@
 
 <ion-content padding>
   <ion-list>
-    <ion-badge *ngFor="let contact of contacts | slice:0:contactsHeaderLimit" class="inline-badge">
-      {{contact.name}}
-      <ion-icon name="close" (click)="removeContact(contact)" [hidden]="contacts.length === 1"></ion-icon>
-    </ion-badge>
+    <ion-chip *ngFor="let contact of contacts | slice:0:contactsHeaderLimit" (click)="removeContact(contact)"  color="primary">
+      <ion-label>{{contact.name}}</ion-label>
+      <ion-icon name="close" [hidden]="contacts.length === 1"></ion-icon>
+    </ion-chip>
     <ion-badge class="inline-badge" [hidden]="contacts.length <= contactsHeaderLimit">
       + {{contacts.length - contactsHeaderLimit}} נוספים
     </ion-badge>

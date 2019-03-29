@@ -22,6 +22,7 @@
     "@angular/http": "5.2.11",
     "@angular/platform-browser": "^5.2.11",
     "@angular/platform-browser-dynamic": "5.2.11",
+    "@ionic-native/android-permissions": "^5.3.0",
     "@ionic-native/call-log": "5.2.0",
     "@ionic-native/core": "5.2.0",
     "@ionic-native/firebase": "5.2.0",
@@ -36,6 +37,7 @@
     "@types/lodash": "^4.14.120",
     "angularfire2": "^5.1.1",
     "cordova-android": "7.1.4",
+    "cordova-plugin-android-permissions": "1.0.0",
     "cordova-plugin-calllog": "^1.3.1",
     "cordova-plugin-device": "^2.0.2",
     "cordova-plugin-firebase": "^2.0.5",
@@ -70,7 +72,8 @@
       "cordova-plugin-ionic-webview": {
         "ANDROID_SUPPORT_ANNOTATIONS_VERSION": "27.+"
       },
-      "cordova-sms-plugin": {}
+      "cordova-sms-plugin": {},
+      "cordova-plugin-android-permissions": {}
     },
     "platforms": [
       "android"

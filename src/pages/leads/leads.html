@@ -20,17 +20,21 @@
 </ion-header>
 
 <ion-content>
-  <lead-type-select [value]="selectedLeadType" label="LEAD_TYPE_SELECTION" (valueChanged)="leadTypeChanged($event)"></lead-type-select>
-  <ion-list>
+  <lead-type-select [value]="selectedLeadType" label="LEAD_TYPE_SELECTION" (valueChanged)="leadTypeChanged($event)">
+  </lead-type-select>
+  <ion-list  [hidden]="filterSearchRunning">
     <div class="filtered-list-header" [hidden]="!activeFilters">
       <filtered-by [filters]="activeFilters"></filtered-by>
     </div>
 
-    <range-budget-slider *ngIf="showBudgetSlider" [value]="budgetValue" [minMaxValues]="budgetMinMaxValues" [dealType]="selectedDealType"
-      (valueChanged)="budgetChanged($event)">
+    <range-budget-slider *ngIf="showBudgetSlider" [value]="budgetValue" [minMaxValues]="budgetMinMaxValues"
+      [dealType]="selectedDealType" (valueChanged)="budgetChanged($event)">
     </range-budget-slider>
 
     <leads-list [hidden]="activeFilters" [leads]="leads" (itemClicked)="itemClicked($event)"></leads-list>
+    <ion-list-header *ngIf="!leadsSearchResults || leadsSearchResults.length === 0">
+      {{leadsFoundMessage}}
+    </ion-list-header>
     <leads-list [hidden]="!activeFilters" [leads]="leadsSearchResults" (itemClicked)="itemClicked($event)"></leads-list>
   </ion-list>
 

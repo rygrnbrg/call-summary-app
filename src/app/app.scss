@@ -1,182 +1,187 @@
-.bg-color{
-    background-color: $background-color;
+.bg-color {
+  background-color: $background-color;
 }
 
-p.danger, .danger{
-    color: color($colors, danger);
+p.danger,
+.danger {
+  color: color($colors, danger);
 }
-p.light, .light{
-    color: color($colors, light);
+p.light,
+.light {
+  color: color($colors, light);
 }
-.cover-bg{
-    background-image: url('../assets/img/background-sky.jpg');
-    background-size: 1563px 929px;
-    background-color: transparent;
-    background-attachment: fixed;
-    background-repeat: no-repeat;
-    background-position: top center;   
+.cover-bg {
+  background-image: url("../assets/img/background-sky.jpg");
+  background-size: 1563px 929px;
+  background-color: transparent;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  background-position: top center;
 }
-.cover-page{
-    @extend .cover-bg;
+.cover-page {
+  @extend .cover-bg;
 }
 
-.select-text{
-    margin-left: $content-margin;
+.select-text {
+  margin-left: $content-margin;
 }
 
 ion-list-header.list-header {
+  margin-bottom: 0;
+}
+
+ion-chip {
+  ion-label.label {
+    // margin-right: 0;
+  }
+  &.chip {
+    margin-left: $content-margin/2;
+  }
+}
+
+ion-radio {
+  margin-left: $content-margin !important;
+}
+
+ion-list-header.list-header {
+  text-align: right;
+  border-top: none;
+}
+
+ion-list-header {
+  h1,
+  h2,
+  p {
+    text-align: initial;
+  }
+  &.no-margin {
     margin-bottom: 0;
+  }
+}
+.item-grid {
+  ion-label.label {
+    margin: 0;
+  }
+}
+.pad-left-right {
+  padding-left: $content-padding * 2;
+  padding-right: $content-padding * 2;
 }
 
-ion-chip{
-    ion-label.label{
-        margin-right:0;
-    }
-}
-
-ion-radio{
-    margin-left: $content-margin !important;
-}
-
-ion-list-header.list-header{
-    text-align: right;
-    border-top: none;
-}
-
-
-ion-list-header{
-     h1, h2, p{
-         text-align: initial;
-     }
-     &.no-margin{
-         margin-bottom: 0;
-     }
-}
-.item-grid{
-    ion-label.label{
-        margin: 0;
-    }
-}
-.pad-left-right{
-    padding-left: $content-padding * 2;
-    padding-right: $content-padding * 2;
-}
-
-.toolbar .toolbar-title{
-    color:$toolbar-text-color !important;
+.toolbar .toolbar-title {
+  color: $toolbar-text-color !important;
 }
 
 ion-header::after {
-    background-image: none !important;
+  background-image: none !important;
 }
 
 .toolbar {
-    .toolbar-background {
-        @extend .cover-bg;
-    }
-    .toolbar-title {
-        color: black;
-    }
+  .toolbar-background {
+    @extend .cover-bg;
+  }
+  .toolbar-title {
+    color: black;
+  }
 }
 
-.box-shadow-effect{
-    box-shadow: 0px 2px 1px rgb(247, 247, 247), 0 2px 4px #ccc;
+.box-shadow-effect {
+  box-shadow: 0px 2px 1px rgb(247, 247, 247), 0 2px 4px #ccc;
 }
 
-.logo-block{
-    background-image: url('../assets/img/app-logo-medium.png');
-    background-position: top;    
-    background-size: contain;
-    height: 20vh;
-    background-repeat: no-repeat;
-    margin-bottom: $content-margin*2;  
+.logo-block {
+  background-image: url("../assets/img/app-logo-medium.png");
+  background-position: top;
+  background-size: contain;
+  height: 20vh;
+  background-repeat: no-repeat;
+  margin-bottom: $content-margin * 2;
 }
 
-.border-radius-button{
-    border-radius: 10px;
+.border-radius-button {
+  border-radius: 10px;
 }
 
-.light-label{
-    color: darken(color($colors, light), 5%);
+.light-label {
+  color: darken(color($colors, light), 5%);
 }
 
-.login-box{
-    padding: $content-margin*2;
-    
-    button{
-        @extend .border-radius-button;
-    }
+.login-box {
+  padding: $content-margin * 2;
 
-    .item{
-        background-color: transparent !important;
-        color:color($colors, light);
+  button {
+    @extend .border-radius-button;
+  }
 
-        .label {
-            @extend .light-label;
-        }
-    }
-
-    .danger-note{
-        color: color($colors, danger);
-        text-align: center;
-        font-weight: bold;
-        width:100%;
-    }
-
-}
-    
-.login-box-buttons{
-    text-align:center; 
-    background-color: transparent;
+  .item {
+    background-color: transparent !important;
     color: color($colors, light);
-    b{
-        @extend .light-label;
+
+    .label {
+      @extend .light-label;
     }
-}   
+  }
 
-
-.transparent{
-    background-color:transparent;
-}
-
-.danger-color{
+  .danger-note {
     color: color($colors, danger);
+    text-align: center;
+    font-weight: bold;
+    width: 100%;
+  }
 }
 
-.alert-button.danger-color{
-    color: color($colors, danger) !important;
+.login-box-buttons {
+  text-align: center;
+  background-color: transparent;
+  color: color($colors, light);
+  b {
+    @extend .light-label;
+  }
+}
+
+.transparent {
+  background-color: transparent;
+}
+
+.danger-color {
+  color: color($colors, danger);
+}
+
+.alert-button.danger-color {
+  color: color($colors, danger) !important;
 }
 
 .list {
-  .item, .item-inner{
-      box-shadow: none !important;
-      padding: 0;
+  .item,
+  .item-inner {
+    box-shadow: none !important;
+    padding: 0;
   }
 }
 
 .fab-pad {
-     padding-bottom: 90px;
+  padding-bottom: 90px;
 }
 
-.items-list{
-    margin-bottom: 0;
-    ion-icon.icon{
-        min-width: 24px;
-        text-align: center;
-    }
+.items-list {
+  margin-bottom: 0;
+  ion-icon.icon {
+    min-width: 24px;
+    text-align: center;
+  }
 }
 
-.swiper-pagination-progress .swiper-pagination-progressbar{
-    background: color($colors, success);
+.swiper-pagination-progress .swiper-pagination-progressbar {
+  background: color($colors, success);
 }
-  
-.inline-badge{
-    margin: $content-margin/4;
-    padding: $content-padding/2;
-    white-space: normal;
-    text-align: right;
 
-    ion-icon{
-        margin-right: $content-margin/2;
-    }
+.inline-badge {
+  margin: $content-margin/4;
+  padding: $content-padding/2;
+  white-space: normal;
+  text-align: right;
+
+  ion-icon {
+    margin-right: $content-margin/2;
+  }
 }
