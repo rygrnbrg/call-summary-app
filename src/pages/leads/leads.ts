@@ -75,7 +75,8 @@ export class LeadsPage {
     else {
       this.leadsProvider.get(this.selectedLeadType.id).get().then(
         (res) => {
-          this.leadsDictionary[leadTypeKey] = res.docs.map(lead => this.leadsProvider.convertDbObjectToLead(lead.data(), this.selectedLeadType.id));
+          let leads = res.docs.map(lead => this.leadsProvider.convertDbObjectToLead(lead.data(), this.selectedLeadType.id));
+          this.leadsDictionary[leadTypeKey] = this.sortLeads(leads);
           this.leads = this.leadsDictionary[leadTypeKey];
           this.loading.dismiss();
         },
@@ -131,6 +132,18 @@ export class LeadsPage {
   ionViewDidLeave() {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
     this.loading.dismiss();
+  }
+
+  private sortLeads(leads: Lead[]): Lead[]{
+    let sortedLeads = leads.sort((a,b)=>{
+      if (!a.created || !b.created){
+        return 0;
+      }
+      
+      return ((<any>b.created).toDate()).getTime() - ((<any>a.created).toDate()).getTime();
+    });
+
+    return sortedLeads;
   }
 
   private showToast(message: string) {

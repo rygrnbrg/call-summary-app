@@ -14,8 +14,10 @@ export class LeadsListComponent {
   title: string;
 
   @Output() itemClicked = new EventEmitter<Lead>();
-  constructor() {}
-  
+  constructor() {
+
+  }
+
   public onItemClicked(item: Lead) {
     this.itemClicked.emit(item);
   }
