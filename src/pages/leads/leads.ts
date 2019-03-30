@@ -192,7 +192,8 @@ export class LeadsPage {
 
   private filterLeadsByRange() {
     let filteredQueryResults = this.queryLeadsSearchResults.filter(x => this.inBudgetRange(x));
-    this.leadsSearchResults = filteredQueryResults.map(lead => this.leadsProvider.convertDbObjectToLead(lead, this.selectedLeadType.id));
+    let leads = filteredQueryResults.map(lead => this.leadsProvider.convertDbObjectToLead(lead, this.selectedLeadType.id));
+    this.leadsSearchResults = this.sortLeads(leads);
   }
 
   private setShowBudgetSlider(): void {
