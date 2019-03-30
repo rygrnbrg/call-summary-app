@@ -15,9 +15,9 @@
       <ion-label>{{contact.name}}</ion-label>
       <ion-icon name="close" [hidden]="contacts.length === 1"></ion-icon>
     </ion-chip>
-    <ion-badge class="inline-badge" [hidden]="contacts.length <= contactsHeaderLimit">
-      + {{contacts.length - contactsHeaderLimit}} נוספים
-    </ion-badge>
+    <ion-chip [hidden]="contacts.length <= contactsHeaderLimit" color="secondary">
+      <ion-label>+ {{contacts.length - contactsHeaderLimit}} נוספים</ion-label>
+    </ion-chip>
   </ion-list>
   <ion-list>
     <ion-item-divider>
