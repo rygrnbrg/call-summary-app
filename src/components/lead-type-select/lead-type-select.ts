@@ -11,6 +11,8 @@ export class LeadTypeSelectComponent {
 
   @Input() public value: LeadType;
   @Input() public label: string;
+  @Input() public dropdownSelect: boolean;
+ 
   @Output() valueChanged = new EventEmitter<LeadType>();
   constructor() {
     this.initValue();

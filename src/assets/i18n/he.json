@@ -114,8 +114,8 @@
   "LANDLORD_ACTION": "להשכיר",
   "DETAILS":"פרטים",
   "PROPERTIES": "מאפיינים",
-  "LEAD_RELEVANCE_STATUS_YES": "רלבנטי",
-  "LEAD_RELEVANCE_STATUS_NO": "לא רלבנטי",
+  "LEAD_RELEVANCE_STATUS_YES": "רלוונטי",
+  "LEAD_RELEVANCE_STATUS_NO": "לא רלוונטי",
   "LEADS_RECIEVED_MESSAGE": "הודעה נשלחה בהצלחה ל-{numberOfLeads} לידים",
   "LEADS_FOUND": "נמצאו {numberOfLeads} לידים"
 }

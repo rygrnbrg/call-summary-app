@@ -1,8 +1,25 @@
-  <ion-list>
-    <ion-item>
+<ion-list>
+  <ion-item *ngIf="dropdownSelect">
+    <ion-label>{{ label | translate }}</ion-label>
+    <ion-select [(ngModel)]="selectedLeadType" interface="popover" (ionChange)="leadTypeChanged($event)"
+      [compareWith]="compareWithLeadType">
+      <ion-option [value]="leadType" *ngFor="let leadType of leadTypes">{{ leadType.actionTranslation | translate }}
+      </ion-option>
+    </ion-select>
+  </ion-item>
+  <ion-item *ngIf="!dropdownSelect"  lines="none">
       <ion-label>{{ label | translate }}</ion-label>
-      <ion-select [(ngModel)]="selectedLeadType" interface="popover" (ionChange)="leadTypeChanged($event)" [compareWith]="compareWithLeadType">
-        <ion-option [value]="leadType" *ngFor="let leadType of leadTypes">{{ leadType.actionTranslation | translate }}</ion-option>
-      </ion-select>
-    </ion-item>
-  </ion-list>
+  </ion-item>
+  <ion-item *ngIf="!dropdownSelect" lines="none">
+    <ion-grid>
+      <ion-row>
+        <ion-col *ngFor="let leadType of leadTypes" col-3>
+          <button type="button" block ion-button small [color]="selectedLeadType === leadType? 'secondary' : 'primary'"
+            (click)="selectedLeadType = leadType">
+            {{ leadType.actionTranslation | translate }}
+          </button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-item>
+</ion-list>

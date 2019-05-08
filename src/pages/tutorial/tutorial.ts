@@ -49,6 +49,7 @@ export class TutorialPage {
       LeadPropertyMetadata.reset(slide)
     );
     this.resultLead = new Lead(this.item.phone, this.item.name, this.item.type);
+    this.dealType = this.leadPropertyMetadataProvider.getDealTypeByLeadType(this.item.type);
   }
 
   public onSlideChangeStart(slider) {
@@ -61,7 +62,6 @@ export class TutorialPage {
     if (slide.type === LeadPropertyType.StringSingleValue) {
       this.handleSingleValueButtonClick(slide, button);
       this.goToSlide(index + 1);
-      this.setDealType();
     }
   }
 
@@ -131,9 +131,5 @@ export class TutorialPage {
     }
 
     return null;
-  }
-
-  public setDealType(): void {
-    this.dealType = this.leadPropertyMetadataProvider.getDealType(this.leadPropertiesMetadata);
   }
 }

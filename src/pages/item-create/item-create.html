@@ -11,7 +11,7 @@
 
 <ion-content>
   <form *ngIf="form" [formGroup]="form" (ngSubmit)="done()">
-    <lead-type-select [value]="selectedLeadType" label="ITEM_CREATE_TYPE_SELECT_TITLE" (valueChanged)="leadTypeChanged($event)" ></lead-type-select>
+    <lead-type-select [value]="selectedLeadType" [dropdownSelect]="false" label="ITEM_CREATE_TYPE_SELECT_TITLE" (valueChanged)="leadTypeChanged($event)" ></lead-type-select>
     <ion-list>
       <ion-item>
         <ion-label>{{ 'ITEM_NAME_PLACEHOLDER' | translate }}</ion-label>

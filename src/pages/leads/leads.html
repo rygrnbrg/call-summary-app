@@ -20,7 +20,7 @@
 </ion-header>
 
 <ion-content>
-  <lead-type-select [value]="selectedLeadType" label="LEAD_TYPE_SELECTION" (valueChanged)="leadTypeChanged($event)">
+  <lead-type-select [value]="selectedLeadType" [dropdownSelect]="true" label="LEAD_TYPE_SELECTION" (valueChanged)="leadTypeChanged($event)">
   </lead-type-select>
   <ion-list  [hidden]="filterSearchRunning">
     <div class="filtered-list-header" [hidden]="!activeFilters">
