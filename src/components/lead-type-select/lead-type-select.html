@@ -15,7 +15,7 @@
       <ion-row>
         <ion-col *ngFor="let leadType of leadTypes" col-3>
           <button type="button" block ion-button small [color]="selectedLeadType === leadType? 'secondary' : 'primary'"
-            (click)="selectedLeadType = leadType">
+            (click)="leadTypeChanged(leadType)">
             {{ leadType.actionTranslation | translate }}
           </button>
         </ion-col>

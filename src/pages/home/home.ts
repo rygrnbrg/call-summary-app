@@ -16,6 +16,7 @@ export class HomePage {
   log: Lead[];
   keys: string[];
   private logUpdateSubscription: Subscription;
+  private lastLogDate: any;
 
   constructor(
     public navCtrl: NavController,
@@ -26,11 +27,11 @@ export class HomePage {
   }
 
   ionViewDidEnter() {
-    const source = interval(1000);
+    const source = interval(3000);
     this.logUpdateSubscription = source.subscribe(val => this.updateLog());
   }
 
-  ionViewCanLeave() {
+  ionViewDidLeave() {
     this.logUpdateSubscription.unsubscribe();
   }
 
@@ -40,11 +41,10 @@ export class HomePage {
         this.callLog.hasReadPermission().then(hasPermission => {
           if (hasPermission) {
             this.callLog.getCallLog(this.getLogFilter(3)).then((result: Caller[]) => {
-              let freshLog = this.getUniqueCallerLog(result);
-              if (!this.areEqualLogs(this.log, freshLog)) {
-                this.log = freshLog;
+              if (result && result.length && result[0].date !== this.lastLogDate){
+                this.lastLogDate = result[0].date
+                this.log = this.getUniqueCallerLog(result);
               }
-
             });
           }
           else {
@@ -56,27 +56,16 @@ export class HomePage {
       }
     }
     else {//todo: mock remove
+      if (this.log && this.log.length){
+        return;
+      }
       let log: Caller[] = [];
       for (let index = 0; index < 10; index++) {
         log.push(<Caller>{ number: "052862665" + index, name: "caller" + index });
       }
-      for (let index = 0; index < 10; index++) {
-        log.push(<Caller>{ number: "052862665" + index, name: "caller" + index });
-      }
-
       let freshLog = this.getUniqueCallerLog(log);
-      if (!this.areEqualLogs(this.log, freshLog)) {
-        this.log = freshLog;
-      }
+      this.log = freshLog;
     }
-  }
-
-  private areEqualLogs(first: Lead[], second: Lead[]): boolean {
-    if (!first || !second || first.length !== second.length) {
-      return false;
-    }
-
-    return first.every((value, index) => second[index].phone === value.phone);
   }
 
   private getUniqueCallerLog(log: Caller[]): Lead[] {

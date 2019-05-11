@@ -13,8 +13,10 @@ export class NumberFormatPipe implements PipeTransform {
     }
     if (value >= 100000){
       return value/1000 + "K";
+    }  
+    if (value >= 1000){
+      return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
-    
     return value.toFixed(0);
   }
 }
