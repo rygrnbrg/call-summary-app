@@ -22,7 +22,7 @@ export class LeadPropertyMetadataProvider {
       //     new PropertyOption("לשכור", false, LeadTypeID.Tenant),
       //     new PropertyOption("למכור", false, LeadTypeID.Seller)
       //   ],
-      //   icon: 'clipboard-outline',
+      //   icon: 'clipboard',
       //   type: LeadPropertyType.StringSingleValue,
       //   filterable: false
       // },
@@ -47,7 +47,7 @@ export class LeadPropertyMetadataProvider {
           new PropertyOption("תעשייה"),
           new PropertyOption("מגרש")
         ],
-        icon: 'home-outline',
+        icon: 'home',
         type: LeadPropertyType.StringSingleValue,
         filterable: true
       },
@@ -64,7 +64,7 @@ export class LeadPropertyMetadataProvider {
           new PropertyOption("5"),
           new PropertyOption("יותר מ-5")
         ],
-        icon: 'people-outline',
+        icon: 'people',
         type: LeadPropertyType.StringSingleValue,
         filterable: true
       },
@@ -73,7 +73,7 @@ export class LeadPropertyMetadataProvider {
         title: 'תקציב',
         description: 'תקציב בשקלים',
         image: 'assets/img/ica-slidebox-img-3.png',
-        icon: 'cash-outline',
+        icon: 'cash',
         type: LeadPropertyType.Budget,
         filterable: false
       },
@@ -105,7 +105,7 @@ export class LeadPropertyMetadataProvider {
           new PropertyOption('א.ת החדש'),
           new PropertyOption('א.ת אחר')
         ],
-        icon: 'map-outline',
+        icon: 'md-map',
         type: LeadPropertyType.StringMultivalue,
         filterable: true
       },
