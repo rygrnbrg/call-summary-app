@@ -43,12 +43,16 @@ export class MessagePage {
   private askAndroidSMSPermissions() {
     if (this.platform.is("cordova")) {
       this.androidPermissions.checkPermission(this.androidPermissions.PERMISSION.SEND_SMS).then(
-        result => console.log('Ceck permission?', result.hasPermission),
-        err => this.androidPermissions.requestPermission(this.androidPermissions.PERMISSION.SEND_SMS).then(requestResult => {
-          console.log('Request permission?', requestResult.hasPermission)
-        })
+        result => result.hasPermission? console.log('Ceck permission?', result.hasPermission) : this.requestUserSMSPermission(),
+        err => this.requestUserSMSPermission()
       );
     }
+  }
+
+  private requestUserSMSPermission() {
+    this.androidPermissions.requestPermission(this.androidPermissions.PERMISSION.SEND_SMS).then(requestResult => {
+      console.log('Request permission?', requestResult.hasPermission)
+    });
   }
 
   public removeContact(contact: Contact) {
@@ -114,6 +118,9 @@ export class MessagePage {
         },
         (reason) => {
           console.log(reason);
+          if (reason === "User has denied permission") {
+            this.askAndroidSMSPermissions();
+          }
         }
       );
     }

@@ -1,13 +1,15 @@
+import { Contact } from './../../models/lead';
 import { LeadsProvider } from './../../providers/leads/leads';
 import { Component } from "@angular/core";
-import { IonicPage, NavController, NavParams, ToastController } from "ionic-angular";
-import { Items } from "../../providers";
+import { IonicPage, NavParams, ToastController, ModalController } from "ionic-angular";
 import { LeadPropertyMetadataProvider } from "../../providers/lead-property-metadata/lead-property-metadata";
 import { LeadPropertyMetadata, LeadPropertyType } from "../../models/lead-property-metadata";
 import { Lead } from "../../models/lead";
 import { AvatarPipe } from "../../pipes/avatar/avatar";
 import { NumberFormatPipe } from "../../pipes/number-format/number-format";
 import { TranslateService } from '@ngx-translate/core';
+import { smsResult } from '../../models/smsResult';
+import { CallNumber } from '@ionic-native/call-number/ngx';
 
 @IonicPage()
 @Component({
@@ -28,7 +30,9 @@ export class ItemDetailPage {
     private toastCtrl: ToastController,
     private leadsProvider: LeadsProvider,
     private numberFormatPipe: NumberFormatPipe,
-    private translateService: TranslateService
+    private translateService: TranslateService,
+    private modalCtrl: ModalController,
+    private callNumber: CallNumber
   ) {
     this.leadPropertiesMetadata = leadPropertyMetadataProvider.get();
     this.item = navParams.get("item");
@@ -36,7 +40,7 @@ export class ItemDetailPage {
     this.relevant = this.item.relevant;
   }
 
-    ionViewDidLoad() {
+  ionViewDidLoad() {
     let translationSubscription = this.translateService.get([
       'GENERAL_ACTION_ERROR']).subscribe(values => {
         this.translations = values;
@@ -58,10 +62,16 @@ export class ItemDetailPage {
     return props;
   }
 
-  public relevantChanged(){
-    this.leadsProvider.updateLeadRelevance(this.item, this.relevant).then(()=>{
+  public call() {
+    this.callNumber.callNumber(this.item.phone, true)
+      .then(res => console.log('Launched dialer!', res))
+      .catch(err => console.log('Error launching dialer', err));
+  }
+
+  public relevantChanged() {
+    this.leadsProvider.updateLeadRelevance(this.item, this.relevant).then(() => {
       this.item.relevant = this.relevant;
-    }).catch(()=>{
+    }).catch(() => {
       this.showToast(this.translations.GENERAL_ACTION_ERROR);
       this.relevant = this.item.relevant;
     });
@@ -74,6 +84,19 @@ export class ItemDetailPage {
       position: 'top'
     });
     toast.present();
+  }
+
+  public sendMessage() {
+    let leads = [this.item];
+    let contacts = leads.map((lead: Lead) => new Contact(lead.phone, lead.name));
+    let modal = this.modalCtrl.create('MessagePage', { contacts: contacts });
+    modal.onDidDismiss((result: smsResult) => {
+      if (result && result.success) {
+        let message = this.translations.LEADS_RECIEVED_MESSAGE.replace("{numberOfLeads}", result.sentCount);
+        this.showToast(message);
+      }
+    })
+    modal.present();
   }
 
   private getPropertyString(property: LeadPropertyMetadata): string {
