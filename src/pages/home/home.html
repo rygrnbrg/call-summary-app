@@ -7,6 +7,9 @@
   </ion-navbar>
 </ion-header>
 <ion-content class="cover-bg">
+  <ion-refresher  (ionRefresh)="updateLog($event)">
+    <ion-refresher-content  refreshingSpinner="crescent"></ion-refresher-content>
+  </ion-refresher>
   <div class="logo-block"></div>  
   <div class="bg-color">
   <ion-list class="items-list">

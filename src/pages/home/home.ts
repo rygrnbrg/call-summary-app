@@ -27,7 +27,7 @@ export class HomePage {
   }
 
   ionViewDidEnter() {
-    const source = interval(3000);
+    const source = interval(60000);
     this.logUpdateSubscription = source.subscribe(val => this.updateLog());
   }
 
@@ -35,41 +35,53 @@ export class HomePage {
     this.logUpdateSubscription.unsubscribe();
   }
 
-  public updateLog() {
+  public updateLog(refresher?: any) {
     if (this.platform.is("cordova")) {
       if (this.platform.is("android")) {
         this.callLog.hasReadPermission().then(hasPermission => {
           if (hasPermission) {
-            this.callLog.getCallLog(this.getLogFilter(3)).then((result: Caller[]) => {
-              if (result && result.length && result[0].date !== this.lastLogDate){
+            this.callLog.getCallLog(this.getLogFilter(2)).then((result: Caller[]) => {
+              if (result && result.length && result[0].date !== this.lastLogDate) {
                 this.lastLogDate = result[0].date
                 this.log = this.getUniqueCallerLog(result);
+              }
+              if (refresher) {
+                refresher.complete();
+              }
+            }).catch((reason) => {
+              if (refresher) {
+                refresher.complete();
               }
             });
           }
           else {
             this.callLog.requestReadPermission().then((value) => {
-              this.updateLog();
+              this.updateLog(refresher);
             });
           }
         });
       }
     }
     else {//todo: mock remove
-      if (this.log && this.log.length){
-        return;
+      if (!(this.log && this.log.length)) {
+        let log: Caller[] = [];
+        for (let index = 0; index < 10; index++) {
+          log.push(<Caller>{ number: "052862665" + index, name: "caller" + index });
+        }
+        let freshLog = this.getUniqueCallerLog(log);
+        this.log = freshLog;
       }
-      let log: Caller[] = [];
-      for (let index = 0; index < 10; index++) {
-        log.push(<Caller>{ number: "052862665" + index, name: "caller" + index });
-      }
-      let freshLog = this.getUniqueCallerLog(log);
-      this.log = freshLog;
+      setTimeout(() => {
+        console.log('Async operation has ended');
+        if (refresher) {
+          refresher.complete();
+        }
+      }, 2000);
     }
   }
 
   private getUniqueCallerLog(log: Caller[]): Lead[] {
-    let fullLog = log.slice(0, 100).map((x) => new Lead(x.number, x.name));
+    let fullLog = log.slice(0, 50).map((x) => new Lead(x.number, x.name));
     let uniqueItemsLog: Lead[] = [];
 
     fullLog.forEach(item => {
@@ -84,10 +96,10 @@ export class HomePage {
   }
 
   public openItem(item?: Lead) {
-    if (!item){
-      item = new Lead("","");
+    if (!item) {
+      item = new Lead("", "");
     }
-    
+
     let addModal = this.modalCtrl.create('ItemCreatePage', { item: item });
     addModal.present();
   }
