@@ -7,14 +7,15 @@
   </ion-navbar>
 </ion-header>
 <ion-content class="cover-bg">
-  <ion-refresher  (ionRefresh)="updateLog($event)">
+  <!-- <ion-refresher  (ionRefresh)="updateLog($event)">
     <ion-refresher-content  refreshingSpinner="crescent"></ion-refresher-content>
-  </ion-refresher>
+  </ion-refresher> -->
   <div class="logo-block"></div>  
   <div class="bg-color">
   <ion-list class="items-list">
-    <ion-list-header>
+    <ion-list-header (click)="updateLog()">
       {{ 'MAIN_LATEST_CALLS' | translate }}
+      <ion-icon name="refresh" item-end></ion-icon>
     </ion-list-header>
     <ion-item *ngFor="let item of log" (click)="openItem(item)">
       <ion-avatar item-start>

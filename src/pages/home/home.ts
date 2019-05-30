@@ -15,7 +15,6 @@ import { interval, Subscription } from 'rxjs';
 export class HomePage {
   log: Lead[];
   keys: string[];
-  private logUpdateSubscription: Subscription;
   private lastLogDate: any;
 
   constructor(
@@ -27,12 +26,11 @@ export class HomePage {
   }
 
   ionViewDidEnter() {
-    const source = interval(60000);
-    this.logUpdateSubscription = source.subscribe(val => this.updateLog());
+
   }
 
   ionViewDidLeave() {
-    this.logUpdateSubscription.unsubscribe();
+
   }
 
   public updateLog(refresher?: any) {
@@ -81,18 +79,21 @@ export class HomePage {
   }
 
   private getUniqueCallerLog(log: Caller[]): Lead[] {
-    let fullLog = log.slice(0, 50).map((x) => new Lead(x.number, x.name));
-    let uniqueItemsLog: Lead[] = [];
+    let fullLog = log.slice(0, 50).map((x) => new Lead(x.number? x.number: "", x.name? x.name: ""));
+    // let uniqueItemsLog: Lead[] = [];
 
-    fullLog.forEach(item => {
-      let existingItem = uniqueItemsLog.find(x => x.phone === item.phone);
+    // fullLog.forEach(item => {
+    //   let existingItem = uniqueItemsLog.find(x => x.phone === item.phone);
 
-      if (!existingItem) {
-        uniqueItemsLog.push(item);
-      }
-    });
+    //   if (!existingItem) {
+    //     uniqueItemsLog.push(item);
+    //   }
+    //  });
+   
+    // return uniqueItemsLog;
+    return fullLog;
 
-    return uniqueItemsLog;
+
   }
 
   public openItem(item?: Lead) {
