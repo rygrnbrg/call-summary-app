@@ -108,14 +108,21 @@ export class MessagePage {
   }
 
   private sendSMS() {
+    if (!this.contacts.length){
+      console.log("Contacts list for SMS send is empty");
+      return;
+    }
     let phones = this.contacts.map(contact => contact.phone);
     if (this.platform.is("cordova")) {
-      this.sms.send(phones, this.messageText).then(
+      this.sms.send(phones[0], this.messageText).then(
         (value) => {
           console.log(value);
           let result: smsResult = { success: true, sentCount: phones.length };
+          let extraPhones = phones.splice(0);
+          extraPhones.forEach(phone=>this.sms.send(phone, this.messageText));          
           this.viewCtrl.dismiss(result);
-        },
+
+       },
         (reason) => {
           console.log(reason);
           if (reason === "User has denied permission") {
