@@ -1,7 +1,8 @@
 export enum LeadPropertyType {
   Budget,
   StringMultivalue,
-  StringSingleValue
+  StringSingleValue,
+  FreeText
 }
 
 export class LeadPropertyMetadata {

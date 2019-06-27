@@ -1,0 +1,16 @@
+1. Make sure android.json file has entry:
+    {
+        "xml": "<uses-permission android:name=\"android.permission.SEND_SMS\" />",
+        "count": 1
+    }
+
+2. Update version
+    - config.xml   
+    - package.json
+
+3. Notice build-extras was added (scripts folder + config.xml)
+    If not working, remove from xml and try again
+
+4. Update google-services.json files with:
+    "package_name": "real.estate.nadlanit"
+    (in the first client info section)

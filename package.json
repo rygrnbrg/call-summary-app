@@ -1,6 +1,6 @@
 {
   "name": "Nadlanit",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "author": "Ionic Framework",
   "homepage": "http://ionicframework.com/",
   "private": true,
@@ -10,7 +10,8 @@
     "build": "ionic-app-scripts build",
     "lint": "ionic-app-scripts lint",
     "do": "ionic cordova run android --device -c",
-    "deploy": "ionic cordova run android --device"
+    "deploy": "ionic cordova run android --device",
+    "apk": "ionic cordova build android"
   },
   "dependencies": {
     "@angular/animations": "^7.2.15",
