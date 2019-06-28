@@ -88,7 +88,7 @@
       "cordova-plugin-ionic": {
         "APP_ID": "1:433595381418:android:acf524304cb46d31",
         "CHANNEL_NAME": "Master",
-        "UPDATE_METHOD": "none"
+        "UPDATE_METHOD": "background"
       },
       "cordova-support-google-services": {}
     },

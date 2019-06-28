@@ -14,3 +14,8 @@
 4. Update google-services.json files with:
     "package_name": "real.estate.nadlanit"
     (in the first client info section)
+
+5. GIT 
+git add .
+git commit -m "Your Awesome Changes!"
+git push ionic master
