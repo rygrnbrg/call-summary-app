@@ -65,7 +65,7 @@ export class LeadsProvider {
     let query: Query = this.leadsDictionary[leadTypeId.toString()].ref;
 
     // query = this.addBudgetFilter(filters, query);
-    query = this.addRelevanceFilter(query);
+    query = this.addRelevanceFilter(filters, query);
     query = this.addStringFilters(filters, query);
     query = this.addMultivalueFilters(filters, query);
 
@@ -116,15 +116,18 @@ export class LeadsProvider {
     return query;
   }
 
-  private addRelevanceFilter(query: Query): Query {
-    query = query.where(LeadPropertyMetadataProvider.relevanceKey, "==", true);
+  private addRelevanceFilter(filters: LeadFilter[], query: Query): Query {
+    let relevanceFilter = filters.find(x=> x.id === LeadPropertyMetadataProvider.relevanceKey)
+    if (relevanceFilter){
+       query = query.where(LeadPropertyMetadataProvider.relevanceKey, "==", relevanceFilter.value);
+    }
     return query;
   }
 
   private addStringFilters(filters: LeadFilter[], query: Query): Query {
     filters
       .filter(
-        filter => filter.metadata.type === LeadPropertyType.StringSingleValue
+        filter => filter.metadata && filter.metadata.type === LeadPropertyType.StringSingleValue
       )
       .forEach(filter => {
         if (filter.value) {
@@ -138,7 +141,7 @@ export class LeadsProvider {
   private addMultivalueFilters(filters: LeadFilter[], query: Query): Query {
     filters
       .filter(
-        filter => filter.metadata.type === LeadPropertyType.StringMultivalue
+        filter => filter.metadata && filter.metadata.type === LeadPropertyType.StringMultivalue
       )
       .forEach(filter => {
         if (filter.value && filter.value.length === 1) {

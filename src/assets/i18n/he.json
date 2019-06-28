@@ -116,6 +116,8 @@
   "PROPERTIES": "מאפיינים",
   "LEAD_RELEVANCE_STATUS_YES": "רלוונטי",
   "LEAD_RELEVANCE_STATUS_NO": "לא רלוונטי",
+  "LEAD_RELEVANCE_SHOW_ONLY_RELEVANT": "הצג לידים רלוונטיים בלבד",
+  "LEAD_RELEVANCE_SHOW_ONLY_RELEVANT_TRUE": "רלוונטי",
   "LEADS_RECIEVED_MESSAGE": "הודעה נשלחה בהצלחה ל-{numberOfLeads} אנשי קשר",
   "LEADS_FOUND": "נמצאו {numberOfLeads} לידים",
   "COMMENTS": "הערות",

@@ -23,6 +23,7 @@ export class LeadsFilterPage {
   public leadPropertyType = LeadPropertyType;
   public leadPropertyMetadata: LeadPropertyMetadata[];
   public dealType: DealType;
+  public relevantOnly: boolean = true;
 
   constructor(
     private viewCtrl: ViewController,
@@ -114,6 +115,17 @@ export class LeadsFilterPage {
   }
 
   done() {
+    if (this.relevantOnly){
+      this.filters.push(
+        <LeadFilter>{
+          id: LeadPropertyMetadataProvider.relevanceKey,
+          metadata: null,
+          selected: true,
+          type: LeadPropertyType.Boolean,
+          value: true
+        }) 
+    }
+
     this.viewCtrl.dismiss(this.filters);
   }
 }

@@ -108,7 +108,7 @@ export class MessagePage {
   }
 
   private sendSMS() {
-    if (!this.contacts.length){
+    if (this.contacts.length == 0){
       console.log("Contacts list for SMS send is empty");
       return;
     }
@@ -116,10 +116,16 @@ export class MessagePage {
     if (this.platform.is("cordova")) {
       this.sms.send(phones[0], this.messageText).then(
         (value) => {
-          console.log(value);
+          console.log(value + " " + phones[0]);
           let result: smsResult = { success: true, sentCount: phones.length };
-          let extraPhones = phones.splice(0);
-          extraPhones.forEach(phone=>this.sms.send(phone, this.messageText));          
+          if (phones.length > 1){
+            for (let index = 1; index < phones.length; index++) {
+              let phone = phones[index];
+              this.sms.send(phone, this.messageText).then((value)=>{
+                console.log(value + " " + phone);              
+              });             
+            }
+          }   
           this.viewCtrl.dismiss(result);
 
        },
