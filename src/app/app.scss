@@ -22,7 +22,7 @@ p.light,
   @extend .cover-bg;
 }
 
-.margin-top{
+.margin-top {
   margin-top: $content-margin;
 }
 .select-text {
@@ -58,6 +58,11 @@ ion-list-header {
     margin-bottom: 0;
   }
 }
+.title-note{
+  float:left;
+  line-height: 200%;
+}
+
 .item-grid {
   ion-label.label {
     margin: 0;
@@ -160,7 +165,9 @@ ion-header::after {
 }
 
 .fab-pad {
-  padding-bottom: 90px;
+  padding: 0 !important;
+  margin: 0 !important;
+  height: 80px !important;
 }
 
 .items-list {

@@ -152,11 +152,22 @@ export class ItemDetailPage {
   public getCommentIcon(comment: Comment) {
     switch (comment.commentType) {
       case CommentType.UserComment:
-        return "clipboard";
+        return "create";
       case CommentType.MessageSent:
         return "text";
       default:
         return "clipboard";
+    }
+  }
+ 
+  public getCommentTitle(comment: Comment){
+    switch (comment.commentType) {
+      case CommentType.MessageSent:
+        return 'MESSAGE_SENT_TITLE';
+      case CommentType.UserComment:
+        return '';
+      default:
+        return '';
     }
   }
 
