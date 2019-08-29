@@ -22,16 +22,23 @@
 <ion-content>
   <lead-type-select [value]="selectedLeadType" [dropdownSelect]="true" label="LEAD_TYPE_SELECTION" (valueChanged)="leadTypeChanged($event)">
   </lead-type-select>
-  <ion-list  [hidden]="filterSearchRunning">
+  <ion-list [hidden]="filterSearchRunning">
     <div class="filtered-list-header" [hidden]="!activeFilters">
       <filtered-by [filters]="activeFilters"></filtered-by>
     </div>
 
-    <range-budget-slider *ngIf="showBudgetSlider" [value]="budgetValue" [minMaxValues]="budgetMinMaxValues"
-      [dealType]="selectedDealType" (valueChanged)="budgetChanged($event)">
+    <ion-list-header [hidden]="activeFilters">
+      <ion-icon name="checkmark" item-start></ion-icon>
+      <ion-label>{{'LEAD_RELEVANCE_SHOW_ONLY_RELEVANT' | translate }}</ion-label>
+      <ion-toggle [(ngModel)]="relevantOnly"></ion-toggle>
+    </ion-list-header>
+
+
+    <range-budget-slider *ngIf="showBudgetSlider" [value]="budgetValue" [minMaxValues]="budgetMinMaxValues" [dealType]="selectedDealType"
+      (valueChanged)="budgetChanged($event)">
     </range-budget-slider>
 
-    <leads-list [hidden]="activeFilters" [leads]="leads" (itemClicked)="itemClicked($event)"></leads-list>
+    <leads-list [hidden]="activeFilters" [leads]="leads" [showOnlyRelevant]="relevantOnly" (itemClicked)="itemClicked($event)"></leads-list>
     <!-- <ion-list-header *ngIf="!leadsSearchResults || leadsSearchResults.length === 0">
       {{leadsFoundMessage}}
     </ion-list-header> -->

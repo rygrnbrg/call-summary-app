@@ -12,6 +12,8 @@ export class LeadsListComponent {
   leads: Lead[];
   @Input()
   title: string;
+  @Input()
+  showOnlyRelevant: boolean;
 
   @Output() itemClicked = new EventEmitter<Lead>();
   constructor() {

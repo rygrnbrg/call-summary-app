@@ -18,7 +18,7 @@
         </ion-avatar>
         <h2>{{item.name}}</h2>
         <p>{{item.phone}}</p>
-        <ion-note item-end *ngIf="item.created">{{item.created.toDate() | date: 'shortDate'}}</ion-note>
+        <ion-note item-end *ngIf="item.created">{{item.created.toDate() | date: 'dd/MM/yy'}}</ion-note>
       </ion-item-divider>
       <ion-item>
         <ion-icon name="phone-portrait" icon item-start color="secondary"></ion-icon>
@@ -47,7 +47,7 @@
     <ion-item *ngFor="let comment of item.comments" (click)="openComment(comment)">
       <ion-icon [name]="getCommentIcon(comment)" icon item-start color="dark" small></ion-icon>
       <p>{{comment.text}}</p>
-      <ion-note item-end>{{comment.date.toDate() | date: 'shortDate'}}</ion-note>
+      <ion-note item-end>{{comment.date.toDate() | date: 'dd/MM/yy'}}</ion-note>
     </ion-item>  
     <ion-item (click)="addNote()">
       <ion-icon name="add-circle-outline" icon item-start color="primary"></ion-icon>

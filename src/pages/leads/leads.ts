@@ -22,6 +22,7 @@ import { Comment } from '../../models/comment';
 })
 export class LeadsPage {
   private subscriptions: Subscription[];
+  public relevantOnly: boolean = true;
   leadsDictionary: { [id: string]: firebase.firestore.DocumentData[] } = {};
   leads: firebase.firestore.DocumentData[];
   queryLeadsSearchResults: firebase.firestore.DocumentData[];
