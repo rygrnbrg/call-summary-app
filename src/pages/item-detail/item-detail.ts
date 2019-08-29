@@ -10,6 +10,7 @@ import { NumberFormatPipe } from "../../pipes/number-format/number-format";
 import { TranslateService } from '@ngx-translate/core';
 import { smsResult } from '../../models/smsResult';
 import { CallNumber } from '@ionic-native/call-number/ngx';
+import { Subscription } from 'rxjs';
 
 @IonicPage()
 @Component({
@@ -23,6 +24,7 @@ export class ItemDetailPage {
   public relevant: boolean;
   private translations: any;
   private leadPropertiesMetadata: LeadPropertyMetadata[];
+  private subscriptions: Subscription[];
 
   constructor(
     navParams: NavParams,
@@ -41,10 +43,18 @@ export class ItemDetailPage {
   }
 
   ionViewDidLoad() {
+    this.subscriptions = [];
+
     let translationSubscription = this.translateService.get([
       'GENERAL_ACTION_ERROR']).subscribe(values => {
         this.translations = values;
       });
+
+    this.subscriptions.push(translationSubscription);
+  }
+
+  ionViewDidLeave() {
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
 
@@ -95,6 +105,14 @@ export class ItemDetailPage {
         let message = this.translations.LEADS_RECIEVED_MESSAGE.replace("{numberOfLeads}", result.sentCount);
         this.showToast(message);
       }
+    })
+    modal.present();
+  }
+
+  public addNote() {
+    let modal = this.modalCtrl.create('CommentPage', { lead: this.item });
+    modal.onDidDismiss((result: boolean) => {
+      result ? console.log("Comment added successfully") : console.log("Failed to add comment");
     })
     modal.present();
   }

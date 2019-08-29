@@ -19,11 +19,11 @@ import { smsResult } from '../../models/smsResult';
   providers: [AvatarPipe]
 })
 export class LeadsPage {
+  private subscriptions: Subscription[];
   leadsDictionary: { [id: string]: firebase.firestore.DocumentData[] } = {};
   leads: firebase.firestore.DocumentData[];
   queryLeadsSearchResults: firebase.firestore.DocumentData[];
   leadsSearchResults: firebase.firestore.DocumentData[];
-  subscriptions: Subscription[];
   loading: Loading;
   translations: any;
   activeFilters: LeadFilter[];

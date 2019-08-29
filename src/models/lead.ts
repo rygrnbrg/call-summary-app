@@ -1,30 +1,33 @@
 import { LeadTypeID } from './lead-property-metadata';
-export class Contact {
-    name: string;
-    phone: string;
+import { Comment } from './comment';
 
-    constructor(phone: string, name: string){
-        this.phone = phone;
-        this.name = name;    
-    }
+export class Contact {
+  name: string;
+  phone: string;
+
+  constructor(phone: string, name: string) {
+    this.phone = phone;
+    this.name = name;
+  }
 }
 
 export class Lead extends Contact {
-    constructor(phone: string, name: string, type?: LeadTypeID) {
-        super(phone, name);
-        this.created = new Date();
-        this.type = type;
-    }
+  constructor(phone: string, name: string, type?: LeadTypeID) {
+    super(phone, name);
+    this.created = new Date();
+    this.type = type;
+  }
 
-    avatar: string;
-    name: string;
-    phone: string;
-    created: Date;
-    type: LeadTypeID;
-    property: string;
-    rooms: string;
-    source: string;  
-    budget: number;
-    area: string[];
-    relevant: boolean;
+  avatar: string;
+  name: string;
+  phone: string;
+  created: Date;
+  type: LeadTypeID;
+  property: string;
+  rooms: string;
+  source: string;
+  budget: number;
+  area: string[];
+  relevant: boolean;
+  comments: Comment[]
 }

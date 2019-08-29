@@ -8,6 +8,7 @@ import * as _ from "lodash";
 export class LeadPropertyMetadataProvider {
   private properties: LeadPropertyMetadata[] = [];
   public static relevanceKey = "relevant";
+  public static commentKey = "comment";
 
   constructor() {
     this.properties = [

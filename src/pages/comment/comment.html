@@ -1,0 +1,24 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>{{ 'COMMENT_PAGE_TITLE' | translate }}</ion-title>
+    <ion-buttons start>
+      <button ion-button (click)="cancel()">
+        <ion-icon name="close"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-list>
+    <ion-item-divider>
+      <ion-textarea autofocus="true" class="sms-box" rows="10" placeholder="{{'ADD_COMMENT_PLACEHOLDER' | translate}}" [(ngModel)]="text"></ion-textarea>
+    </ion-item-divider>
+  </ion-list>
+
+    <ion-fab bottom center [hidden]="!text.length">
+    <button ion-fab (click)="submit()">
+      <ion-icon name="checkmark"></ion-icon>
+    </button>
+  </ion-fab>
+</ion-content>

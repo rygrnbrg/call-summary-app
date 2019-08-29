@@ -9,10 +9,10 @@ import {
   AngularFirestoreCollection,
   Query
 } from "angularfire2/firestore";
-import { Observable } from "rxjs/Rx";
 import { User } from "..";
 import { firestore } from "firebase";
 import { LeadPropertyType, DealType } from "../../models/lead-property-metadata";
+import { Comment } from '../../models/comment';
 /*
   Generated class for the LeadsProvider provider.
 
@@ -76,8 +76,23 @@ export class LeadsProvider {
     let data = {};
     data[LeadPropertyMetadataProvider.relevanceKey] = isRelevant;
     let promise = this.leadsDictionary[item.type.toString()].ref.where("phone", "==", item.phone).get();
-    return promise.then((querySnapshot)=>{
-      querySnapshot.forEach(x=>{
+    return promise.then((querySnapshot) => {
+      querySnapshot.forEach(x => {
+        return x.ref.update(data);
+      });
+    });
+  }
+
+  public addComment(item: Lead, comment: Comment): Promise<void> {
+    let promise = this.leadsDictionary[item.type.toString()].ref.where("phone", "==", item.phone).get();
+    return promise.then((querySnapshot) => {
+      querySnapshot.forEach((x: firestore.QueryDocumentSnapshot) => {
+        let lead = this.convertDbObjectToLead(x, item.type);
+        lead.comments.push(comment);
+        let data = {};
+
+        data[LeadPropertyMetadataProvider.commentKey] = lead.comments.map(comment => this.getCommentDbObject(comment));
+
         return x.ref.update(data);
       });
     });
@@ -88,6 +103,11 @@ export class LeadsProvider {
     LeadsProvider.standardLeadKeys.forEach(key => (lead[key] = item[key]));
     lead.type = leadType;
     lead.relevant = item[LeadPropertyMetadataProvider.relevanceKey];
+
+    let comments = <Object[]>item[LeadPropertyMetadataProvider.commentKey];
+    lead.comments = comments && comments.map ? comments.map(comment =>
+      new Comment(comment["text"], comment["date"], comment["title"], comment["commentType"])) : [];
+
     return lead;
   }
 
@@ -117,9 +137,9 @@ export class LeadsProvider {
   }
 
   private addRelevanceFilter(filters: LeadFilter[], query: Query): Query {
-    let relevanceFilter = filters.find(x=> x.id === LeadPropertyMetadataProvider.relevanceKey)
-    if (relevanceFilter){
-       query = query.where(LeadPropertyMetadataProvider.relevanceKey, "==", relevanceFilter.value);
+    let relevanceFilter = filters.find(x => x.id === LeadPropertyMetadataProvider.relevanceKey)
+    if (relevanceFilter) {
+      query = query.where(LeadPropertyMetadataProvider.relevanceKey, "==", relevanceFilter.value);
     }
     return query;
   }
@@ -152,9 +172,14 @@ export class LeadsProvider {
     return query;
   }
   private getLeadDbObject(item: Lead): Object {
-    let leadObj = { };
+    let leadObj = {};
     leadObj[LeadPropertyMetadataProvider.relevanceKey] = true;
     LeadsProvider.standardLeadKeys.forEach(key => (leadObj[key] = item[key]));
     return leadObj;
+  }
+
+  private getCommentDbObject(item: Comment): Object {
+    let commentObj = { title: item.title, text: item.text, commentType: item.commentType, date: item.date };
+    return commentObj;
   }
 }

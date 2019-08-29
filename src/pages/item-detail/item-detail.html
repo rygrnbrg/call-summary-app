@@ -37,8 +37,22 @@
         <ion-icon [name]="prop.icon" icon item-start color="secondary"></ion-icon>
         <h2>{{prop.title}}</h2>
         <h2>{{prop.value}}</h2>
-      </ion-item>
+      </ion-item>     
     </ion-list>
+    <ion-list class="items-list">
+      <ion-list-header>
+        {{ 'COMMENTS' | translate}}
+      </ion-list-header>
+    </ion-list>
+    <ion-item *ngFor="let comment of item.comments">
+      <ion-icon name="clipboard" icon item-start color="dark"></ion-icon>
+      <h2>{{comment.text}}</h2>
+      <!-- //todo: design better comment -->
+    </ion-item>  
+    <ion-item (click)="addNote()">
+      <ion-icon name="add-circle-outline" icon item-start color="primary"></ion-icon>
+      <h2>{{'ADD_COMMENT_ACTION' | translate}}</h2>            
+    </ion-item>
   </div>
   <ion-fab bottom left>
     <button ion-fab (click)="sendMessage()">
