@@ -44,14 +44,14 @@
         {{ 'COMMENTS' | translate}}
       </ion-list-header>
     </ion-list>
-    <ion-item *ngFor="let comment of item.comments">
-      <ion-icon name="clipboard" icon item-start color="dark"></ion-icon>
-      <h2>{{comment.text}}</h2>
-      <!-- //todo: design better comment -->
+    <ion-item *ngFor="let comment of item.comments" (click)="openComment(comment)">
+      <ion-icon [name]="getCommentIcon(comment)" icon item-start color="dark" small></ion-icon>
+      <p>{{comment.text}}</p>
+      <ion-note item-end>{{comment.date.toDate() | date: 'shortDate'}}</ion-note>
     </ion-item>  
     <ion-item (click)="addNote()">
       <ion-icon name="add-circle-outline" icon item-start color="primary"></ion-icon>
-      <h2>{{'ADD_COMMENT_ACTION' | translate}}</h2>            
+      <h2>{{'ADD_COMMENT_ACTION' | translate}}</h2>           
     </ion-item>
   </div>
   <ion-fab bottom left>

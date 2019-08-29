@@ -75,7 +75,7 @@ export class LeadsProvider {
   public updateLeadRelevance(item: Lead, isRelevant: boolean): Promise<void> {
     let data = {};
     data[LeadPropertyMetadataProvider.relevanceKey] = isRelevant;
-    let promise = this.leadsDictionary[item.type.toString()].ref.where("phone", "==", item.phone).get();
+    let promise = this.getQuerySnapshotPromise(item);
     return promise.then((querySnapshot) => {
       querySnapshot.forEach(x => {
         return x.ref.update(data);
@@ -84,10 +84,10 @@ export class LeadsProvider {
   }
 
   public addComment(item: Lead, comment: Comment): Promise<void> {
-    let promise = this.leadsDictionary[item.type.toString()].ref.where("phone", "==", item.phone).get();
+    let promise = this.getQuerySnapshotPromise(item);
     return promise.then((querySnapshot) => {
       querySnapshot.forEach((x: firestore.QueryDocumentSnapshot) => {
-        let lead = this.convertDbObjectToLead(x, item.type);
+        let lead = this.convertDbObjectToLead(x.data(), item.type);
         lead.comments.push(comment);
         let data = {};
 
@@ -118,6 +118,11 @@ export class LeadsProvider {
 
   public delete(item: Lead) {
 
+  }
+
+  public getQuerySnapshotPromise(item: Lead): Promise<firestore.QuerySnapshot> {
+    let promise = this.leadsDictionary[item.type.toString()].ref.where("phone", "==", item.phone).where("created", "==", item.created).get();
+    return promise;
   }
 
   private addBudgetFilter(filters: LeadFilter[], query: Query): Query {

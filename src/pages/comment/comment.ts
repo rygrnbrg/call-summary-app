@@ -33,7 +33,7 @@ export class CommentPage {
     if (this.text.length) {
       let comment = new Comment(this.text);
       this.leadsProvider.addComment(this.lead, comment).then(()=>{
-        this.viewCtrl.dismiss(true);
+        this.viewCtrl.dismiss({success: true});
       });
     }
   }

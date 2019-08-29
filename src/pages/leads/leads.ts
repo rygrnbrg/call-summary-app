@@ -1,3 +1,4 @@
+import { CommentType } from './../../models/comment';
 import { LeadPropertyMetadataProvider } from './../../providers/lead-property-metadata/lead-property-metadata';
 import { LeadType, LeadPropertyType, DealType } from './../../models/lead-property-metadata';
 import { LeadFilter } from './../../models/lead-filter';
@@ -11,6 +12,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { User } from '../../providers';
 import { rangeValue } from '../../components/range-budget-slider/range-budget-slider';
 import { smsResult } from '../../models/smsResult';
+import { Comment } from '../../models/comment';
 
 @IonicPage()
 @Component({
@@ -41,7 +43,7 @@ export class LeadsPage {
   constructor(
     private navCtrl: NavController,
     private leadsProvider: LeadsProvider,
-    private modalCtrl: ModalController, 
+    private modalCtrl: ModalController,
     private loadingCtrl: LoadingController,
     private translateService: TranslateService,
     private toastCtrl: ToastController,
@@ -64,6 +66,11 @@ export class LeadsPage {
       });
 
     this.subscriptions.push(translationSubscription);
+  }
+
+  ionViewDidLeave() {
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+    this.loading.dismiss();
   }
 
   private initLeadSubscription() {
@@ -91,7 +98,7 @@ export class LeadsPage {
         });
     }
   }
- 
+
   public filterLeadsClick(): void {
     let filterModal = this.modalCtrl.create('LeadsFilterPage', { "filters": this.activeFilters, "leadType": this.selectedLeadType });
     filterModal.onDidDismiss((data: LeadFilter[]) => {
@@ -122,24 +129,18 @@ export class LeadsPage {
           });
           this.filterLeadsByRange();
         }
-      ).catch(reason=> loading.dismiss());
+      ).catch(reason => loading.dismiss());
     });
 
     filterModal.present();
   }
 
-
-  ionViewDidLeave() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
-    this.loading.dismiss();
-  }
-
-  private sortLeads(leads: Lead[]): Lead[]{
-    let sortedLeads = leads.sort((a,b)=>{
-      if (!a.created || !b.created){
+  private sortLeads(leads: Lead[]): Lead[] {
+    let sortedLeads = leads.sort((a, b) => {
+      if (!a.created || !b.created) {
         return 0;
       }
-      
+
       return ((<any>b.created).toDate()).getTime() - ((<any>a.created).toDate()).getTime();
     });
 
@@ -155,7 +156,7 @@ export class LeadsPage {
     toast.present();
   }
 
-  addItem() {
+  public addItem() {
     let modal = this.modalCtrl.create('ItemCreatePage');
     modal.onDidDismiss(item => {
       if (item) {
@@ -165,7 +166,7 @@ export class LeadsPage {
     modal.present();
   }
 
-  sendMessage() {
+  public sendMessage() {
     let leads = this.activeFilters ? this.leadsSearchResults : this.leads;
     let contacts = leads.map((lead: Lead) => new Contact(lead.phone, lead.name));
     let modal = this.modalCtrl.create('MessagePage', { contacts: contacts });
@@ -173,6 +174,7 @@ export class LeadsPage {
       if (result && result.success) {
         let message = this.translations.LEADS_RECIEVED_MESSAGE.replace("{numberOfLeads}", result.sentCount);
         this.showToast(message);
+        this.addMessageSentComments(result.text, leads);
       }
     })
     modal.present();
@@ -188,6 +190,15 @@ export class LeadsPage {
     this.selectedDealType = this.leadPropertyMetadataProvider.getDealTypeByLeadType(this.selectedLeadType.id);
     this.initLeadSubscription();
     this.cleanFilters();
+  }
+
+  private addMessageSentComments(text: string, leads: firebase.firestore.DocumentData[]) {
+    let comment = new Comment(text, new Date(Date.now()), "", CommentType.MessageSent);
+
+    leads.forEach(lead => {
+      let convertedLead = this.leadsProvider.convertDbObjectToLead(lead, this.selectedLeadType.id)
+      this.leadsProvider.addComment(convertedLead, comment);
+    });
   }
 
   private filterLeadsByRange() {

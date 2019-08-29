@@ -112,12 +112,14 @@ export class MessagePage {
       console.log("Contacts list for SMS send is empty");
       return;
     }
-    let phones = this.contacts.map(contact => contact.phone);
+    let allPhones = this.contacts.map(contact => contact.phone);
+    let phones = Array.from(new Set(allPhones.map((item:any)=> item)));
+
     if (this.platform.is("cordova")) {
       this.sms.send(phones[0], this.messageText).then(
         (value) => {
           console.log(value + " " + phones[0]);
-          let result: smsResult = { success: true, sentCount: phones.length };
+          let result: smsResult = { success: true, sentCount: phones.length, text: this.messageText };
           if (phones.length > 1){
             for (let index = 1; index < phones.length; index++) {
               let phone = phones[index];
@@ -127,7 +129,6 @@ export class MessagePage {
             }
           }   
           this.viewCtrl.dismiss(result);
-
        },
         (reason) => {
           console.log(reason);
@@ -138,7 +139,7 @@ export class MessagePage {
       );
     }
     else {
-      let result: smsResult = { success: true, sentCount: phones.length };
+      let result: smsResult = { success: true, sentCount: phones.length, text: this.messageText };
       this.viewCtrl.dismiss(result);
     }
 

@@ -1,7 +1,8 @@
+import { MessagePage } from './../message/message';
 import { Contact } from './../../models/lead';
 import { LeadsProvider } from './../../providers/leads/leads';
 import { Component } from "@angular/core";
-import { IonicPage, NavParams, ToastController, ModalController } from "ionic-angular";
+import { IonicPage, NavParams, ToastController, ModalController, AlertController } from "ionic-angular";
 import { LeadPropertyMetadataProvider } from "../../providers/lead-property-metadata/lead-property-metadata";
 import { LeadPropertyMetadata, LeadPropertyType } from "../../models/lead-property-metadata";
 import { Lead } from "../../models/lead";
@@ -11,6 +12,8 @@ import { TranslateService } from '@ngx-translate/core';
 import { smsResult } from '../../models/smsResult';
 import { CallNumber } from '@ionic-native/call-number/ngx';
 import { Subscription } from 'rxjs';
+import { Comment, CommentType } from '../../models/comment';
+import { firestore } from 'firebase';
 
 @IonicPage()
 @Component({
@@ -34,12 +37,13 @@ export class ItemDetailPage {
     private numberFormatPipe: NumberFormatPipe,
     private translateService: TranslateService,
     private modalCtrl: ModalController,
-    private callNumber: CallNumber
+    private callNumber: CallNumber,
+    private alertCtrl: AlertController,
   ) {
     this.leadPropertiesMetadata = leadPropertyMetadataProvider.get();
-    this.item = navParams.get("item");
-    this.properties = this.getProperties();
-    this.relevant = this.item.relevant;
+    let item = navParams.get("item");
+    this.loadItem(item);
+    this.refreshItem();
   }
 
   ionViewDidLoad() {
@@ -57,6 +61,21 @@ export class ItemDetailPage {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
+  private loadItem(item: Lead) {
+    this.item = item;
+    this.properties = this.getProperties();
+    this.relevant = this.item.relevant;
+  }
+
+  private refreshItem() {
+    let promise = this.leadsProvider.getQuerySnapshotPromise(this.item);
+    promise.then((querySnapshot) => {
+      querySnapshot.forEach((x: firestore.QueryDocumentSnapshot) => {
+        let lead = this.leadsProvider.convertDbObjectToLead(x.data(), this.item.type);
+        this.loadItem(lead);
+      });
+    });
+  }
 
   private getProperties(): ItemProperty[] {
     let props: ItemProperty[] = [];
@@ -87,7 +106,7 @@ export class ItemDetailPage {
     });
   }
 
-  private showToast(message: string) {
+  private showToast(message: string): void {
     let toast = this.toastCtrl.create({
       message: message,
       duration: 3000,
@@ -96,7 +115,7 @@ export class ItemDetailPage {
     toast.present();
   }
 
-  public sendMessage() {
+  public sendMessage(): void {
     let leads = [this.item];
     let contacts = leads.map((lead: Lead) => new Contact(lead.phone, lead.name));
     let modal = this.modalCtrl.create('MessagePage', { contacts: contacts });
@@ -109,12 +128,36 @@ export class ItemDetailPage {
     modal.present();
   }
 
+  public openComment(comment: Comment) {
+    const prompt = this.alertCtrl.create({
+      message: comment.text
+    });
+    prompt.present();
+  }
+
   public addNote() {
     let modal = this.modalCtrl.create('CommentPage', { lead: this.item });
-    modal.onDidDismiss((result: boolean) => {
-      result ? console.log("Comment added successfully") : console.log("Failed to add comment");
+    modal.onDidDismiss((result) => {
+      if (result.success) {
+        console.log("Comment added successfully")
+        this.refreshItem();
+      }
+      else {
+        console.log("Failed to add comment");
+      }
     })
     modal.present();
+  }
+
+  public getCommentIcon(comment: Comment) {
+    switch (comment.commentType) {
+      case CommentType.UserComment:
+        return "clipboard";
+      case CommentType.MessageSent:
+        return "text";
+      default:
+        return "clipboard";
+    }
   }
 
   private getPropertyString(property: LeadPropertyMetadata): string {
