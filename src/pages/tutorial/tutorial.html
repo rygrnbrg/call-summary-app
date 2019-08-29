@@ -21,11 +21,18 @@
                   </button>
                 </ion-col>
               </ion-row>
+              <ion-row *ngIf="slide.id === 'rooms'" class="margin-top">
+                <ion-col col-12>          
+                  <button color="secondary" ion-button block (click)="addMetersSlide(i);" color="primary">
+                    {{ 'METER_DATA_INPUT' | translate }}
+                  </button>
+                </ion-col>
+              </ion-row>
             </ion-grid>
           </ion-buttons>
           <div *ngIf="slide.type === leadPropertyType.Budget && isSlideActive(slide)">
-            <budget-slider [dealType]="dealType" [value]="this.resultLead.budget"
-              (valueChanged)="setBudget(slide, $event)"></budget-slider>
+            <budget-slider [dealType]="dealType" [value]="this.resultLead.budget" 
+            (valueChanged)="setBudget(slide, $event)" (customValueSelected)="goToSlide(i +1);"></budget-slider>
           </div>
         </div>
         <ion-fab bottom center>

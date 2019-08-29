@@ -124,5 +124,7 @@
   "LEADS_RECIEVED_MESSAGE": "הודעה נשלחה בהצלחה ל-{numberOfLeads} אנשי קשר",
   "LEADS_FOUND": "נמצאו {numberOfLeads} לידים",
   "COMMENTS": "הערות",
-  "ADD_COMMENTS_ACTION": "הוסף הערה..."
+  "ADD_COMMENTS_ACTION": "הוסף הערה...",
+  "COMMERCIAL_GROUND": "שטח מסחרי",
+  "METER_DATA_INPUT":"הזן מידע במטרים"
 }

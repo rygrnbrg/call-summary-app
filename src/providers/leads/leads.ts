@@ -30,6 +30,7 @@ export class LeadsProvider {
     "area",
     "property",
     "rooms",
+    "meters",
     "source"
   ];
 

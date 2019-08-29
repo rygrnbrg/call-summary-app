@@ -36,7 +36,7 @@
       <ion-item *ngFor="let prop of properties">
         <ion-icon [name]="prop.icon" icon item-start color="secondary"></ion-icon>
         <h2>{{prop.title}}</h2>
-        <h2>{{prop.value}}</h2>
+        <h2>{{prop.value? prop.value: "-"}}</h2>
       </ion-item>     
     </ion-list>
     <ion-list class="items-list">

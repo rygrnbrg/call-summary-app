@@ -114,7 +114,7 @@ export class MessagePage {
     }
     let allPhones = this.contacts.map(contact => contact.phone);
     let phones = Array.from(new Set(allPhones.map((item:any)=> item)));
-
+    
     if (this.platform.is("cordova")) {
       this.sms.send(phones[0], this.messageText).then(
         (value) => {

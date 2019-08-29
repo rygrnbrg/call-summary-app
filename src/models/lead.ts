@@ -29,5 +29,6 @@ export class Lead extends Contact {
   budget: number;
   area: string[];
   relevant: boolean;
+  meters: string;
   comments: Comment[]
 }

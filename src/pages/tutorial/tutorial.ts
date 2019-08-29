@@ -33,12 +33,12 @@ export class TutorialPage {
     public leadPropertyMetadataProvider: LeadPropertyMetadataProvider,
     public leads: LeadsProvider,
     public navParams: NavParams) {
-      this.item = navParams.get("item");
-      this.dir = platform.dir();
-      this.leadPropertiesMetadata = this.leadPropertyMetadataProvider.get();
+    this.item = navParams.get("item");
+    this.dir = platform.dir();
+    this.leadPropertiesMetadata = this.leadPropertyMetadataProvider.get().filter(x => !x.hidden);
   }
 
-  goToSlide(index: number) {
+  public goToSlide(index: number) {
     setTimeout(() => {
       this.slides.slideTo(index);
     }, 300);
@@ -56,6 +56,17 @@ export class TutorialPage {
     this.showSkip = !slider.isEnd();
   }
 
+  public addMetersSlide(index: number) {
+    let metersId = "meters";
+
+    if (!this.leadPropertiesMetadata.some(x => x.id === metersId)) {
+      let data = this.leadPropertyMetadataProvider.get().find(x => x.id === metersId);
+      this.leadPropertiesMetadata.splice(index + 1, 0, data);
+    }
+
+    this.goToSlide(index + 1);
+  }
+
   answerButtonClick(slide: LeadPropertyMetadata, button: PropertyOption, index: number): void {
     button.selected = !button.selected;
 
@@ -65,11 +76,16 @@ export class TutorialPage {
     }
   }
 
-  getSlideValueString(property: LeadPropertyMetadata): String {
-    return LeadPropertyMetadata.getValueString(property);
+  public getSlideValueString(property: LeadPropertyMetadata): String {
+    let value = LeadPropertyMetadata.getValueString(property);
+    if (!value) {
+      value = "-";
+    }
+
+    return value;
   }
 
-  setBudget(slide: LeadPropertyMetadata, value: number) {
+  setBudget(slide: LeadPropertyMetadata, value: number, index?: number) {
     let transform = this.numberFormatPipe.transform;
     this.resultLead.budget = value;
     slide.value = transform(value);
@@ -88,6 +104,7 @@ export class TutorialPage {
     this.resultLead.property = this.getSimpleSlideValue("property");
     this.resultLead.rooms = this.getSimpleSlideValue("rooms");
     this.resultLead.source = this.getSimpleSlideValue("source");
+    this.resultLead.meters = this.getSimpleSlideValue("meters");
 
     this.leads.add(this.resultLead).then(() =>
       this.navCtrl.setRoot(

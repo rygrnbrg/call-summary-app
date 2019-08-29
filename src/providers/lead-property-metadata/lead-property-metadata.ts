@@ -56,7 +56,6 @@ export class LeadPropertyMetadataProvider {
         id: 'rooms',
         title: 'חדרים',
         description: 'מספר חדרים מבוקש',
-        image: 'assets/img/ica-slidebox-img-3.png',
         options: [
           new PropertyOption("1"),
           new PropertyOption("2"),
@@ -70,10 +69,25 @@ export class LeadPropertyMetadataProvider {
         filterable: true
       },
       {
+        id: 'meters',
+        title: 'מטרים',
+        description: 'שטח מבוקש במטרים',
+        options: [
+          new PropertyOption("עד 50"),
+          new PropertyOption("50 - 100"),
+          new PropertyOption("100 - 200"),
+          new PropertyOption("200 - 500"),
+          new PropertyOption("יותר מ-500")
+        ],
+        icon: 'code',
+        type: LeadPropertyType.StringSingleValue,
+        filterable: true,
+        hidden: true
+      },
+      {
         id: 'budget',
         title: 'תקציב',
         description: 'תקציב בשקלים',
-        image: 'assets/img/ica-slidebox-img-3.png',
         icon: 'cash',
         type: LeadPropertyType.Budget,
         filterable: false
@@ -150,7 +164,7 @@ export class LeadPropertyMetadataProvider {
   }
 
   getDealTypeByLeadType(leadTypeId: LeadTypeID): DealType {
-    if (leadTypeId === LeadTypeID.Buyer || leadTypeId === LeadTypeID.Seller){
+    if (leadTypeId === LeadTypeID.Buyer || leadTypeId === LeadTypeID.Seller) {
       return DealType.Sell
     }
 

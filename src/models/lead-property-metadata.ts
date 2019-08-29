@@ -16,6 +16,7 @@ export class LeadPropertyMetadata {
   public icon?: string;
   public type: LeadPropertyType;
   public filterable: boolean;
+  public hidden?: boolean;
 
   static getValueString(
     leadPropertyMetadata: LeadPropertyMetadata,

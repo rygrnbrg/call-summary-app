@@ -22,6 +22,9 @@ p.light,
   @extend .cover-bg;
 }
 
+.margin-top{
+  margin-top: $content-margin;
+}
 .select-text {
   margin-left: $content-margin;
 }
