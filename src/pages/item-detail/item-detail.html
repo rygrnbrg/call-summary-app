@@ -4,8 +4,12 @@
       {{item.name}}
       <ion-note class="title-note" *ngIf="item.created">{{item.created.toDate() | date: 'dd/MM/yy'}}</ion-note>
     </ion-title>
+        <ion-buttons start>
+      <button ion-button (click)="cancel()">
+        <ion-icon name="close"></ion-icon>
+      </button>
+    </ion-buttons>
   </ion-navbar>
-
 </ion-header>
 
 <ion-content>

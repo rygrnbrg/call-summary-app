@@ -264,8 +264,26 @@ export class LeadsPage {
   }
 
   itemClicked(item: Lead) {
-    this.navCtrl.push('ItemDetailPage', {
-      item: item
-    });
+    let modal = this.modalCtrl.create('ItemDetailPage', { item: item });
+
+    modal.onDidDismiss((editedItem: Lead) => {
+      if (editedItem) {
+        this.updateItem(item, editedItem, this.leads);
+        this.updateItem(item, editedItem, this.leadsSearchResults);
+      }
+    })
+
+    modal.present();
+  }
+
+  private updateItem(item: Lead, editedItem: Lead, leads: any[]) {
+    if (leads) {
+      let index = leads.indexOf(item);
+      if (index > -1) {
+        let lead = <Lead>leads[index];
+        lead.comments = editedItem.comments;
+        lead.relevant = editedItem.relevant;
+      }
+    }
   }
 }

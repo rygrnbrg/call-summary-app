@@ -1,8 +1,7 @@
-import { MessagePage } from './../message/message';
 import { Contact } from './../../models/lead';
 import { LeadsProvider } from './../../providers/leads/leads';
 import { Component } from "@angular/core";
-import { IonicPage, NavParams, ToastController, ModalController, AlertController } from "ionic-angular";
+import { IonicPage, NavParams, ToastController, ModalController, AlertController, ViewController, Platform } from "ionic-angular";
 import { LeadPropertyMetadataProvider } from "../../providers/lead-property-metadata/lead-property-metadata";
 import { LeadPropertyMetadata, LeadPropertyType } from "../../models/lead-property-metadata";
 import { Lead } from "../../models/lead";
@@ -39,14 +38,17 @@ export class ItemDetailPage {
     private modalCtrl: ModalController,
     private callNumber: CallNumber,
     private alertCtrl: AlertController,
+    private viewCtrl: ViewController,
+    private platform: Platform
   ) {
     this.leadPropertiesMetadata = leadPropertyMetadataProvider.get();
     let item = navParams.get("item");
     this.loadItem(item);
-    this.refreshItem();
+    // this.refreshItem();
   }
 
   ionViewDidLoad() {
+    let backButtonSubscription = this.platform.backButton.subscribe(()=> this.cancel());
     this.subscriptions = [];
 
     let translationSubscription = this.translateService.get([
@@ -54,7 +56,7 @@ export class ItemDetailPage {
         this.translations = values;
       });
 
-    this.subscriptions.push(translationSubscription);
+    this.subscriptions.push(translationSubscription, backButtonSubscription);
   }
 
   ionViewDidLeave() {
@@ -123,18 +125,18 @@ export class ItemDetailPage {
       if (result && result.success) {
         let message = this.translations.LEADS_RECIEVED_MESSAGE.replace("{numberOfLeads}", result.sentCount);
         this.showToast(message);
-        this.addMessageSentComments(result.text);      
+        this.addMessageSentComments(result.text);
       }
     })
     modal.present();
   }
 
-  
+
   private addMessageSentComments(text: string) {
     let comment = new Comment(text, new Date(Date.now()), "", CommentType.MessageSent);
 
     let convertedLead = this.leadsProvider.convertDbObjectToLead(this.item, this.item.type)
-    this.leadsProvider.addComment(convertedLead, comment).then(x=> this.refreshItem());
+    this.leadsProvider.addComment(convertedLead, comment).then(x => this.refreshItem());
   }
 
   public openComment(comment: Comment) {
@@ -168,8 +170,8 @@ export class ItemDetailPage {
         return "clipboard";
     }
   }
- 
-  public getCommentTitle(comment: Comment){
+
+  public getCommentTitle(comment: Comment) {
     switch (comment.commentType) {
       case CommentType.MessageSent:
         return 'MESSAGE_SENT_TITLE';
@@ -193,6 +195,10 @@ export class ItemDetailPage {
       default:
         return this.item[property.id];
     }
+  }
+
+  public cancel() {
+    this.viewCtrl.dismiss(this.item);
   }
 
   private getBudget(value: number): string {
