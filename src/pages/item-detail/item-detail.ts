@@ -50,7 +50,7 @@ export class ItemDetailPage {
     this.subscriptions = [];
 
     let translationSubscription = this.translateService.get([
-      'GENERAL_ACTION_ERROR']).subscribe(values => {
+      'GENERAL_ACTION_ERROR', 'LEADS_RECIEVED_MESSAGE']).subscribe(values => {
         this.translations = values;
       });
 
@@ -123,9 +123,18 @@ export class ItemDetailPage {
       if (result && result.success) {
         let message = this.translations.LEADS_RECIEVED_MESSAGE.replace("{numberOfLeads}", result.sentCount);
         this.showToast(message);
+        this.addMessageSentComments(result.text);      
       }
     })
     modal.present();
+  }
+
+  
+  private addMessageSentComments(text: string) {
+    let comment = new Comment(text, new Date(Date.now()), "", CommentType.MessageSent);
+
+    let convertedLead = this.leadsProvider.convertDbObjectToLead(this.item, this.item.type)
+    this.leadsProvider.addComment(convertedLead, comment).then(x=> this.refreshItem());
   }
 
   public openComment(comment: Comment) {

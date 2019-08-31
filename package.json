@@ -1,6 +1,6 @@
 {
   "name": "Nadlanit",
-  "version": "0.1.6",
+  "version": "0.1.9",
   "author": "Ionic Framework",
   "homepage": "http://ionicframework.com/",
   "private": true,
@@ -88,7 +88,7 @@
       "cordova-plugin-ionic": {
         "APP_ID": "1:433595381418:android:acf524304cb46d31",
         "CHANNEL_NAME": "Master",
-        "UPDATE_METHOD": "background"
+        "UPDATE_METHOD": "none"
       },
       "cordova-support-google-services": {}
     },

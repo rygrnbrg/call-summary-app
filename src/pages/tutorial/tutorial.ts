@@ -133,6 +133,12 @@ export class TutorialPage {
       prop => prop.id === propertyId
     );
 
+    let slide = this.getSlide(propertyId);
+
+    if (!slide) {
+      return null;
+    }
+
     let slideValues = this.getSlide(propertyId)
       .options.filter(button => button.selected)
       .map(button => button.title);

@@ -19,3 +19,11 @@
 git add .
 git commit -m "Your Awesome Changes!"
 git push ionic master
+
+6. Ionic Update
+C:\Users\Roy\callSummaryApp\platforms\android\android.json
+edit the line "xml": "<string name=\"ionic_update_method\">none</string>"
+
+C:\Users\Roy\callSummaryApp\platforms\android\app\src\main\res\values\strings.xml
+check update method appears only once and correct
+
