@@ -1,8 +1,9 @@
+import { Area } from './../../providers/user/user';
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
-
+import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
+import { User } from '../../providers';
 import { Settings } from '../../providers';
 
 /**
@@ -18,15 +19,20 @@ import { Settings } from '../../providers';
 export class SettingsPage {
   // Our local settings object
   options: any;
-
   settingsReady = false;
 
   form: FormGroup;
-
   profileSettings = {
-    page: 'profile',
-    pageTitleKey: 'SETTINGS_PAGE_PROFILE'
+   page: 'profile',
+   pageTitleKey: 'SETTINGS_PAGE_PROFILE'
   };
+
+  areasSettings = {
+    page: 'areas',
+    pageTitleKey: 'SETTINGS_PAGE_AREAS'
+  };
+  public areas : Area[];
+  private translations: any;
 
   page: string = 'main';
   pageTitleKey: string = 'SETTINGS_TITLE';
@@ -38,35 +44,36 @@ export class SettingsPage {
     public settings: Settings,
     public formBuilder: FormBuilder,
     public navParams: NavParams,
-    public translate: TranslateService) {
+    public translate: TranslateService,
+    private alertCtrl: AlertController,
+    private user: User) {
+      this.translate.get([
+        'SMS_MESSAGE_WILL_BE_SENT_TO', 'CONTACTS', 'GENERAL_CANCEL', 'GENERAL_APPROVE']).subscribe(values => {
+          this.translations = values;
+        });
   }
-
   _buildForm() {
     let group: any = {
       option1: [this.options.option1],
       option2: [this.options.option2],
       option3: [this.options.option3],
     };
-
+    
     switch (this.page) {
       case 'main':
         break;
-      case 'profile':
-        group = {
-          option4: [this.options.option4]
-        };
-        break;
+       case 'profile':
+         group = {
+           option4: [this.options.option4]
+         };
+         break;
       case 'areas':
-        group = {
-          option4: [this.options.option4]
-        };
+        this.areas = this.user.getUserData().areas;
         break;
     }
-    this.form = this.formBuilder.group(group);
-
-    // Watch the form for changes, and
+     // Watch the form for changes, and
     this.form.valueChanges.subscribe((v) => {
-      this.settings.merge(this.form.value);
+       this.settings.merge(this.form.value);
     });
   }
 
@@ -96,5 +103,36 @@ export class SettingsPage {
 
   ngOnChanges() {
     console.log('Ng All Changes');
+  }
+
+  public confirmAreaRemove(area: Area) {
+    let message = `${this.translations.SETTINGS_AREAS_DELETE_CONFIRM}`;
+    message.replace('{area}', area.name);
+    const prompt = this.alertCtrl.create({
+      message: message,
+      buttons: [
+        {
+          text: this.translations.GENERAL_CANCEL,
+          handler: data => {
+
+          },
+          cssClass: 'danger-color'
+        },
+        {
+          text: this.translations.GENERAL_APPROVE,
+          handler: data => {
+            this.removeArea(area).then();
+          },
+          cssClass: 'primary'
+        }
+      ]
+    });
+    prompt.present();
+  }
+
+  private removeArea(area: Area): Promise<void>{
+    return this.user.removeArea(area).then(()=>{
+      this.areas.splice(this.areas.indexOf(area));
+    });
   }
 }

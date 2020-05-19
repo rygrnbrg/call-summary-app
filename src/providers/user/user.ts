@@ -88,10 +88,14 @@ export class User {
 
   private initUser(user: firebase.User) {
     this._user = user;
+    this.initAreas();
+  }
+
+  private initAreas(){
     this._areas = [];
     let areasCollectionRef = this.afStore
         .collection("users")
-        .doc(user.email)
+        .doc(this._user.email)
         .collection("areas", ref => ref.orderBy("name", "asc"));
       this._areasRef = areasCollectionRef;
       this._areasRef.ref.get().then(areas => {
@@ -103,13 +107,20 @@ export class User {
       this.initRoysAreas(); //todo: remove
   }
 
-  private addArea(name: string) {
+  public addArea(name: string): Promise<void> {
     let area = { name: name };
-    this._areasRef.ref.where("name", "==", name).get().then((querySnapshot) => {
+    return this._areasRef.ref.where("name", "==", name).get().then((querySnapshot) => {
       if (querySnapshot.size == 0){
-        this._areasRef.add(area);
+        return this._areasRef.add(area);
       }
-    });
+    }).then(()=> this.initAreas());
+  }
+  public removeArea(area: Area): Promise<void>{
+    return this._areasRef.ref.where("name", "==", area.name).get().then((querySnapshot) => {
+      return querySnapshot.forEach(x=> {
+        return x.ref.delete();
+      });
+    }).then(()=> this.initAreas());
   }
 
   private initRoysAreas() {

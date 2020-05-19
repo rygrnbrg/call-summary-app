@@ -42,8 +42,9 @@
 
   "SETTINGS_PROFILE_BUTTON": "Edit Profile",
 
-  "SETTINGS_PAGE_AREAS": "האזורים שלי",
-  "SETTINGS_AREAS_BUTTON": "האזורים שלי",
+  "SETTINGS_PAGE_AREAS": "אזורים",
+  "SETTINGS_AREAS_BUTTON": "אזורים",
+  "SETTINGS_AREAS_DELETE_CONFIRM": "האם למחוק את האזור {area}?",
 
   "WELCOME_TITLE": "ברוכים הבאים",
 
@@ -96,8 +97,8 @@
   "VERIFY_BUTTON": "לחצתי, בואו נמשיך!",
 
   "PASSWORD_RECOVERY_TITLE": "שחזור סיסמה",
-  "PASSWORD_RECOVERY_MESSAGE": "הזן את כתובת הדואר האלקטרוני איתה נרשמת",
-  "PASSWORD_RECOVERY_SUCCESS": "שלחנו לך קישור לאיפוס הסיסמה לכתובת הדואר האלקטרוני שהוזנה",
+  "PASSWORD_RECOVERY_MESSAGE": "יש להזין את כתובת הדואר האלקטרוני איתה נרשמת",
+  "PASSWORD_RECOVERY_SUCCESS": "קישור לאיפוס הסיסמה נשלח לכתובת הדואר האלקטרוני שהוזנה",
   "PASSWORD_RECOVERY_FAIL": "איפוס הסיסמה נכשל, אנא נסה שנית",
   "PASSWORD_RECOVERY_NO_ACCOUNT": "הכתובת שהוזנה לא רשומה אצלנו במערכת",
 
