@@ -9,4 +9,4 @@ export const SendVerificationPage = 'SendVerificationPage';
 
 export const Tab1Root = 'HomePage';
 export const Tab2Root = 'LeadsPage';
-// export const Tab3Root = 'SettingsPage';
+export const Tab3Root = 'SettingsPage';

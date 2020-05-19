@@ -20,7 +20,7 @@
 </ion-header>
 
 <ion-content>
-  <lead-type-select [value]="selectedLeadType" [dropdownSelect]="true" label="LEAD_TYPE_SELECTION"
+  <lead-type-select *ngIf="selectedLeadType" [value]="selectedLeadType" [dropdownSelect]="true" label="LEAD_TYPE_SELECTION"
     (valueChanged)="leadTypeChanged($event)">
   </lead-type-select>
   <ion-list [hidden]="filterSearchRunning">
@@ -39,7 +39,7 @@
       [dealType]="selectedDealType" (valueChanged)="budgetChanged($event)">
     </range-budget-slider>
 
-    <leads-list [hidden]="activeFilters" [leads]="leads" [showOnlyRelevant]="relevantOnly"
+    <leads-list [hidden]="activeFilters || !leads" [leads]="leads" [showOnlyRelevant]="relevantOnly"
       (itemClicked)="itemClicked($event)"></leads-list>
     <!-- <ion-list-header *ngIf="!leadsSearchResults || leadsSearchResults.length === 0">
       {{leadsFoundMessage}}

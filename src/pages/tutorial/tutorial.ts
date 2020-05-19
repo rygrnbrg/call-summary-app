@@ -1,4 +1,4 @@
-import { LeadTypeID } from './../../models/lead-property-metadata';
+import { LeadType } from './../../models/lead-property-metadata';
 import { Component, ViewChild } from "@angular/core";
 import { IonicPage, MenuController, NavController, Platform, Slides, NavParams } from "ionic-angular";
 import { LeadPropertyMetadataProvider } from "../../providers/lead-property-metadata/lead-property-metadata";
@@ -19,7 +19,6 @@ export class TutorialPage {
   public leadPropertyType = LeadPropertyType;
   public leadPropertiesMetadata: LeadPropertyMetadata[];
   public dealType: number = DealType.Sell;
-
   public dir: string = "rtl";
   private showSkip: boolean = true;
 
@@ -32,7 +31,8 @@ export class TutorialPage {
     public numberFormatPipe: NumberFormatPipe,
     public leadPropertyMetadataProvider: LeadPropertyMetadataProvider,
     public leads: LeadsProvider,
-    public navParams: NavParams) {
+    public navParams: NavParams
+  ) {
     this.item = navParams.get("item");
     this.dir = platform.dir();
     this.leadPropertiesMetadata = this.leadPropertyMetadataProvider.get().filter(x => !x.hidden);
@@ -109,7 +109,7 @@ export class TutorialPage {
     this.leads.add(this.resultLead).then(() =>
       this.navCtrl.setRoot(
         "TabsPage",
-        { tab: "LeadsPage" },
+        { tab: "LeadsPage", params: { leadType: new LeadType(this.resultLead.type) } },
         {
           animate: true,
           direction: "forward"

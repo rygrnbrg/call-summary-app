@@ -12,18 +12,18 @@ export class LeadTypeSelectComponent {
   @Input() public value: LeadType;
   @Input() public label: string;
   @Input() public dropdownSelect: boolean;
- 
+
   @Output() valueChanged = new EventEmitter<LeadType>();
   constructor() {
-    this.initValue();
-  }
 
-  private initValue() {
+  }
+  ngOnInit() {
+    this.leadTypes = LeadType.getAllLeadTypes();
     if (this.value) {
-      this.selectedLeadType = this.value;
+      let val = this.leadTypes.find(x => x.id === this.value.id);
+      this.selectedLeadType = val;
     }
     else {
-      this.leadTypes = LeadType.getAllLeadTypes();
       this.selectedLeadType = this.leadTypes[0];
     }
   }

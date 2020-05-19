@@ -45,13 +45,18 @@ export class SettingsPage {
     let group: any = {
       option1: [this.options.option1],
       option2: [this.options.option2],
-      option3: [this.options.option3]
+      option3: [this.options.option3],
     };
 
     switch (this.page) {
       case 'main':
         break;
       case 'profile':
+        group = {
+          option4: [this.options.option4]
+        };
+        break;
+      case 'areas':
         group = {
           option4: [this.options.option4]
         };

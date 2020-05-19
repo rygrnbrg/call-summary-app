@@ -3,6 +3,7 @@ import { LeadPropertyType } from '../../models/lead-property-metadata';
 import { Injectable } from '@angular/core';
 import { PropertyOption, LeadPropertyMetadata } from '../../models/lead-property-metadata'
 import * as _ from "lodash";
+import { User } from '../../providers';
 
 @Injectable()
 export class LeadPropertyMetadataProvider {
@@ -10,7 +11,8 @@ export class LeadPropertyMetadataProvider {
   public static relevanceKey = "relevant";
   public static commentKey = "comment";
 
-  constructor() {
+  constructor(    
+    private user: User) {
     this.properties = [
       // {
       //   id: 'type',
@@ -96,30 +98,7 @@ export class LeadPropertyMetadataProvider {
         id: 'area',
         title: 'אזור',
         description: 'האזור המבוקש',
-        options: [
-          new PropertyOption('מרכז העיר'),
-          new PropertyOption('צפון העיר'),
-          new PropertyOption('דרום העיר'),
-          new PropertyOption('שכונות הרצף'),
-          new PropertyOption('הגוש הדתי'),
-          new PropertyOption('רמת אפריים'),
-          new PropertyOption('רמת חן'),
-          new PropertyOption('נת 600 / נת 542'),
-          new PropertyOption('קו החוף'),
-          new PropertyOption('נוף גלים'),
-          new PropertyOption('עיר ימים'),
-          new PropertyOption('פולג'),
-          new PropertyOption('אגמים'),
-          new PropertyOption('האירוסים'),
-          new PropertyOption('נורדאו'),
-          new PropertyOption('דורה'),
-          new PropertyOption('אזורים'),
-          new PropertyOption('קרית השרון'),
-          new PropertyOption('ותיקים / עמליה'),
-          new PropertyOption('מושבים'),
-          new PropertyOption('א.ת החדש'),
-          new PropertyOption('א.ת אחר')
-        ],
+        options: this.user.getUserData().areas.map(x=> new PropertyOption(x.name)),
         icon: 'md-map',
         type: LeadPropertyType.StringMultivalue,
         filterable: true

@@ -3,7 +3,7 @@ import { LeadPropertyMetadataProvider } from './../../providers/lead-property-me
 import { LeadType, LeadPropertyType, DealType } from './../../models/lead-property-metadata';
 import { LeadFilter } from './../../models/lead-filter';
 import { Component } from '@angular/core';
-import { IonicPage, ModalController, NavController, LoadingController, Loading, ToastController } from 'ionic-angular';
+import { IonicPage, ModalController, LoadingController, Loading, ToastController, NavParams } from 'ionic-angular';
 import { LeadsProvider } from '../../providers/leads/leads';
 import { Lead, Contact } from '../../models/lead';
 import { AvatarPipe } from '../../pipes/avatar/avatar';
@@ -13,6 +13,7 @@ import { User } from '../../providers';
 import { rangeValue } from '../../components/range-budget-slider/range-budget-slider';
 import { smsResult } from '../../models/smsResult';
 import { Comment } from '../../models/comment';
+import { Storage } from '@ionic/storage';
 
 @IonicPage()
 @Component({
@@ -42,36 +43,62 @@ export class LeadsPage {
   leadsFoundMessage: string;
 
   constructor(
-    private navCtrl: NavController,
     private leadsProvider: LeadsProvider,
     private modalCtrl: ModalController,
     private loadingCtrl: LoadingController,
     private translateService: TranslateService,
     private toastCtrl: ToastController,
     private leadPropertyMetadataProvider: LeadPropertyMetadataProvider,
-    private user: User) {
+    private user: User,
+    private localSorage: Storage,
+    private navParams: NavParams) {
   }
 
   ionViewDidLoad() {
     this.loading = this.loadingCtrl.create();
     this.subscriptions = [];
     this.leadTypes = LeadType.getAllLeadTypes();
-    this.selectedLeadType = this.leadTypes[0];
-    this.selectedDealType = this.leadPropertyMetadataProvider.getDealTypeByLeadType(this.selectedLeadType.id);
-    this.loading.present();
-    this.initLeadSubscription();
 
     let translationSubscription = this.translateService.get([
       'LIST_LOADING_ERROR', 'LEADS_RECIEVED_MESSAGE', 'LEADS_FOUND']).subscribe(values => {
         this.translations = values;
       });
-
     this.subscriptions.push(translationSubscription);
+
+    this.initLeadType().then(() => {
+      this.selectedDealType = this.leadPropertyMetadataProvider.getDealTypeByLeadType(this.selectedLeadType.id);
+      this.loading.present();
+      this.initLeadSubscription();
+    });
   }
 
   ionViewDidLeave() {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
     this.loading.dismiss();
+  }
+
+  private async initLeadType(): Promise<void> {
+    let paramsKey = 'params';
+    let leadTypeKey = 'leadType';
+
+    return this.getFromLocalStorage(paramsKey, leadTypeKey);
+  }
+
+  private async getFromLocalStorage(paramsKey: string, leadTypeKey: string){
+    let value = await this.localSorage.get(paramsKey);
+    if (value) {
+      let storageParams = value;
+      if (storageParams) {
+        let leadType = (<LeadType>storageParams[leadTypeKey]);
+        if (leadType) {
+          this.selectedLeadType = leadType;
+        }
+        this.localSorage.remove(paramsKey);
+      }
+    }
+    if (!this.selectedLeadType) {
+      this.selectedLeadType = this.leadTypes[0];
+    }
   }
 
   private initLeadSubscription() {
