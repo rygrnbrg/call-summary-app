@@ -26,7 +26,8 @@ export class User {
   private _user: firebase.User;
   private _areasRef : AngularFirestoreCollection<firestore.DocumentData>;
   private _areas : Area[];
-
+  private defaultAreasInitiated = false;
+  
   constructor(
     private authProvider: AuthProvider,     
     private afStore: AngularFirestore) {
@@ -103,8 +104,11 @@ export class User {
           this._areas.push({ name: area.data().name});
         });
       });
+      if (!this.defaultAreasInitiated){
+        this.defaultAreasInitiated = true;
+        this.initRoysAreas(); //todo: remove      
+      }
 
-      this.initRoysAreas(); //todo: remove
   }
 
   public addArea(name: string): Promise<void> {
@@ -115,6 +119,7 @@ export class User {
       }
     }).then(()=> this.initAreas());
   }
+
   public removeArea(area: Area): Promise<void>{
     return this._areasRef.ref.where("name", "==", area.name).get().then((querySnapshot) => {
       return querySnapshot.forEach(x=> {

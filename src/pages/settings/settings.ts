@@ -2,7 +2,7 @@ import { Area } from './../../providers/user/user';
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
-import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController, LoadingController, Loading } from 'ionic-angular';
 import { User } from '../../providers';
 import { Settings } from '../../providers';
 
@@ -17,6 +17,10 @@ import { Settings } from '../../providers';
   templateUrl: 'settings.html'
 })
 export class SettingsPage {
+  public areas : Area[];
+  private loading: Loading;
+  private translations: any;
+
   // Our local settings object
   options: any;
   settingsReady = false;
@@ -31,8 +35,6 @@ export class SettingsPage {
     page: 'areas',
     pageTitleKey: 'SETTINGS_PAGE_AREAS'
   };
-  public areas : Area[];
-  private translations: any;
 
   page: string = 'main';
   pageTitleKey: string = 'SETTINGS_TITLE';
@@ -45,10 +47,11 @@ export class SettingsPage {
     public formBuilder: FormBuilder,
     public navParams: NavParams,
     public translate: TranslateService,
+    private loadingCtrl: LoadingController,
     private alertCtrl: AlertController,
     private user: User) {
       this.translate.get([
-        'SMS_MESSAGE_WILL_BE_SENT_TO', 'CONTACTS', 'GENERAL_CANCEL', 'GENERAL_APPROVE']).subscribe(values => {
+        'SETTINGS_AREAS_DELETE_CONFIRM', 'GENERAL_CANCEL', 'GENERAL_APPROVE']).subscribe(values => {
           this.translations = values;
         });
   }
@@ -107,7 +110,7 @@ export class SettingsPage {
 
   public confirmAreaRemove(area: Area) {
     let message = `${this.translations.SETTINGS_AREAS_DELETE_CONFIRM}`;
-    message.replace('{area}', area.name);
+    message = message.replace('{area}', '"' + area.name + '"');
     const prompt = this.alertCtrl.create({
       message: message,
       buttons: [
@@ -121,7 +124,7 @@ export class SettingsPage {
         {
           text: this.translations.GENERAL_APPROVE,
           handler: data => {
-            this.removeArea(area).then();
+            this.removeArea(area);
           },
           cssClass: 'primary'
         }
@@ -131,8 +134,11 @@ export class SettingsPage {
   }
 
   private removeArea(area: Area): Promise<void>{
+    this.loading = this.loadingCtrl.create();
+    this.loading.present()
     return this.user.removeArea(area).then(()=>{
-      this.areas.splice(this.areas.indexOf(area));
+      this.loading.dismiss();
+      this.areas.splice(this.areas.indexOf(area), 1);
     });
   }
 }
