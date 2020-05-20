@@ -98,7 +98,7 @@ export class LeadPropertyMetadataProvider {
         id: 'area',
         title: 'אזור',
         description: 'האזור המבוקש',
-        options: this.user.getUserData().areas.map(x=> new PropertyOption(x.name)),
+        options: this.getAreasOptions(),
         icon: 'md-map',
         type: LeadPropertyType.StringMultivalue,
         filterable: true
@@ -148,6 +148,10 @@ export class LeadPropertyMetadataProvider {
     }
 
     return DealType.Rent;
+  }
+
+  getAreasOptions(): PropertyOption[]{
+    return this.user.getUserData().areas.map(x=> new PropertyOption(x.name))
   }
 }
 

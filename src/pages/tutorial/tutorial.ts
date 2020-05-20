@@ -1,11 +1,13 @@
+import { TranslateService } from '@ngx-translate/core';
 import { LeadType } from './../../models/lead-property-metadata';
 import { Component, ViewChild } from "@angular/core";
-import { IonicPage, MenuController, NavController, Platform, Slides, NavParams } from "ionic-angular";
+import { IonicPage, MenuController, NavController, Platform, Slides, NavParams, Loading, LoadingController, AlertController, ToastController } from "ionic-angular";
 import { LeadPropertyMetadataProvider } from "../../providers/lead-property-metadata/lead-property-metadata";
 import { LeadPropertyMetadata, PropertyOption, LeadPropertyType, DealType } from "../../models/lead-property-metadata";
 import { NumberFormatPipe } from "../../pipes/number-format/number-format";
 import { LeadsProvider } from "../../providers/leads/leads";
 import { Lead } from "../../models/lead";
+import { User } from '../../providers';
 
 @IonicPage()
 @Component({
@@ -21,7 +23,10 @@ export class TutorialPage {
   public dealType: number = DealType.Sell;
   public dir: string = "rtl";
   private showSkip: boolean = true;
-
+  private newAreaName: string;
+  private translations: any;
+  private loading: Loading;
+  
   @ViewChild(Slides) slides: Slides;
 
   constructor(
@@ -31,8 +36,19 @@ export class TutorialPage {
     public numberFormatPipe: NumberFormatPipe,
     public leadPropertyMetadataProvider: LeadPropertyMetadataProvider,
     public leads: LeadsProvider,
-    public navParams: NavParams
+    public navParams: NavParams,
+    public translate: TranslateService,
+    private alertCtrl: AlertController,
+    private loadingCtrl: LoadingController,
+    private user: User,
+    private toastCtrl: ToastController,
   ) {
+    this.translate.get([
+      'GENERAL_CANCEL', 'GENERAL_APPROVE', 'SETTINGS_AREAS_ADD_TITLE', 
+      'SETTINGS_AREAS_ADD_PLACEHOLDER','GENERAL_ACTION_ERROR',
+      'SETTINGS_AREAS_ADD_SUCCESS']).subscribe(values => {
+        this.translations = values;
+      });
     this.item = navParams.get("item");
     this.dir = platform.dir();
     this.leadPropertiesMetadata = this.leadPropertyMetadataProvider.get().filter(x => !x.hidden);
@@ -45,11 +61,17 @@ export class TutorialPage {
   }
 
   ionViewDidLoad() {
+    this.updateAreas();
     this.leadPropertiesMetadata.forEach(slide =>
       LeadPropertyMetadata.reset(slide)
     );
     this.resultLead = new Lead(this.item.phone, this.item.name, this.item.type);
     this.dealType = this.leadPropertyMetadataProvider.getDealTypeByLeadType(this.item.type);
+  }
+
+  private updateAreas(){
+    this.leadPropertiesMetadata.find(x=> x.id == 'area').options = 
+    this.leadPropertyMetadataProvider.getAreasOptions();
   }
 
   public onSlideChangeStart(slider) {
@@ -91,12 +113,45 @@ export class TutorialPage {
     slide.value = transform(value);
   }
 
-  private handleSingleValueButtonClick(slide: LeadPropertyMetadata, button: PropertyOption) {
-    if (button.selected) {
-      slide.options.forEach(item => {
-        item.selected = item === button ? true : false;
-      });
-    }
+  public addAreaModal() {
+    this.newAreaName = "";
+    const prompt = this.alertCtrl.create({
+      title: this.translations.SETTINGS_AREAS_ADD_TITLE,
+      cssClass: "rtl-modal",
+      inputs: [
+        {
+          name: 'area',
+          placeholder: this.translations.SETTINGS_AREAS_ADD_PLACEHOLDER,
+          value: this.newAreaName
+        },
+      ],
+      buttons: [
+        {
+          text: this.translations.GENERAL_CANCEL,
+          handler: data => {
+
+          }
+        },
+        {
+          text: this.translations.GENERAL_APPROVE,
+          handler: data => {
+            this.loading = this.loadingCtrl.create();
+            this.loading.present()
+            this.user.addArea(data.area).then(()=>{
+              let areasOptions = this.leadPropertyMetadataProvider.getAreasOptions();
+              let newOption = areasOptions.find(x=>x.title == data.area);
+              newOption.selected = true;
+              this.leadPropertiesMetadata.find(x=>x.id == 'area').options.unshift(newOption);
+              this.user.getUserData().areas;
+              this.loading.dismiss();
+            }, ()=>{            
+              this.showToast(this.translations.GENERAL_ACTION_ERROR);
+            });//todo:handle error
+          }
+        }
+      ]
+    });
+    prompt.present();
   }
 
   public submitSummary() {
@@ -118,6 +173,13 @@ export class TutorialPage {
     );
   }
 
+  private handleSingleValueButtonClick(slide: LeadPropertyMetadata, button: PropertyOption) {
+    if (button.selected) {
+      slide.options.forEach(item => {
+        item.selected = item === button ? true : false;
+      });
+    }
+  }
   private getSlide(propertyId: string) {
     return this.leadPropertiesMetadata.find(slide => slide.id === propertyId);
   }
@@ -154,5 +216,14 @@ export class TutorialPage {
     }
 
     return null;
+  }
+
+  private showToast(message: string) {
+    let toast = this.toastCtrl.create({
+      message: message,
+      duration: 3000,
+      position: 'top'
+    });
+    toast.present();
   }
 }

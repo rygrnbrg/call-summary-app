@@ -42,9 +42,12 @@
 
   "SETTINGS_PROFILE_BUTTON": "Edit Profile",
 
-  "SETTINGS_PAGE_AREAS": "אזורים",
-  "SETTINGS_AREAS_BUTTON": "אזורים",
+  "SETTINGS_PAGE_AREAS": "אזורי נכסים",
+  "SETTINGS_AREAS_BUTTON": "אזורי נכסים",
   "SETTINGS_AREAS_DELETE_CONFIRM": "האם למחוק את האזור {area}?",
+  "SETTINGS_AREAS_ADD_TITLE": "הוספת אזור",
+  "SETTINGS_AREAS_ADD_PLACEHOLDER": "שם האזור",
+  "SETTINGS_AREAS_ADD_SUCCESS": "האזור נוסף בהצלחה",
 
   "WELCOME_TITLE": "ברוכים הבאים",
 

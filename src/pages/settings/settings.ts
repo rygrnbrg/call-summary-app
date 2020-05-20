@@ -1,8 +1,9 @@
+import { ToastController } from 'ionic-angular';
 import { Area } from './../../providers/user/user';
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
-import { IonicPage, NavController, NavParams, AlertController, LoadingController, Loading } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController, LoadingController, Loading, ModalController } from 'ionic-angular';
 import { User } from '../../providers';
 import { Settings } from '../../providers';
 
@@ -20,6 +21,7 @@ export class SettingsPage {
   public areas : Area[];
   private loading: Loading;
   private translations: any;
+  private newAreaName: string;
 
   // Our local settings object
   options: any;
@@ -49,9 +51,12 @@ export class SettingsPage {
     public translate: TranslateService,
     private loadingCtrl: LoadingController,
     private alertCtrl: AlertController,
+    private toastCtrl: ToastController,
     private user: User) {
       this.translate.get([
-        'SETTINGS_AREAS_DELETE_CONFIRM', 'GENERAL_CANCEL', 'GENERAL_APPROVE']).subscribe(values => {
+        'SETTINGS_AREAS_DELETE_CONFIRM', 'GENERAL_CANCEL', 'GENERAL_APPROVE',
+        'SETTINGS_AREAS_ADD_TITLE', 'SETTINGS_AREAS_ADD_PLACEHOLDER','GENERAL_ACTION_ERROR',
+        'SETTINGS_AREAS_ADD_SUCCESS']).subscribe(values => {
           this.translations = values;
         });
   }
@@ -140,5 +145,52 @@ export class SettingsPage {
       this.loading.dismiss();
       this.areas.splice(this.areas.indexOf(area), 1);
     });
+  }
+
+  public addAreaModal() {
+    this.newAreaName = "";
+    const prompt = this.alertCtrl.create({
+      title: this.translations.SETTINGS_AREAS_ADD_TITLE,
+      cssClass: "rtl-modal",
+      inputs: [
+        {
+          name: 'area',
+          placeholder: this.translations.SETTINGS_AREAS_ADD_PLACEHOLDER,
+          value: this.newAreaName
+        },
+      ],
+      buttons: [
+        {
+          text: this.translations.GENERAL_CANCEL,
+          handler: data => {
+
+          }
+        },
+        {
+          text: this.translations.GENERAL_APPROVE,
+          handler: data => {
+            this.loading = this.loadingCtrl.create();
+            this.loading.present()
+            this.user.addArea(data.area).then(()=>{
+              this.areas = this.user.getUserData().areas;
+              this.loading.dismiss();
+              this.showToast(this.translations.SETTINGS_AREAS_ADD_SUCCESS);
+            }, ()=>{            
+              this.showToast(this.translations.GENERAL_ACTION_ERROR);
+            });//todo:handle error
+          }
+        }
+      ]
+    });
+    prompt.present();
+  }
+
+  private showToast(message: string) {
+    let toast = this.toastCtrl.create({
+      message: message,
+      duration: 3000,
+      position: 'top'
+    });
+    toast.present();
   }
 }

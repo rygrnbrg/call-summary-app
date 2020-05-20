@@ -8,7 +8,7 @@
 
 <ion-content>
   <form [formGroup]="form" *ngIf="settingsReady">
-    <ion-list *ngIf="page == 'main'">
+    <ion-list *ngIf="page == 'main'" class="items-list">
       
       <button ion-item [navPush]="subSettings" [navParams]="areasSettings">
           {{ 'SETTINGS_AREAS_BUTTON' | translate }}
@@ -45,10 +45,16 @@
       </ion-item>
   -->
     </form>
-    <ion-list *ngIf="page == 'areas'">
+    <ion-list *ngIf="page == 'areas'" class="items-list">
         <ion-item *ngFor="let area of areas"  class="items-list">
-        <ion-icon name="close" icon item-end color="danger" (click)="confirmAreaRemove(area)"></ion-icon>
-        <h2>{{area.name}}</h2>
-        </ion-item>      
+          <ion-icon name="close" icon item-end color="danger" (click)="confirmAreaRemove(area)"></ion-icon>
+          <h2>{{area.name}}</h2>
+        </ion-item> 
+        <ion-item class="fab-pad"></ion-item>  
     </ion-list>
+    <ion-fab bottom left *ngIf="page == 'areas'">
+      <button ion-fab (click)="addAreaModal()">
+        <ion-icon name="add"></ion-icon>
+      </button>
+    </ion-fab>
 </ion-content>

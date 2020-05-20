@@ -8,7 +8,6 @@
   <ion-slides pager="true" paginationType="progress" dir="{{ dir }}" (ionSlideWillChange)="onSlideChangeStart($event)">
     <ion-slide *ngFor="let slide of leadPropertiesMetadata; let i = index">
       <ion-content class="pad-left-right">
-        <div class="fab-pad">
           <ion-icon [name]="slide.icon" class="slide-icon"></ion-icon>
           <h3 class="slide-title">{{ slide.title | translate }}</h3>
           <ion-buttons end *ngIf="slide.options?.length">
@@ -20,6 +19,9 @@
                     {{ button.title }}
                   </button>
                 </ion-col>
+              </ion-row>
+              <ion-row [hidden]="slide.type !== leadPropertyType.StringMultivalue">
+                <ion-item class="fab-pad"></ion-item> 
               </ion-row>
               <ion-row *ngIf="slide.id === 'rooms'" class="margin-top">
                 <ion-col col-12>          
@@ -33,18 +35,23 @@
           <div *ngIf="slide.type === leadPropertyType.Budget && isSlideActive(slide)">
             <budget-slider [dealType]="dealType" [value]="this.resultLead.budget" 
             (valueChanged)="setBudget(slide, $event)" (customValueSelected)="goToSlide(i +1);"></budget-slider>
-          </div>
-        </div>
+         </div>
         <ion-fab bottom center>
           <button ion-fab (click)="goToSlide(i + 1)" [hidden]="slide.type !== leadPropertyType.Budget">
             {{ "GENERAL_APPROVE" | translate }}
           </button>
-          <button ion-fab (click)="goToSlide(i + 1)" [hidden]="slide.type !== leadPropertyType.StringMultivalue">
+          <button ion-fab (click)="goToSlide(i + 1)" [hidden]="slide.type !== leadPropertyType.StringMultivalue" >
             {{ "GENERAL_APPROVE" | translate }}
+          </button>
+        </ion-fab>
+        <ion-fab bottom left *ngIf="slide.id == 'area'" >
+          <button ion-fab (click)="addAreaModal()" color="secondary">
+            <ion-icon name="add"></ion-icon>
           </button>
         </ion-fab>
       </ion-content>
     </ion-slide>
+    
     <ion-slide class="final-summary-slide">
       <ion-content>
         <div class="fab-pad">
