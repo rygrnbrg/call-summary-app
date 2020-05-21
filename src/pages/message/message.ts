@@ -40,6 +40,10 @@ export class MessagePage {
     this.askAndroidSMSPermissions();
   }
 
+  public contactsSelectPopup(){
+    
+  }
+
   private askAndroidSMSPermissions() {
     if (this.platform.is("cordova")) {
       this.androidPermissions.checkPermission(this.androidPermissions.PERMISSION.SEND_SMS).then(
