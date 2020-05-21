@@ -5,11 +5,13 @@ import { SMS } from '@ionic-native/sms/ngx';
 import { TranslateService } from '@ngx-translate/core';
 import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
 import { smsResult } from '../../models/smsResult';
+import { AvatarPipe } from "../../pipes/avatar/avatar";
 
 @IonicPage()
 @Component({
   selector: 'page-message',
   templateUrl: 'message.html',
+  providers: [AvatarPipe]
 })
 export class MessagePage {
   public contacts: Contact[] = [];
@@ -59,7 +61,11 @@ export class MessagePage {
     });
   }
 
-  public removeContact(contact: Contact) {
+  public removeContact(contact: Contact): void {
+    if (this.contacts.length == 1){
+      return;
+    }
+    
     this.contacts.splice(this.contacts.indexOf(contact), 1);
   }
 

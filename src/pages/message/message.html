@@ -9,20 +9,25 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
+<ion-content>
   <ion-list>
-    <ion-chip *ngFor="let contact of contacts | slice:0:contactsHeaderLimit" (click)="removeContact(contact)"  color="primary">
-      <ion-label>{{contact.name}}</ion-label>
-      <ion-icon name="close" [hidden]="contacts.length === 1"></ion-icon>
-    </ion-chip>
-    <ion-chip [hidden]="contacts.length <= contactsHeaderLimit" color="secondary" (click)="contactsSelectPopup()">
-      <ion-label>+ {{contacts.length - contactsHeaderLimit}} נוספים</ion-label>
-    </ion-chip>
   </ion-list>
   <ion-list>
-    <ion-item-divider>
+    <ion-item>
       <ion-textarea class="sms-box" rows="5" placeholder="{{'TYPE_SMS_PLACEHOLDER' | translate}}" [(ngModel)]="messageText"></ion-textarea>
-    </ion-item-divider>
+    </ion-item>
+    <ion-list-header>
+    {{'SMS_MESSAGE_WILL_BE_SENT_TO' | translate}}-{{contacts.length}} {{'CONTACTS' | translate}}
+    </ion-list-header>
+    <ion-list class="items-list">
+      <ion-item *ngFor="let contact of contacts" ion-item>
+        <ion-avatar item-start> <img [src]="contact.avatar | avatar: item" /> </ion-avatar>
+        <h2>{{ contact.name }}
+          </h2>
+        <p>{{ contact.phone }}</p>
+        <ion-icon name="close" icon item-end color="danger" (click)="removeContact(contact)" [hidden]="contacts.length === 1"></ion-icon>
+      </ion-item>
+    </ion-list>
   </ion-list>
 
     <ion-fab bottom center [hidden]="!messageText.length">
