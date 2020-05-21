@@ -3,17 +3,30 @@
   <ion-navbar>
     <ion-title>{{ pageTitle }}</ion-title>
   </ion-navbar>
-
+  <div class="header-icon">
+    <div class="header-icon-inner"></div>
+  </div>
 </ion-header>
 
 <ion-content>
   <form [formGroup]="form" *ngIf="settingsReady">
     <ion-list *ngIf="page == 'main'" class="items-list">
-      
+        <ion-list-header>
+            {{ 'SETTINGS_ACCOUNT' | translate }}
+        </ion-list-header>
+      <button menuClose ion-item (click)="logout()">
+        <ion-avatar item-start>
+            <img [src]=" '' | avatar" />
+        </ion-avatar>
+        <h2>{{userData.email}}</h2>
+        <p class="danger">{{'GENERAL_LOGOUT' | translate}}</p>
+    </button>
+      <ion-list-header>
+         {{ 'SETTINGS_PREFERENCES' | translate }}
+     </ion-list-header>
       <button ion-item [navPush]="subSettings" [navParams]="areasSettings">
           {{ 'SETTINGS_AREAS_BUTTON' | translate }}
       </button>
-
       <!-- <ion-item>
         <ion-label>{{ 'SETTINGS_OPTION1' | translate }}</ion-label>
         <ion-toggle formControlName="option1"></ion-toggle>

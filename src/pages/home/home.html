@@ -1,16 +1,21 @@
 <ion-header>
   <ion-navbar>
-    <ion-title></ion-title>
-    <button ion-button menuToggle>
+    <ion-title>
+     {{'HOME_PAGE_TITLE' | translate}}
+    </ion-title>
+    <!-- <button ion-button menuToggle>
       <ion-icon ion-button name="menu"></ion-icon>
-    </button>
+    </button> -->
+    <div class="header-icon">
+      <div class="header-icon-inner"></div>
+    </div>
   </ion-navbar>
 </ion-header>
 <ion-content class="cover-bg">
   <ion-refresher  (ionRefresh)="updateLog($event)">
     <ion-refresher-content  refreshingSpinner="crescent"></ion-refresher-content>
   </ion-refresher>
-  <div class="logo-block"></div>  
+  <!-- <div class="logo-block"></div>   -->
   <div class="bg-color">
   <ion-list class="items-list">
     <ion-list-header (click)="updateLog()">
@@ -23,6 +28,7 @@
       </ion-avatar>
       <h2>{{item.name}}</h2>
       <p>{{item.phone}}</p>
+      <ion-icon item-end name="add-circle-outline"></ion-icon>
       <!-- <ion-note item-end *ngIf="item.created">{{item.created | date : 'dd/MM/yy'}}</ion-note> -->
     </ion-item>
     <ion-item class="fab-pad"></ion-item>

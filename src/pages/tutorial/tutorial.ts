@@ -154,14 +154,16 @@ export class TutorialPage {
     prompt.present();
   }
 
-  public submitSummary() {
+  public submitSummary() {   
+    this.loading = this.loadingCtrl.create();
+    this.loading.present();
     this.resultLead.area = this.getSimpleSlideValue("area");
     this.resultLead.property = this.getSimpleSlideValue("property");
     this.resultLead.rooms = this.getSimpleSlideValue("rooms");
     this.resultLead.source = this.getSimpleSlideValue("source");
     this.resultLead.meters = this.getSimpleSlideValue("meters");
-
-    this.leads.add(this.resultLead).then(() =>
+    this.leads.add(this.resultLead).then(() => {
+    this.loading.dismiss();
       this.navCtrl.setRoot(
         "TabsPage",
         { tab: "LeadsPage", params: { leadType: new LeadType(this.resultLead.type) } },
@@ -170,7 +172,7 @@ export class TutorialPage {
           direction: "forward"
         }
       )
-    );
+      });
   }
 
   private handleSingleValueButtonClick(slide: LeadPropertyMetadata, button: PropertyOption) {

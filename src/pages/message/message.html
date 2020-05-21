@@ -15,7 +15,7 @@
       <ion-label>{{contact.name}}</ion-label>
       <ion-icon name="close" [hidden]="contacts.length === 1"></ion-icon>
     </ion-chip>
-    <ion-chip [hidden]="contacts.length <= contactsHeaderLimit" color="secondary">
+    <ion-chip [hidden]="contacts.length <= contactsHeaderLimit" color="secondary" (click)="contactsSelectPopup()">
       <ion-label>+ {{contacts.length - contactsHeaderLimit}} נוספים</ion-label>
     </ion-chip>
   </ion-list>

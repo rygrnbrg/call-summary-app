@@ -14,13 +14,14 @@ $font-path: "../assets/fonts";
 // The "primary" color is the only required color in the map.
 
 $colors: (
-  primary:    #2C5C84,
-  secondary:  #F7713F,
-  danger:     rgb(116, 35, 51),
-  light:      #F7F7F7,
-  light-darken: #F1F1F1,
-  dark:        #4b4b4b,
-  success:      rgb(60, 72, 97)
+  primary:    #7275e4,
+  secondary:  #ffc12b,
+  danger:     #af3348,
+  light:      #fefefefe,
+  light-darken: #e4e1e1,
+  dark:        #724163,
+  success:      rgb(60, 72, 97),
+  black:        #1e1e1e
   );
 
 
@@ -69,6 +70,8 @@ $text-input-highlight-color-invalid:    color($colors, danger);
 $text-input-placeholder-color:           #999;
 
 $fab-content-margin: 20px;
+
+$logo-md-height: 60px;
 
 // App iOS Variables
 // --------------------------------------------------

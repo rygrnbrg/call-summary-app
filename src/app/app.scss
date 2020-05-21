@@ -11,9 +11,8 @@ p.light,
   color: color($colors, light);
 }
 .cover-bg {
-  background-image: url("../assets/img/background-sky.jpg");
-  background-size: 1563px 929px;
-  background-color: transparent;
+  background-size: contain;
+  background-color: color($colors, primary);
   background-attachment: fixed;
   background-repeat: no-repeat;
   background-position: top center;
@@ -63,6 +62,14 @@ ion-list-header {
   line-height: 200%;
 }
 
+ion-list{
+  &.no-lines{
+    .item-inner{
+      border-bottom: none !important;
+    }
+  }
+}
+
 .item-grid {
   ion-label.label {
     margin: 0;
@@ -95,12 +102,58 @@ ion-header::after {
 }
 
 .logo-block {
-  background-image: url("../assets/img/app-logo-medium.png");
+  background-image: url("../assets/img/keepi_logo-med.png");
   background-position: top;
   background-size: contain;
-  height: 20vh;
+  height: $logo-md-height;
   background-repeat: no-repeat;
-  margin-bottom: $content-margin * 2;
+  margin-bottom: $content-margin * 1;
+}
+
+.logo-block-round {
+  width: 50%;
+  background-color: white;
+  height: 100px;
+  z-index: 100;
+  position: absolute;
+  left: $content-margin;
+  border-radius: 0  0 $content-margin*8 $content-margin*8 ;
+  padding:$content-margin;
+}
+
+.logo-block-round-inner {
+  background-image: url("../assets/img/keepi_logo-med.png");
+  background-position: center;
+  background-size: contain;
+  height:  $logo-md-height;
+  width: 100%;
+  background-repeat: no-repeat;
+}
+
+
+.header-icon{
+  background-size: contain;
+  background-repeat: no-repeat;
+  margin: 0; 
+  height: 50px;
+  width:60px;
+  position: absolute;
+  top:0;
+  padding-top: $content-margin/2;
+  left:$content-margin;
+  background-color: white;
+  border-radius: 0 0 $content-margin*2 $content-margin*2;
+  box-shadow: 0 6px 6px -5px;
+}
+
+.header-icon-inner{
+  background-image: url("../assets/img/keepi-face-sm.png");
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  margin: 0; 
+  height: 35px;
+  width:100%;
 }
 
 .border-radius-button {
@@ -113,6 +166,7 @@ ion-header::after {
 
 .login-box {
   padding: $content-margin * 2;
+  margin-top: $logo-md-height;
 
   button {
     @extend .border-radius-button;
@@ -128,9 +182,8 @@ ion-header::after {
   }
 
   .danger-note {
-    color: color($colors, danger);
+    color: color($colors, black);
     text-align: center;
-    font-weight: bold;
     width: 100%;
   }
 }

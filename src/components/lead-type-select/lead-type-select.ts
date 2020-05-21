@@ -12,6 +12,7 @@ export class LeadTypeSelectComponent {
   @Input() public value: LeadType;
   @Input() public label: string;
   @Input() public dropdownSelect: boolean;
+  @Input() public iconsView: boolean;
 
   @Output() valueChanged = new EventEmitter<LeadType>();
   constructor() {

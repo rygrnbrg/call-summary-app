@@ -12,15 +12,15 @@
       </button>
     </ion-buttons>
 
-    <button ion-button menuToggle large>
+    <!-- <button ion-button menuToggle large>
       <ion-icon ion-button name="menu">
       </ion-icon>
-    </button>
+    </button> -->
   </ion-navbar>
 </ion-header>
 
 <ion-content>
-  <lead-type-select *ngIf="selectedLeadType" [value]="selectedLeadType" [dropdownSelect]="true" label="LEAD_TYPE_SELECTION"
+  <lead-type-select *ngIf="selectedLeadType" [value]="selectedLeadType" [dropdownSelect]="true" [iconsView]="false"  label="LEAD_TYPE_SELECTION"
     (valueChanged)="leadTypeChanged($event)">
   </lead-type-select>
   <ion-list [hidden]="filterSearchRunning">

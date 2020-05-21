@@ -1,6 +1,8 @@
 <ion-header>
   <ion-navbar>
-    <ion-title></ion-title>
+    <ion-title>
+    {{'ITEM_CREATE_TYPE_SELECT_HEADER' | translate}}
+    </ion-title>
     <ion-buttons start>
       <button ion-button (click)="cancel()">
         <ion-icon name="close"></ion-icon>
@@ -11,14 +13,14 @@
 
 <ion-content>
   <form *ngIf="form" [formGroup]="form" (ngSubmit)="done()">
-    <lead-type-select [value]="selectedLeadType" [dropdownSelect]="false" label="ITEM_CREATE_TYPE_SELECT_TITLE" (valueChanged)="leadTypeChanged($event)" ></lead-type-select>
+    <lead-type-select [value]="selectedLeadType" [dropdownSelect]="false" [iconsView]="true" label="ITEM_CREATE_TYPE_SELECT_TITLE" (valueChanged)="leadTypeChanged($event)" ></lead-type-select>
     <ion-list>
       <ion-item>
-        <ion-label>{{ 'ITEM_NAME_PLACEHOLDER' | translate }}</ion-label>
+        <ion-label fixed>{{ 'ITEM_NAME_PLACEHOLDER' | translate }}</ion-label>
         <ion-input type="text" placeholder="" formControlName="name" dir="rtl"></ion-input>
       </ion-item>
       <ion-item>
-        <ion-label>{{ 'ITEM_PHONE_PLACEHOLDER' | translate }}</ion-label>
+        <ion-label fixed>{{ 'ITEM_PHONE_PLACEHOLDER' | translate }}</ion-label>
         <ion-input type="text" placeholder="" formControlName="phone" dir="rtl"></ion-input>
       </ion-item>
     </ion-list>

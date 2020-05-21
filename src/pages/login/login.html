@@ -1,4 +1,7 @@
-<ion-header>
+<div class="logo-block-round">
+  <div class="logo-block-round-inner"></div>
+</div>
+<ion-header class="logo-header">
   <ion-navbar>
     <ion-title></ion-title>
   </ion-navbar>
@@ -8,7 +11,6 @@
   <form (submit)="doLogin()">
     <ion-list>
       <div class="login-box">
-        <div class="logo-block"></div>
         <ion-item>
           <ion-label fixed>{{ 'EMAIL' | translate }}</ion-label>
           <ion-input type="email" [(ngModel)]="account.email" name="email"></ion-input>
@@ -18,7 +20,7 @@
           <ion-input type="password" [(ngModel)]="account.password" name="password"></ion-input>
         </ion-item>
         <div padding>
-          <button ion-button color="light" block>{{ 'LOGIN_BUTTON' | translate }}</button>
+          <button ion-button color="secondary" block>{{ 'LOGIN_BUTTON' | translate }}</button>
         </div>
         <div class="danger-note" (click)="forgotPassword()">
             {{ 'LOGIN_FORGOT_PASSWORD' | translate }}

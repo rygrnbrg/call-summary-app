@@ -1,11 +1,12 @@
 import { ToastController } from 'ionic-angular';
-import { Area } from './../../providers/user/user';
+import { Area, UserData } from './../../providers/user/user';
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { IonicPage, NavController, NavParams, AlertController, LoadingController, Loading, ModalController } from 'ionic-angular';
 import { User } from '../../providers';
 import { Settings } from '../../providers';
+import { AvatarPipe } from "../../pipes/avatar/avatar";
 
 /**
  * The Settings page is a simple form that syncs with a Settings provider
@@ -15,10 +16,13 @@ import { Settings } from '../../providers';
 @IonicPage()
 @Component({
   selector: 'page-settings',
-  templateUrl: 'settings.html'
+  templateUrl: 'settings.html',
+  providers: [AvatarPipe]
 })
 export class SettingsPage {
   public areas : Area[];
+  public userData: UserData;  
+
   private loading: Loading;
   private translations: any;
   private newAreaName: string;
@@ -52,7 +56,7 @@ export class SettingsPage {
     private loadingCtrl: LoadingController,
     private alertCtrl: AlertController,
     private toastCtrl: ToastController,
-    private user: User) {
+    public user: User) {
       this.translate.get([
         'SETTINGS_AREAS_DELETE_CONFIRM', 'GENERAL_CANCEL', 'GENERAL_APPROVE',
         'SETTINGS_AREAS_ADD_TITLE', 'SETTINGS_AREAS_ADD_PLACEHOLDER','GENERAL_ACTION_ERROR',
@@ -67,6 +71,7 @@ export class SettingsPage {
       option3: [this.options.option3],
     };
     
+    this.userData = this.user.getUserData();
     switch (this.page) {
       case 'main':
         break;
@@ -76,7 +81,7 @@ export class SettingsPage {
          };
          break;
       case 'areas':
-        this.areas = this.user.getUserData().areas;
+        this.areas = this.userData.areas;
         break;
     }
      // Watch the form for changes, and
@@ -111,6 +116,10 @@ export class SettingsPage {
 
   ngOnChanges() {
     console.log('Ng All Changes');
+  }
+
+  public logout() {
+    this.user.logout();
   }
 
   public confirmAreaRemove(area: Area) {

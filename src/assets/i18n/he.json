@@ -1,5 +1,5 @@
 {
-  
+  "HOME_PAGE_TITLE":"הוספת ליד חדש",
   "GENERAL_LATER":"אחר כך",
   "GENERAL_CANCEL": "ביטול",
   "GENERAL_APPROVE": "אישור",
@@ -14,7 +14,7 @@
   "GENERAL_FILTER": "סנן",
   "GENERAL_SEARCH_NO_RESULTS": "לא נמצאו תוצאות",
   "GENERAL_ACTION_ERROR" : "הפעולה נכשלה",
-
+  "GENERAL_REAL_ESTATE": "נדלן",
   "NAME": "שם",
   "PASSWORD": "סיסמה",
   "EMAIL": "דואר אלקטרוני",
@@ -39,7 +39,8 @@
   "SETTINGS_OPTION4": "אופציה 4",
 
   "SETTINGS_PAGE_PROFILE": "עריכת פרופיל",
-
+  "SETTINGS_PREFERENCES": "התאמה אישית",
+  "SETTINGS_ACCOUNT": "חשבון",
   "SETTINGS_PROFILE_BUTTON": "Edit Profile",
 
   "SETTINGS_PAGE_AREAS": "אזורי נכסים",
@@ -56,7 +57,8 @@
   "LOGIN_WRONG_CREDENTIALS":  "שם המשתמש או הסיסמה אינם נכונים. אנא נסה שנית.",
   "LOGIN_EMAIL_NOT_VERIFIED": "כתובת הדואר האלקטרוני שלך לא אומתה. שלחנו לך הודעה לכתובת זו ובה קישור לאימות, אנא לחץ עליו.",
 
-  "LOGIN_FORGOT_PASSWORD": "שכחתי סיסמה",
+  "LOGIN_FORGOT_PASSWORD": "שכחת סיסמה?",
+  "LOGIN_FORGOT_PASSWORD_CARE": "אין בעיה, נדאג לך",
   "LOGIN_BUTTON": "התחבר",
  
   "GOTO_SIGNUP_MESSAGE": "פעם ראשונה אצלנו?", 
@@ -81,7 +83,8 @@
   "LEAD_TYPE_SELECTION": "מציג לידים המעוניינים",
 
   "ITEM_CREATE_TITLE": "ליד חדש",
-  "ITEM_CREATE_TYPE_SELECT_TITLE": "צור ליד החדש המעוניין",
+  "ITEM_CREATE_TYPE_SELECT_TITLE": "מה הליד החדש מעוניין לעשות?",
+  "ITEM_CREATE_TYPE_SELECT_HEADER": "הוספת ליד חדש",
   "ITEM_CREATE_CHOOSE_IMAGE": "הוסף תמונה",
   "ITEM_PHONE_PLACEHOLDER": "טלפון",
   "ITEM_NAME_PLACEHOLDER": "שם",

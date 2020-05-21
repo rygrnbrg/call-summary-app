@@ -93,6 +93,10 @@ export class User {
   }
 
   private initAreas(): Promise<void>{
+    if (!this._user){
+      return Promise.resolve();
+    }
+
     this._areas = [];
     let areasCollectionRef = this.afStore
         .collection("users")

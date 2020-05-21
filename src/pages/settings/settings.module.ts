@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { IonicPageModule } from 'ionic-angular';
-
+import { PipesModule } from '../../pipes/pipes.module';
 import { SettingsPage } from './settings';
 
 @NgModule({
@@ -10,7 +10,8 @@ import { SettingsPage } from './settings';
   ],
   imports: [
     IonicPageModule.forChild(SettingsPage),
-    TranslateModule.forChild()
+    TranslateModule.forChild(),
+    PipesModule, 
   ],
   exports: [
     SettingsPage
