@@ -1,14 +1,14 @@
 <ion-header>
   <ion-navbar>
-    <!-- <ion-title>{{ 'LEADS_PAGE_TITLE' | translate }}</ion-title> -->
+    <ion-title>{{ 'LEADS_PAGE_TITLE' | translate }}</ion-title>
     <ion-buttons end>
       <button ion-button item-start icon-start (click)="cleanFilters()" [hidden]="!activeFilters">
         {{"LEADS_CLEAR_FILTERS" | translate}}
-        <ion-icon name="close"></ion-icon>
+        <ion-icon name="ios-funnel"></ion-icon>
       </button>
       <button ion-button clear item-start icon-start (click)="filterLeadsClick()" [hidden]="activeFilters">
         {{ "GENERAL_FILTER" | translate }}
-        <ion-icon name="funnel"></ion-icon>
+        <ion-icon name="ios-funnel"></ion-icon>
       </button>
     </ion-buttons>
 
